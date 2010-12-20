@@ -10,6 +10,7 @@ class QGridLayout;
 class QMenuBar;
 
 class DProject;
+class DHomeScreen;
 
 class MainWindow : public QMainWindow
 {
@@ -18,14 +19,27 @@ class MainWindow : public QMainWindow
 private:
     DProject * current;
 
+    QWidget * central;
     QGridLayout * l;
     QMenuBar * menuBar;
+    QMenu * menFile;
+    QAction * actCreateProject;
+    QAction * actOpenProject;
+    QAction * actSave;
+    QAction * actSaveAs;
+    QAction * actClose;
+    QAction * actExit;
+
+    DHomeScreen * home;
 
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
     bool loadProject( QString & filename);
+
+public slots:
+    void lockUI( bool );
 };
 
 #endif // MAINWINDOW_H
