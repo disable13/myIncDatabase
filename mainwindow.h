@@ -24,6 +24,8 @@ private:
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    bool loadProject( QString & filename);
 };
 
 #endif // MAINWINDOW_H

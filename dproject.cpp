@@ -3,7 +3,9 @@
 #include <QStringList>
 #include <QSettings>
 #include <QFile>
+#ifndef NO_SQL
 #include <QtSql/QSqlDatabase>
+#endif
 
 DProject::DProject(QString fileName)
 {
@@ -30,7 +32,7 @@ bool DProject::load()
 {
     if (isNew)
         return false;
-
+#ifndef NO_SQL
     dbDriver = set->value( "Database/Driver", QVariant("NULL") ).toString();
     if (dbDriver == "NULL")
         return false;
@@ -39,7 +41,7 @@ bool DProject::load()
     dbConnectOptions = set->value( "Database/Options", QVariant("") ).toString();
     dbHost = set->value( "Database/Hostname", QVariant("") ).toString();
     dbPort = set->value( "Database/Driver", QVariant(-1) ).toInt();
-
+#endif
     return true;
 }
 
@@ -93,12 +95,14 @@ bool DProject::setDbDriver(QString & nameDriver)
     nameDriver = nameDriver.trimmed().toUpper() ;
     if (nameDriver == "")
         return false;
+#ifndef NO_SQL
     int n = QSqlDatabase::drivers().count();
     for (int i = 0; i < n; i++)
         if (nameDriver == QSqlDatabase::drivers().at(i) ) {
             dbDriver = nameDriver;
             return true;
     }
+#endif
     return false;
 }
 
@@ -136,6 +140,7 @@ bool DProject::connectDatabase()
 {
     if ( !isNew || !isLoad)
         return false;
+#ifndef NO_SQL
     QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver );
     db.setHostName( dbHost );
     db.setDatabaseName( dbName );
@@ -144,4 +149,7 @@ bool DProject::connectDatabase()
     db.setPort( dbPort );
     db.setConnectOptions( dbConnectOptions );
     return db.open();
+#else
+    return false;
+#endif
 }

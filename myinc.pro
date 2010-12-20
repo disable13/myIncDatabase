@@ -1,13 +1,13 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2010-11-26T10:50:18
-#
-#-------------------------------------------------
+#---------------------------------------------------------
+# Project created by Timoshenko Sergey 2010-11-26T10:50:18
+#---------------------------------------------------------
 
-QT       = core gui sql
+QT = core gui
+#QT += sql
 
 TARGET = myinc
 TEMPLATE = app
+DEFINES += NO_SQL
 
 
 SOURCES += main.cpp\

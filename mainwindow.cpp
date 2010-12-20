@@ -30,3 +30,8 @@ MainWindow::~MainWindow()
 {
 
 }
+
+bool MainWindow::loadProject( QString & filename)
+{
+    return true;
+}
