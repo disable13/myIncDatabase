@@ -1,19 +1,18 @@
+#include "dnamespace.h"
 #include "dproject.h"
 
-#include <QStringList>
 #include <QSettings>
 #include <QFile>
-#include <QDomDocument>
-
-#ifndef NO_SQL
+#include <QtXml/QDomDocument>
 #include <QtSql/QSqlDatabase>
-#endif
+
+
 
 DProject::DProject(QString fileName)
 {
+    nspace = new DNamespace( this );
     isNew = !QFile::exists(fileName);
     isLoad = !isLoad;
-    //isSqlLoad = !isSqlLoad;
 
     set = new QSettings( fileName, QSettings::IniFormat );
 }
@@ -33,6 +32,7 @@ bool DProject::save()
     set->setValue( "Database/Hostname", dbHost );
     set->setValue( "Database/Driver", dbPort );
     set->setValue( "Database/Query File", dbSqlList );
+    set->setValue( "Database/User Interface", dbUi );
 
     isNew = false;
     return true;
@@ -52,6 +52,7 @@ bool DProject::load()
     dbHost = set->value( "Database/Hostname", QVariant("") ).toString();
     dbPort = set->value( "Database/Driver", QVariant(-1) ).toInt();
     dbSqlList = set->value( "Database/Query File", QVariant("") ).toString();
+    dbUi = set->value( "Database/User Interface", QVariant("") ).toString();
 
     return true;
 }
@@ -60,6 +61,7 @@ bool DProject::loadSql()
 {
     sel.clear();
     del.clear();
+    upd.clear();
     ins.clear();
     other.clear();
 
@@ -75,17 +77,15 @@ bool DProject::loadSql()
 
     QDomElement docElem = doc.documentElement();
 
-    if (docElem.tagName() != "sql-list")
+    if (docElem.tagName().toLower() != "sql-list")
         return 0x01;
-    QDomNode n = docElem.firstChild();
-    while(!n.isNull()) {
+    for ( QDomNode n = docElem.firstChildElement( "sql" ); !n.isNull(); n = n.nextSiblingElement("sql") ) {
         QDomElement e = n.toElement();
-        if ( !e.isNull() && (e.tagName() == "sql")) {
-            QDomNode nn = e.firstChild();
-            while(!nn.isNull()) {
+        if ( !e.isNull() ) {
+            QString type = n.toElement().attribute( "type", "null" ).toLower();
+            for ( QDomNode nn = e.firstChild(); !nn.isNull(); nn = nn.nextSiblingElement( "query" ) ) {
                 QDomElement ee = nn.toElement();
-                if ( !ee.isNull() && (ee.tagName() == "query")) {
-                    QString type = n.toElement().attribute( "type", "null" ).toLower();
+                if ( !ee.isNull() ) {
 
                     if (type == "select") {
                         sel.insert( ee.attribute( "name", "null"), ee.text() );
@@ -98,15 +98,10 @@ bool DProject::loadSql()
                     } else if ( type == "other") {
                         other.insert( ee.attribute( "name", "null"), ee.text() );
                     }
-                    //qDebug() << "Tag name " << ee.tagName() << ". Type " << n.toElement().attribute( "type", "null" )
-                    //        << ". Name: " << ee.attribute( "name", "null") << ". Text: " << ee.text();
                 }
-                nn = nn.nextSibling();
             }
         }
-        n = n.nextSibling();
     }
-
     return true;
 }
 
@@ -175,9 +170,19 @@ QString DProject::getDeleteSqlQuerty(QString &name)
     return del[name];
 }
 
+QString DProject::getUpdateSqlQuerty(QString &name)
+{
+    return upd[name];
+}
+
 QString DProject::getOtherSqlQuerty(QString &name)
 {
     return other[name];
+}
+
+QString DProject::getUiFile()
+{
+    return dbUi;
 }
 
 bool DProject::setDbDriver(QString & nameDriver)
@@ -231,6 +236,11 @@ void DProject::setDbSqlListFile(QString &filename)
     dbSqlList = filename;
 }
 
+void DProject::setUiListFile(QString &filename)
+{
+    dbUi = filename;
+}
+
 bool DProject::connectDatabase()
 {
     if ( !isNew || !isLoad)
@@ -257,7 +267,7 @@ void DProject::disconnectDatabase()
 QStringList DProject::workTables()
 {
 #ifndef NO_SQL
-
+    return QStringList();
 #else
     return QStringList();
 #endif

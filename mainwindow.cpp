@@ -39,6 +39,7 @@ MainWindow::~MainWindow()
     /// FIXME: ~DProject
     //if (current)
     //   delete current;
+    delete home;
     delete actExit;
     delete actClose;
     delete actSaveAs;
@@ -49,6 +50,11 @@ MainWindow::~MainWindow()
     delete menuBar;
     delete l;
     delete central;
+}
+
+DProject * MainWindow::getProject()
+{
+    return current;
 }
 
 bool MainWindow::loadProject( QString & filename)

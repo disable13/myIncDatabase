@@ -36,6 +36,8 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    DProject * getProject();
+
     bool loadProject( QString & filename);
 
 public slots:

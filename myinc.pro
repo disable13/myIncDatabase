@@ -3,18 +3,32 @@
 #---------------------------------------------------------
 
 QT = core gui xml
-#QT += sql
+QT += sql
 
 TARGET = myinc
 TEMPLATE = app
-DEFINES += NO_SQL
-
+DESTDIR += bin
+OBJECTS_DIR += build
+MOC_DIR += build
+UI_DIR += build
+CONFIG += uitools
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     dproject.cpp \
-    dhomescreen.cpp
+    dhomescreen.cpp \
+    dtablewidget.cpp \
+    dworkwidget.cpp \
+    dnamespace.cpp
 
 HEADERS  += mainwindow.h \
     dproject.h \
-    dhomescreen.h
+    dhomescreen.h \
+    dtablewidget.h \
+    dworkwidget.h \
+    dnamespace.h \
+    errors.h
+
+OTHER_FILES += \
+    templates/sql.xml \
+    templates/ui.xml

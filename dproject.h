@@ -3,8 +3,10 @@
 
 #include <QObject>
 
+#include <QStringList>
 #include <QHash>
 
+class DNamespace;
 class QSettings;
 
 class DProject : public QObject
@@ -12,6 +14,8 @@ class DProject : public QObject
     Q_OBJECT
 private:
     QSettings * set;
+    DNamespace * nspace;
+
     bool isNew;
     bool isLoad;
     //bool isSqlLoad;
@@ -24,6 +28,9 @@ private:
     QString dbHost;
     int     dbPort;
     QString dbSqlList;
+    QString dbUi;
+    QStringList dbTables; // список рабочих таблиц
+    // список полей для рабочих таблиц
 
     QHash<QString, QString> sel;
     QHash<QString, QString> ins;
@@ -49,10 +56,12 @@ public:
     QString getDbHost();
     int     getDdbPort();
     QString getDbSqlListFile();
+    QString getUiFile();
 
     QString getSelectSqlQuerty( QString & name);
     QString getInsertSqlQuerty( QString & name);
     QString getDeleteSqlQuerty( QString & name);
+    QString getUpdateSqlQuerty( QString & name);
     QString getOtherSqlQuerty( QString & name);
 
 
@@ -64,6 +73,7 @@ public:
     void setDbHost(QString & hostName);
     void setDdbPort(int & port);
     void setDbSqlListFile( QString & filename );
+    void setUiListFile( QString & filename );
 
     bool connectDatabase();
     void disconnectDatabase();
@@ -72,6 +82,7 @@ public:
 
 
 signals:
+    void error();
 
 public slots:
 
