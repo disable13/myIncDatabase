@@ -7,6 +7,10 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QApplication>
+#include <QFileDialog>
+#include <QMessageBox>
+
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
     actClose = menFile->addAction( tr("Close") );
     actExit = menFile->addAction( tr("Exit"), qApp, SLOT(quit()) );
 
+    connect( actOpenProject, SIGNAL(triggered()), this, SLOT(openProjectPush()) );
+
     home = new DHomeScreen( central );
     l->addWidget( home, 0, 0);
 
@@ -37,8 +43,9 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     /// FIXME: ~DProject
-    //if (current)
-    //   delete current;
+    qDebug("FIXME: MainWindow::~MainWindow()");
+    if (current)
+       delete current;
     delete home;
     delete actExit;
     delete actClose;
@@ -62,6 +69,7 @@ bool MainWindow::loadProject( QString & filename)
     current = new DProject( filename );
     if (!current->load())
         return false;
+    connect( current, SIGNAL(error(int)), this, SLOT(error(int)) );
     return current->connectDatabase();
 }
 
@@ -72,4 +80,18 @@ void MainWindow::lockUI(bool lo)
     actSave->setEnabled( lo );
     actSaveAs->setEnabled( lo );
     actClose->setEnabled( lo );
+}
+
+void MainWindow::openProjectPush()
+{
+    QFileDialog f(this, tr("Select MyInc Project"), "", "XML files (*.xml)" );
+    if (f.exec())
+        if ( !loadProject(f.selectedFiles()[0]) ) {
+            QMessageBox::warning( this, tr("Error"), tr("Can't connect to database.") );
+        }
+}
+
+void MainWindow::error(int e)
+{
+    qDebug() << "Error: " << e;
 }

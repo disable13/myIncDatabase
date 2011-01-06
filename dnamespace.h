@@ -29,13 +29,14 @@ public:
     enum Type { Sql, System, Config };
 
     bool initConfig();
-    QString config(QString & name, QString & arrayElement);
+    QString config(QString name, QString arrayElement );
+    void setConfig(QString name, QString value, QString arrayElement );
 
 public slots:
     void function(Type,QString,QVariant*);
 
 signals:
-    void error(QString);
+    void error(int);
 
 };
 

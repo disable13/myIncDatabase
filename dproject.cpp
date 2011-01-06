@@ -1,38 +1,38 @@
 #include "dnamespace.h"
 #include "dproject.h"
 
-#include <QSettings>
 #include <QFile>
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlDatabase>
 
-
-
 DProject::DProject(QString fileName)
 {
-    nspace = new DNamespace( this );
+    //nspace = new DNamespace( this );
     isNew = !QFile::exists(fileName);
     isLoad = !isLoad;
+    filePath = fileName;
 
-    set = new QSettings( fileName, QSettings::IniFormat );
+    nspace = new DNamespace( this );
+
+    connect( nspace, SIGNAL(error(int)), this, SIGNAL(error(int)) );
 }
 
 DProject::~DProject()
 {
     /// FIXME: close database connection;
-    delete set;
+    qDebug( "FIXME: DProject::~DProject()" );
+    disconnectDatabase();
+    delete nspace;
 }
 
 bool DProject::save()
 {
-    set->setValue( "Database/Driver", dbDriver );
-    set->setValue( "Database/Username", dbUser );
-    set->setValue( "Database/Password", dbPassord );
-    set->setValue( "Database/Options", dbConnectOptions );
-    set->setValue( "Database/Hostname", dbHost );
-    set->setValue( "Database/Driver", dbPort );
-    set->setValue( "Database/Query File", dbSqlList );
-    set->setValue( "Database/User Interface", dbUi );
+    nspace->setConfig( "Database", dbDriver, "Driver" );
+    nspace->setConfig( "Database", dbUser, "Username" );
+    nspace->setConfig( "Database", dbPassord, "Password" );
+    nspace->setConfig( "Database", dbConnectOptions, "Options" );
+    nspace->setConfig( "Database", dbHost, "Hostname" );
+    nspace->setConfig( "Database", QString( dbPort ), "Driver" );
 
     isNew = false;
     return true;
@@ -40,25 +40,30 @@ bool DProject::save()
 
 bool DProject::load()
 {
+    isLoad = false;
     if (isNew)
         return false;
+    nspace->initConfig();
 
-    dbDriver = set->value( "Database/Driver", QVariant("NULL") ).toString();
-    if (dbDriver == "NULL")
+    dbDriver = nspace->config( "Database", "Driver" );
+    if ((dbDriver == "NULL") || (dbDriver == "Error"))
         return false;
-    dbUser = set->value( "Database/Username", QVariant("") ).toString();
-    dbPassord = set->value( "Database/Password", QVariant("") ).toString();
-    dbConnectOptions = set->value( "Database/Options", QVariant("") ).toString();
-    dbHost = set->value( "Database/Hostname", QVariant("") ).toString();
-    dbPort = set->value( "Database/Driver", QVariant(-1) ).toInt();
-    dbSqlList = set->value( "Database/Query File", QVariant("") ).toString();
-    dbUi = set->value( "Database/User Interface", QVariant("") ).toString();
+    dbUser = nspace->config( "Database", "Username" );
+    dbPassord = nspace->config( "Database", "Password" );
+    dbConnectOptions = nspace->config( "Database", "Options" );
+    dbHost = nspace->config( "Database", "Hostname" );
+    dbPort = nspace->config( "Database", "Port" ).toInt();
+
+    isLoad = true;
 
     return true;
 }
 
 bool DProject::loadSql()
 {
+    /// FIXME
+    qDebug("FIXME: DProject::loadSql()");
+    /*
     sel.clear();
     del.clear();
     upd.clear();
@@ -102,6 +107,7 @@ bool DProject::loadSql()
             }
         }
     }
+    */
     return true;
 }
 
@@ -150,9 +156,9 @@ int DProject::getDdbPort()
     return dbPort;
 }
 
-QString DProject::getDbSqlListFile()
+QString DProject::getProjectFile()
 {
-    return dbSqlList;
+    return filePath;
 }
 
 QString DProject::getSelectSqlQuerty(QString &name)
@@ -180,24 +186,18 @@ QString DProject::getOtherSqlQuerty(QString &name)
     return other[name];
 }
 
-QString DProject::getUiFile()
-{
-    return dbUi;
-}
-
 bool DProject::setDbDriver(QString & nameDriver)
 {
     nameDriver = nameDriver.trimmed().toUpper() ;
     if (nameDriver == "")
         return false;
-#ifndef NO_SQL
+
     int n = QSqlDatabase::drivers().count();
     for (int i = 0; i < n; i++)
         if (nameDriver == QSqlDatabase::drivers().at(i) ) {
         dbDriver = nameDriver;
         return true;
     }
-#endif
     return false;
 }
 
@@ -231,21 +231,11 @@ void DProject::setDdbPort(int & port)
     dbPort = port;
 }
 
-void DProject::setDbSqlListFile(QString &filename)
-{
-    dbSqlList = filename;
-}
-
-void DProject::setUiListFile(QString &filename)
-{
-    dbUi = filename;
-}
-
 bool DProject::connectDatabase()
 {
     if ( !isNew || !isLoad)
         return false;
-#ifndef NO_SQL
+
     QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver );
     db.setHostName( dbHost );
     db.setDatabaseName( dbName );
@@ -253,22 +243,21 @@ bool DProject::connectDatabase()
     db.setPassword( dbPassord );
     db.setPort( dbPort );
     db.setConnectOptions( dbConnectOptions );
+
     return db.open();
-#else
-    return false;
-#endif
 }
 
 void DProject::disconnectDatabase()
 {
+      /// TODO
+    qDebug("TODO: DProjct::disconnectDatabase()");
+    //QSqlDatabase::removeDatabase();
 
 }
 
 QStringList DProject::workTables()
 {
-#ifndef NO_SQL
+    /// FIXME: !!!!!!!
+    qDebug("FIXME: DProject::workTables()");
     return QStringList();
-#else
-    return QStringList();
-#endif
 }

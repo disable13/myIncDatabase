@@ -7,19 +7,17 @@
 #include <QHash>
 
 class DNamespace;
-class QSettings;
 
 class DProject : public QObject
 {
     Q_OBJECT
 private:
-    QSettings * set;
     DNamespace * nspace;
 
     bool isNew;
     bool isLoad;
-    //bool isSqlLoad;
 
+    QString filePath;
     QString dbDriver;
     QString dbName;
     QString dbUser;
@@ -27,11 +25,11 @@ private:
     QString dbConnectOptions;
     QString dbHost;
     int     dbPort;
-    QString dbSqlList;
-    QString dbUi;
     QStringList dbTables; // список рабочих таблиц
     // список полей для рабочих таблиц
 
+
+    // FIXME:
     QHash<QString, QString> sel;
     QHash<QString, QString> ins;
     QHash<QString, QString> del;
@@ -55,15 +53,13 @@ public:
     QString getDbConnectOptions();
     QString getDbHost();
     int     getDdbPort();
-    QString getDbSqlListFile();
-    QString getUiFile();
+    QString getProjectFile();
 
     QString getSelectSqlQuerty( QString & name);
     QString getInsertSqlQuerty( QString & name);
     QString getDeleteSqlQuerty( QString & name);
     QString getUpdateSqlQuerty( QString & name);
     QString getOtherSqlQuerty( QString & name);
-
 
     bool setDbDriver(QString & nameDriver);
     void setDbName(QString & datebaseName);
@@ -72,17 +68,14 @@ public:
     void setDbConnectOptions(QString & connectOptions);
     void setDbHost(QString & hostName);
     void setDdbPort(int & port);
-    void setDbSqlListFile( QString & filename );
-    void setUiListFile( QString & filename );
 
     bool connectDatabase();
     void disconnectDatabase();
 
     QStringList workTables();
 
-
 signals:
-    void error();
+    void error(int);
 
 public slots:
 

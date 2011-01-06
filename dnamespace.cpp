@@ -1,5 +1,6 @@
 #include "dnamespace.h"
 #include "dproject.h"
+#include "errors.h"
 
 #include <QtXml/QDomDocument>
 #include <QFile>
@@ -32,7 +33,7 @@ void DNamespace::function(Type t, QString query, QVariant * out)
     case System:
         break;
     default:
-        emit error( "Bad type" );
+        emit error( _ERR_NS_TYPE );
     }
 }
 
@@ -40,13 +41,13 @@ bool DNamespace::initConfig()
 {
     isConfig = false;
     doc = new QDomDocument( "Project" );
-    QFile file( "/home/dsb/my.xml" /*parent->getProjectPath();*/ );
+    QFile file( parent->getProjectFile() );
     if (!file.open(QIODevice::ReadOnly)) {
-        emit error( tr("Can't open project file") );
+        emit error( _ERR_CANTOPEN );
         return false;
     }
     if (!doc->setContent(&file)) {
-        emit error( tr("Can't parsing project file") );
+        emit error( _ERR_NS_SYNTAX_PRO );
         file.close();
         return false;
     }
@@ -55,13 +56,13 @@ bool DNamespace::initConfig()
     QDomElement docElem = doc->documentElement();
 
     if (docElem.tagName().toLower() != "root") {
-        emit error( tr("Not found root-node in project") );
+        emit error( _ERR_NS_NOROOT );
         return false;
     }
     /// TODO: Set config node;
     cfg = new QDomNode( docElem.firstChildElement( "config" ) );
     if ( cfg->isNull() ) {
-        emit error( tr("Not fount config-node in project file") );
+        emit error( _ERR_NS_NOCNFNODE );
         return false;
     }
 
@@ -71,23 +72,40 @@ bool DNamespace::initConfig()
 
 
 // <config>
-//      <name value="value1" /> <!-- single -->     // cfg::name = value
+//      <name value="value1" /> <!-- single -->     // cfg::name = 'value1'
 // to set cfg::name(new_value)
 //      <name1 >   <!-- Array -->                   // cfg::name1 = 'Array'
-//          <element name="name0" value="val" />    // cfg::name1[name0] = elem value
+//          <name0 value="val" />    // cfg::name1[name0] = 'val'
 //      </name1>
 // </config>
-QString DNamespace::config(QString query, QVariant * out)
+QString DNamespace::config(QString name, QString arrayElement)
 {
     if (!isConfig) {
-        emit error( "Configuration not loaded" );
+        emit error( _ERR_NS_CNFNOLOADED );
+        return "Error";
+    }
+    name = name.toLower();
+    QDomElement child = cfg->firstChildElement( name );
+    if (child.childNodes().count() != 0 )  {// check array
+        if (arrayElement == "")
+            return "Array";
+        arrayElement = arrayElement.toLower();
+        child = child.firstChildElement( arrayElement );
+        return child.attribute( "value", "NULL" );
+    } else
+        return child.attribute( "value", "NULL" );
+}
+
+void DNamespace::setConfig(QString name, QString value, QString arrayElement)
+{
+    if (!isConfig) {
+        emit error( _ERR_NS_CNFNOLOADED );
         return;
     }
 
-    QDomElement child = cfg->firstChildElement( query );
-    if (child.childNodes().count() != 0 )  {// check array
-        Q_UNUSED(out);
-    } else {
-        out->setValue( child.attribute("value", "NULL") );
-    }
+    QDomElement child = cfg->firstChildElement( name.toLower() );
+    if (child.childNodes().count() != 0 )
+        child.firstChildElement( arrayElement ).attributeNode( "value" ).setValue( value );
+    else
+        child.attributeNode("value").setValue( value );
 }

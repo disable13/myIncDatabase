@@ -42,6 +42,8 @@ public:
 
 public slots:
     void lockUI( bool );
+    void openProjectPush();
+    void error(int);
 };
 
 #endif // MAINWINDOW_H
