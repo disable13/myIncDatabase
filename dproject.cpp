@@ -32,6 +32,7 @@ bool DProject::save()
     nspace->setConfig( "Database", dbPassord, "Password" );
     nspace->setConfig( "Database", dbConnectOptions, "Options" );
     nspace->setConfig( "Database", dbHost, "Hostname" );
+    nspace->setConfig( "Database", dbName, "Name" );
     nspace->setConfig( "Database", QString( dbPort ), "Driver" );
 
     isNew = false;
@@ -45,10 +46,11 @@ bool DProject::load()
         return false;
     nspace->initConfig();
 
-    dbDriver = nspace->config( "Database", "Driver" );
-    if ((dbDriver == "NULL") || (dbDriver == "Error"))
+    dbDriver = QString("Q").append( nspace->config( "Database", "Driver" ).toUpper() );
+    if ((dbDriver == "QNULL") || (dbDriver == "QERORR"))
         return false;
     dbUser = nspace->config( "Database", "Username" );
+    dbName = nspace->config( "Database", "Name" );
     dbPassord = nspace->config( "Database", "Password" );
     dbConnectOptions = nspace->config( "Database", "Options" );
     dbHost = nspace->config( "Database", "Hostname" );
@@ -111,80 +113,35 @@ bool DProject::loadSql()
     return true;
 }
 
-bool DProject::getIsNew()
-{
-    return isNew;
-}
+bool DProject::getIsNew() { return isNew; }
 
-bool DProject::getIsLoad()
-{
-    return isLoad;
-}
+bool DProject::getIsLoad() { return isLoad; }
 
-QString DProject::getDbDriver()
-{
-    return dbDriver;
-}
+QString DProject::getDbDriver() { return dbDriver; }
 
-QString DProject::getDbUser()
-{
-    return dbUser;
-}
+QString DProject::getDbUser() { return dbUser; }
 
-QString DProject::getDbPassord()
-{
-    return dbPassord;
-}
+QString DProject::getDbPassord() { return dbPassord; }
 
-QString DProject::getDbConnectOptions()
-{
-    return dbConnectOptions;
-}
+QString DProject::getDbConnectOptions() { return dbConnectOptions; }
 
-QString DProject::getDbHost()
-{
-    return dbHost;
-}
+QString DProject::getDbHost() {  return dbHost; }
 
-QString DProject::getDbName()
-{
-    return dbName;
-}
+QString DProject::getDbName() { return dbName; }
 
-int DProject::getDdbPort()
-{
-    return dbPort;
-}
+int DProject::getDdbPort() { return dbPort; }
 
-QString DProject::getProjectFile()
-{
-    return filePath;
-}
+QString DProject::getProjectFile() { return filePath; }
 
-QString DProject::getSelectSqlQuerty(QString &name)
-{
-    return sel[name];
-}
+QString DProject::getSelectSqlQuerty(QString &name) { return sel[name]; }
 
-QString DProject::getInsertSqlQuerty(QString &name)
-{
-    return ins[name];
-}
+QString DProject::getInsertSqlQuerty(QString &name) { return ins[name]; }
 
-QString DProject::getDeleteSqlQuerty(QString &name)
-{
-    return del[name];
-}
+QString DProject::getDeleteSqlQuerty(QString &name) { return del[name]; }
 
-QString DProject::getUpdateSqlQuerty(QString &name)
-{
-    return upd[name];
-}
+QString DProject::getUpdateSqlQuerty(QString &name) { return upd[name]; }
 
-QString DProject::getOtherSqlQuerty(QString &name)
-{
-    return other[name];
-}
+QString DProject::getOtherSqlQuerty(QString &name) { return other[name]; }
 
 bool DProject::setDbDriver(QString & nameDriver)
 {
@@ -201,39 +158,21 @@ bool DProject::setDbDriver(QString & nameDriver)
     return false;
 }
 
-void DProject::setDbName(QString &datebaseName)
-{
-    dbName = datebaseName;
-}
+void DProject::setDbName(QString &datebaseName) { dbName = datebaseName; }
 
-void DProject::setDbUser(QString & user)
-{
-    dbUser = user;
-}
+void DProject::setDbUser(QString & user) { dbUser = user; }
 
-void DProject::setDbPassord(QString & password)
-{
-    dbPassord = password;
-}
+void DProject::setDbPassord(QString & password) { dbPassord = password; }
 
-void DProject::setDbConnectOptions(QString & connectOptions)
-{
-    dbConnectOptions = connectOptions;
-}
+void DProject::setDbConnectOptions(QString & connectOptions) { dbConnectOptions = connectOptions; }
 
-void DProject::setDbHost(QString & hostName)
-{
-    dbHost = hostName;
-}
+void DProject::setDbHost(QString & hostName) { dbHost = hostName; }
 
-void DProject::setDdbPort(int & port)
-{
-    dbPort = port;
-}
+void DProject::setDdbPort(int & port) { dbPort = port; }
 
 bool DProject::connectDatabase()
 {
-    if ( !isNew || !isLoad)
+    if ( !isLoad )
         return false;
 
     QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver );
@@ -249,7 +188,7 @@ bool DProject::connectDatabase()
 
 void DProject::disconnectDatabase()
 {
-      /// TODO
+    /// TODO
     qDebug("TODO: DProjct::disconnectDatabase()");
     //QSqlDatabase::removeDatabase();
 

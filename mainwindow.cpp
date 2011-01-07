@@ -153,15 +153,20 @@ void MainWindow::connectDatabase()
 {
     /// TODO
     qDebug("FIXME: MainWindow::connectDatabase()");
-    footer->progressStart();
+    footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
         current->disconnectDatabase();
     } else {
-        if (current->connectDatabase())
+        if (!current->connectDatabase()) {
             QMessageBox::warning( this, tr("Error"), tr("Can't connect to database.") );
+            isConnected = false;
+            footer->progressStop( false );
+            return;
+        }
         isConnected = true;
     }
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
+    footer->progressStop( true );
 }
 
 void MainWindow::error(int e)

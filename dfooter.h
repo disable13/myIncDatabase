@@ -31,7 +31,8 @@ public slots:
     void progressStart(QString);
     void progressStart(QString,int);
     void progressChange(int); // now value. to stop set max value
-    void progressStop(); // for indicator
+    void progressStop(); // for indicator (unknow result)
+    void progressStop(bool); // for good or bad result
 };
 
 #endif // DFOOTER_H

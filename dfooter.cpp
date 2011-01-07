@@ -89,3 +89,14 @@ void DFooter::progressStop()
 {
     progressInicator->stopAnimation();
 }
+
+void DFooter::progressStop(bool state)
+{
+    if (state)
+        lText->setText( tr("Complete!") );
+    else
+        lText->setText( tr("Uncomplete...") );
+    qDebug("TODO: icon. DFooter::progressStop(bool)");
+    progressInicator->stopAnimation();
+
+}
