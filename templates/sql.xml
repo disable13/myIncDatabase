@@ -1,18 +1,7 @@
-<sql-list>
-	<sql type="select">
-		<query name="select me"> SELECT * FROM `me`</query>
-		<query name="select me sorted"> SELECT * FROM `me` ORDER BY id</query>	
-	</sql>
-	<sql type="insert">
-		<query name="insert">INSERT INTO me(id,value1,value2) VALUES (NULL,1,'me')</query>
-	</sql>
-	<sql type="delete">
-		<query name="delete">DELETE FROM `me` WHERE `id`=4</query>
-	</sql>
-	<sql type="update">
-		<query name="create base">update sql ^^</query>
-	</sql>
-	<sql type="other">
-        <query name="create base" comment="Delete table 'me'">DROP TABLE `me`</query>
-	</sql>
-</sql-list>
+<sql>
+        <select name="full" >SELECT * FROM my</select>
+        <uptade name="updated">UPDATE FROM my SET olol='lol'</update>
+        <delete name="lol">DELETE FROM my WHERE olol='lol'</delete>
+        <insert name="lol">INSERT INTO my VALUES (NULL,'lol')</insert>
+        <other name="rebuild">DROP DATABASE myinc</other>
+</sql>

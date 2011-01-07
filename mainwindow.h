@@ -11,6 +11,7 @@ class QMenuBar;
 
 class DProject;
 class DHomeScreen;
+class DFooter;
 
 class MainWindow : public QMainWindow
 {
@@ -29,8 +30,16 @@ private:
     QAction * actSaveAs;
     QAction * actClose;
     QAction * actExit;
+    QMenu *  menProject;
+    QAction * actConnect;
+    QAction * actDbSettings;
+    QAction * actQuerySettings;
+    QAction * actUiSettings;
 
     DHomeScreen * home;
+    DFooter * footer;
+
+    bool isConnected;
 
 public:
     MainWindow(QWidget *parent = 0);
@@ -42,8 +51,14 @@ public:
 
 public slots:
     void lockUI( bool );
+    void createProject();
     void openProjectPush();
+    void openConnectionSettings();
+    void openQuerySettings();
+    void openUiSettings();
+    void connectDatabase();
     void error(int);
+
 };
 
 #endif // MAINWINDOW_H

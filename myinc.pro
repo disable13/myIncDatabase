@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     dhomescreen.cpp \
     dtablewidget.cpp \
     dworkwidget.cpp \
-    dnamespace.cpp
+    dnamespace.cpp \
+    dfooter.cpp \
+    ../framework/qprogressindicator/QProgressIndicator.cpp
 
 HEADERS  += mainwindow.h \
     dproject.h \
@@ -27,7 +29,9 @@ HEADERS  += mainwindow.h \
     dtablewidget.h \
     dworkwidget.h \
     dnamespace.h \
-    errors.h
+    errors.h \
+    dfooter.h \
+    ../framework/qprogressindicator/QProgressIndicator.h
 
 OTHER_FILES += \
     templates/sql.xml \

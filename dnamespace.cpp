@@ -14,14 +14,16 @@ DNamespace::DNamespace(DProject * parent) :
 
 DNamespace::~DNamespace()
 {
-    if (doc)
+    if (isConfig) {
         delete doc;
-    if (cfg)
         delete cfg;
+    }
 }
 
 void DNamespace::function(Type t, QString query, QVariant * out)
 {
+    qDebug("FIXME: DNodespace::function(Type,QString,QVariant)");
+
     Q_UNUSED(query);
     Q_UNUSED(out);
 
@@ -44,11 +46,13 @@ bool DNamespace::initConfig()
     QFile file( parent->getProjectFile() );
     if (!file.open(QIODevice::ReadOnly)) {
         emit error( _ERR_CANTOPEN );
+        delete doc;
         return false;
     }
     if (!doc->setContent(&file)) {
         emit error( _ERR_NS_SYNTAX_PRO );
         file.close();
+        delete doc;
         return false;
     }
     file.close();
@@ -57,17 +61,28 @@ bool DNamespace::initConfig()
 
     if (docElem.tagName().toLower() != "root") {
         emit error( _ERR_NS_NOROOT );
+        delete doc;
         return false;
     }
     /// TODO: Set config node;
     cfg = new QDomNode( docElem.firstChildElement( "config" ) );
     if ( cfg->isNull() ) {
         emit error( _ERR_NS_NOCNFNODE );
+        delete doc;
+        delete cfg;
         return false;
     }
 
     isConfig = true;
     return true;
+}
+
+bool DNamespace::initSql()
+{
+    qDebug("TODO: DNamespace::initSql()");
+
+
+    return false;
 }
 
 
@@ -84,12 +99,11 @@ QString DNamespace::config(QString name, QString arrayElement)
         emit error( _ERR_NS_CNFNOLOADED );
         return "Error";
     }
-    name = name.toLower();
     QDomElement child = cfg->firstChildElement( name );
     if (child.childNodes().count() != 0 )  {// check array
         if (arrayElement == "")
             return "Array";
-        arrayElement = arrayElement.toLower();
+
         child = child.firstChildElement( arrayElement );
         return child.attribute( "value", "NULL" );
     } else
@@ -103,7 +117,7 @@ void DNamespace::setConfig(QString name, QString value, QString arrayElement)
         return;
     }
 
-    QDomElement child = cfg->firstChildElement( name.toLower() );
+    QDomElement child = cfg->firstChildElement( name );
     if (child.childNodes().count() != 0 )
         child.firstChildElement( arrayElement ).attributeNode( "value" ).setValue( value );
     else

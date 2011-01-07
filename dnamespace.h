@@ -29,6 +29,8 @@ public:
     enum Type { Sql, System, Config };
 
     bool initConfig();
+    bool initSql();
+
     QString config(QString name, QString arrayElement );
     void setConfig(QString name, QString value, QString arrayElement );
 
