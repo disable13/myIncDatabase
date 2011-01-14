@@ -9,7 +9,9 @@ DProject::DProject(QString fileName)
 {
     //nspace = new DNamespace( this );
     isNew = !QFile::exists(fileName);
-    isLoad = !isLoad;
+    isLoad = false;
+    isSql = false;
+
     filePath = fileName;
 
     nspace = new DNamespace( this );
@@ -117,6 +119,8 @@ bool DProject::getIsNew() { return isNew; }
 
 bool DProject::getIsLoad() { return isLoad; }
 
+bool DProject::getIsConnected() { return isSql; }
+
 QString DProject::getDbDriver() { return dbDriver; }
 
 QString DProject::getDbUser() { return dbUser; }
@@ -183,15 +187,16 @@ bool DProject::connectDatabase()
     db.setPort( dbPort );
     db.setConnectOptions( dbConnectOptions );
 
-    return db.open();
+    isSql = db.open();
+    return isSql;
 }
 
 void DProject::disconnectDatabase()
 {
     /// TODO
-    qDebug("TODO: DProjct::disconnectDatabase()");
-    //QSqlDatabase::removeDatabase();
-
+    qDebug("TODO: DProjct::disconnectDatabase()\n\tTest here plz!");
+    QSqlDatabase::removeDatabase( dbName );
+    isSql = false;
 }
 
 QStringList DProject::workTables()

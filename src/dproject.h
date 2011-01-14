@@ -16,6 +16,7 @@ private:
 
     bool isNew;
     bool isLoad;
+    bool isSql;
 
     QString filePath;
     QString dbDriver;
@@ -46,6 +47,7 @@ public:
     // propertes
     bool getIsNew();
     bool getIsLoad();
+    bool getIsConnected();
     QString getDbDriver();
     QString getDbName();
     QString getDbUser();

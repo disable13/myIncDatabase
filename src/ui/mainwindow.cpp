@@ -87,8 +87,7 @@ bool MainWindow::loadProject( QString & filename)
     current = new DProject( filename );
     connect( current, SIGNAL(error(int)), this, SLOT(error(int)) );
     isOpened = true;
-    return current->load();    /// FIXME: ~DProject
-    qDebug("FIXME: MainWindow::~MainWindow()");
+    return current->load();
 }
 
 void MainWindow::lockUI(bool lo)

@@ -8,6 +8,8 @@ class QDomDocument;
 class QDomNode;
 class DProject;
 class QRegExp;
+class QSqlQuery;
+class QSqlResult;
 
 class DNamespace : public QObject
 {
@@ -21,6 +23,7 @@ private:
     bool isSql; // connected?
     bool isConfig; // open?
     QRegExp * rx; // uri
+    QSqlQuery * query;
 
     QDomNode * cfg;
 
@@ -35,6 +38,8 @@ public:
 
     QString config(QString name, QString arrayElement );
     void setConfig(QString name, QString value, QString arrayElement );
+
+    const QSqlResult * sql(QString queryName, QList<QVariant> bindValue);
 
 public slots:
     void uri(QString,QVariant*);
