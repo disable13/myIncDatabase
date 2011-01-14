@@ -1,0 +1,7 @@
+<sql>
+        <select name="full" >SELECT * FROM my</select>
+        <uptade name="updated">UPDATE FROM my SET olol='lol'</update>
+        <delete name="lol">DELETE FROM my WHERE olol='lol'</delete>
+        <insert name="lol">INSERT INTO my VALUES (NULL,'lol')</insert>
+        <other name="rebuild">DROP DATABASE myinc</other>
+</sql>
