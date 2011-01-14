@@ -74,11 +74,10 @@ bool DNamespace::initSql()
     if (isSql)
         return true;
 
-    if ( !parent->getIsConnected() )
-        if ( !parent->connectDatabase() ) {
-            emit error(_ERR_DB_CONNECT);
-            return false;
-        }
+    if ( !parent->getIsConnected() ) {
+        emit error(_ERR_DB_CONNECT);
+        return false;
+    }
     query = new QSqlQuery();
     /// FIXME: load sql procedures from xml
     qDebug("FIXME: DNamespace::initSql()");
@@ -86,12 +85,11 @@ bool DNamespace::initSql()
     return false;
 }
 
-
 // <config>
-//      <name value="value1" /> <!-- single -->     // cfg::name = 'value1'
-// to set cfg::name(new_value)
-//      <name1 >   <!-- Array -->                   // cfg::name1 = 'Array'
-//          <name0 value="val" />    // cfg::name1[name0] = 'val'
+//      <name value="value1" /> <!-- single -->     //
+// to set
+//      <name1 >   <!-- Array -->                   //
+//          <name0 value="val" />    //
 //      </name1>
 // </config>
 QString DNamespace::config(QString name, QString arrayElement)

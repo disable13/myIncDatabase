@@ -23,7 +23,8 @@ SOURCES += src/main.cpp\
     src/ui/dworkwidget.cpp \
     src/dnamespace.cpp \
     src/ui/dfooter.cpp \
-    src/QProgressIndicator.cpp
+    src/QProgressIndicator.cpp \
+    src/ui/ddbconfig.cpp
 
 HEADERS  += src/ui/mainwindow.h \
     src/dproject.h \
@@ -33,7 +34,8 @@ HEADERS  += src/ui/mainwindow.h \
     src/dnamespace.h \
     src/errors.h \
     src/ui/dfooter.h \
-    src/QProgressIndicator.h
+    src/QProgressIndicator.h \
+    src/ui/ddbconfig.h
 
 OTHER_FILES += \
     res/templates/sql.xml \

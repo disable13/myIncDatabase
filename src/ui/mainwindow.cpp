@@ -3,6 +3,8 @@
 #include "dproject.h"
 #include "dhomescreen.h"
 #include "dfooter.h"
+#include "errors.h"
+#include "ddbconfig.h"
 
 #include <QGridLayout>
 #include <QMenu>
@@ -132,8 +134,9 @@ void MainWindow::openProjectPush()
 
 void MainWindow::openConnectionSettings()
 {
-    /// TODO
-    qDebug("TODO: MainWindow::openConnectionSettings()");
+    DDbConfig c(this);
+    c.setProject( current );
+    c.exec();
 }
 
 void MainWindow::openQuerySettings()
@@ -163,6 +166,7 @@ void MainWindow::connectDatabase()
             return;
         }
         isConnected = true;
+        home->setProject( current );
     }
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
     footer->progressStop( true );
@@ -170,5 +174,34 @@ void MainWindow::connectDatabase()
 
 void MainWindow::error(int e)
 {
+    QString text;
+    switch (e) {
+    // Database
+    case _ERR_DB_CONNECT:
+        text = tr("Can't connect to SQL Server"); break;
+    // URI
+    case _ERR_URI_SYNTAX:
+        text = tr("Syntax error in URI query."); break;
+    // Namespace
+    case _ERR_NS_SQLNOINIT:
+        text = tr("SQL not be initialized."); break;
+    case _ERR_NS_CNFNOINIT:
+        text = tr("Config not be initialized."); break;
+    case _ERR_NS_TYPE:
+        text = tr("Namespace type error?!"); break;
+    case _ERR_NS_NOCNFNODE:
+        text = tr("Config node not found in project xml file."); break;
+    case _ERR_NS_NOROOT:
+        text = tr("Root node not found in project xml file."); break;
+    case _ERR_NS_SYNTAX_PRO:
+        text = tr("Syntax error in project xml file."); break;
+    case _ERR_CANTOPEN:
+        text = tr("Can't open file."); break;
+    case _ERR_NO_ERROR:
+    case _ERR_UNKNOW:
+    default:
+        text = tr("Unknown");
+    }
+
     qDebug() << "Error: " << e;
 }

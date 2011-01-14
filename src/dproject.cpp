@@ -1,9 +1,13 @@
 #include "src/dnamespace.h"
 #include "src/dproject.h"
+#include "src/errors.h"
 
 #include <QFile>
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+
+#include <QDebug>
 
 DProject::DProject(QString fileName)
 {
@@ -21,8 +25,6 @@ DProject::DProject(QString fileName)
 
 DProject::~DProject()
 {
-    /// FIXME: close database connection;
-    qDebug( "FIXME: DProject::~DProject()" );
     disconnectDatabase();
     delete nspace;
 }
@@ -133,22 +135,25 @@ QString DProject::getDbHost() {  return dbHost; }
 
 QString DProject::getDbName() { return dbName; }
 
-int DProject::getDdbPort() { return dbPort; }
+int DProject::getDbPort() { return dbPort; }
 
 QString DProject::getProjectFile() { return filePath; }
 
-QString DProject::getSelectSqlQuerty(QString &name) { return sel[name]; }
+DNamespace * DProject::getNamespace() { return nspace; }
 
-QString DProject::getInsertSqlQuerty(QString &name) { return ins[name]; }
+QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
 
-QString DProject::getDeleteSqlQuerty(QString &name) { return del[name]; }
+QString DProject::getInsertSqlQuerty(QString name) { return ins[name]; }
 
-QString DProject::getUpdateSqlQuerty(QString &name) { return upd[name]; }
+QString DProject::getDeleteSqlQuerty(QString name) { return del[name]; }
 
-QString DProject::getOtherSqlQuerty(QString &name) { return other[name]; }
+QString DProject::getUpdateSqlQuerty(QString name) { return upd[name]; }
 
-bool DProject::setDbDriver(QString & nameDriver)
+QString DProject::getOtherSqlQuerty(QString name) { return other[name]; }
+
+bool DProject::setDbDriver(QString nameDriver)
 {
+    qDebug("FIXME: bool DProject::setDbDriver(QString)\n\tAppend 'Q' char.");
     nameDriver = nameDriver.trimmed().toUpper() ;
     if (nameDriver == "")
         return false;
@@ -162,32 +167,42 @@ bool DProject::setDbDriver(QString & nameDriver)
     return false;
 }
 
-void DProject::setDbName(QString &datebaseName) { dbName = datebaseName; }
+void DProject::setDbName(QString datebaseName) { dbName = datebaseName; }
 
-void DProject::setDbUser(QString & user) { dbUser = user; }
+void DProject::setDbUser(QString user) { dbUser = user; }
 
-void DProject::setDbPassord(QString & password) { dbPassord = password; }
+void DProject::setDbPassord(QString password) { dbPassord = password; }
 
-void DProject::setDbConnectOptions(QString & connectOptions) { dbConnectOptions = connectOptions; }
+void DProject::setDbConnectOptions(QString connectOptions) { dbConnectOptions = connectOptions; }
 
-void DProject::setDbHost(QString & hostName) { dbHost = hostName; }
+void DProject::setDbHost(QString hostName) { dbHost = hostName; }
 
-void DProject::setDdbPort(int & port) { dbPort = port; }
+void DProject::setDbPort(int port) { dbPort = port; }
 
 bool DProject::connectDatabase()
 {
-    if ( !isLoad )
+    if ( !isLoad || isSql )
         return false;
 
     QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver );
-    db.setHostName( dbHost );
-    db.setDatabaseName( dbName );
-    db.setUserName( dbUser );
-    db.setPassword( dbPassord );
-    db.setPort( dbPort );
-    db.setConnectOptions( dbConnectOptions );
+    if (dbHost != "NULL")
+        db.setHostName( dbHost );
+    if (dbName!="NULL")
+        db.setDatabaseName( dbName );
+    if (dbUser!="NULL")
+        db.setUserName( dbUser );
+    if (dbPassord!="NULL")
+        db.setPassword( dbPassord );
+    if (dbPort!=0)
+        db.setPort( dbPort );
+    if (dbConnectOptions!="NULL")
+        db.setConnectOptions( dbConnectOptions );
 
     isSql = db.open();
+    if (!isSql)
+        emit error( _ERR_DB_CONNECT );
+    qDebug("FIXME: DProject::connectDatabase()");
+    //    qDebug(db.lastError().text());
     return isSql;
 }
 
@@ -201,6 +216,9 @@ void DProject::disconnectDatabase()
 
 QStringList DProject::workTables()
 {
-    qDebug("FIXME: DProject::workTables()");
-    return QStringList();
+    int count = nspace->config( "WorkTables", "Count" ).toInt();
+    QStringList list;
+    for( int i = 0; i < count; i++ )
+        list << nspace->config( "WorkTables", QString("Table%1").arg(i) );
+    return list;
 }
