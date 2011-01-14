@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     isConnected = false;
+    isOpened = false;
 
     central = new QWidget();
     l = new QGridLayout( central );
@@ -55,9 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    /// FIXME: ~DProject
-    qDebug("FIXME: MainWindow::~MainWindow()");
-    if (current)
+    if (isOpened)
        delete current;
     delete home;
     delete footer;
@@ -87,8 +86,9 @@ bool MainWindow::loadProject( QString & filename)
 {
     current = new DProject( filename );
     connect( current, SIGNAL(error(int)), this, SLOT(error(int)) );
-
-    return current->load();
+    isOpened = true;
+    return current->load();    /// FIXME: ~DProject
+    qDebug("FIXME: MainWindow::~MainWindow()");
 }
 
 void MainWindow::lockUI(bool lo)

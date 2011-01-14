@@ -40,6 +40,7 @@ private:
     DFooter * footer;
 
     bool isConnected;
+    bool isOpened; // to ~MainWindow
 
 public:
     MainWindow(QWidget *parent = 0);

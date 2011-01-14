@@ -1,5 +1,5 @@
-#include "dnamespace.h"
-#include "dproject.h"
+#include "src/dnamespace.h"
+#include "src/dproject.h"
 
 #include <QFile>
 #include <QtXml/QDomDocument>

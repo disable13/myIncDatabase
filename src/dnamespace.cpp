@@ -1,15 +1,19 @@
-#include "dnamespace.h"
-#include "dproject.h"
-#include "errors.h"
+#include "src/dnamespace.h"
+#include "src/dproject.h"
+#include "src/errors.h"
 
 #include <QtXml/QDomDocument>
 #include <QFile>
+#include <QRegExp>
+#include <QStringList>
 
 DNamespace::DNamespace(DProject * parent) :
         QObject(), parent(parent)
 {
     isSql = false;
     isConfig = false;
+
+    rx = new QRegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?");
 }
 
 DNamespace::~DNamespace()
@@ -18,6 +22,7 @@ DNamespace::~DNamespace()
         delete doc;
         delete cfg;
     }
+    delete rx;
 }
 
 bool DNamespace::initConfig()
@@ -105,26 +110,7 @@ void DNamespace::setConfig(QString name, QString value, QString arrayElement)
         child.attributeNode("value").setValue( value );
 }
 
-void DNamespace::function(Type t, QString query, QVariant * out)
-{
-    qDebug("FIXME: DNodespace::function(Type,QString,QVariant)");
-
-    Q_UNUSED(query);
-    Q_UNUSED(out);
-
-    switch (t) {
-    case Sql:
-        break;
-    case Config:
-        break;
-    case System:
-        break;
-    default:
-        emit error( _ERR_NS_TYPE );
-    }
-}
-
-void DNamespace::uri(QString, QVariant *)
+void DNamespace::uri(QString uri, QVariant * var)
 {
     qDebug("TODO: DNamespace::uri(QString,QVariant*)");
 
@@ -144,6 +130,26 @@ void DNamespace::uri(QString, QVariant *)
     // 5) /pub/ietf/uri/
     // 6) нет результата
     // 7) нет результата
-    // 8) #Related
+    // 8) #Related+
     // 9) Related
+
+    if (rx->indexIn(uri) != -1)
+        if ( rx->cap(1) == "myinc" ) { // default
+           if (rx->cap(3) == "" ) {// localhost without socket
+               QStringList path = rx->cap(4).split('/', QString::SkipEmptyParts );
+               // processing
+               QString q = path.at(0).toLower();
+               if ( q == "config" ) {
+                    var->setValue( config(path[1],path[2]) );
+               } else if ( q == "sql" ) {
+                    qDebug("TODO: DNamespace::uri(QString,QVariant*)\n\tProcessing \"sql\"");
+               } else if ( q == "system" ) {
+                    qDebug("TODO: DNamespace::uri(QString,QVariant*)\n\tProcessing \"system\"");
+               } else {
+                    var->setValue(QString("Error"));
+                    emit error(_ERR_URI_SYNTAX);
+               }
+           }
+        }
+
 }

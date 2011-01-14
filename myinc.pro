@@ -12,6 +12,8 @@ OBJECTS_DIR += build
 MOC_DIR += build
 UI_DIR += build
 CONFIG += uitools
+INCLUDEPATH += src \
+    src/ui
 
 SOURCES += src/main.cpp\
         src/ui/mainwindow.cpp \
@@ -21,7 +23,7 @@ SOURCES += src/main.cpp\
     src/ui/dworkwidget.cpp \
     src/dnamespace.cpp \
     src/ui/dfooter.cpp \
-    ../framework/qprogressindicator/QProgressIndicator.cpp
+    src/QProgressIndicator.cpp
 
 HEADERS  += src/ui/mainwindow.h \
     src/dproject.h \
@@ -31,7 +33,7 @@ HEADERS  += src/ui/mainwindow.h \
     src/dnamespace.h \
     src/errors.h \
     src/ui/dfooter.h \
-    ../framework/qprogressindicator/QProgressIndicator.h
+    src/QProgressIndicator.h
 
 OTHER_FILES += \
     res/templates/sql.xml \

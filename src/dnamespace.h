@@ -7,6 +7,7 @@
 class QDomDocument;
 class QDomNode;
 class DProject;
+class QRegExp;
 
 class DNamespace : public QObject
 {
@@ -19,6 +20,7 @@ private:
     DProject * parent;
     bool isSql; // connected?
     bool isConfig; // open?
+    QRegExp * rx; // uri
 
     QDomNode * cfg;
 
@@ -35,7 +37,6 @@ public:
     void setConfig(QString name, QString value, QString arrayElement );
 
 public slots:
-    void function(Type,QString,QVariant*);
     void uri(QString,QVariant*);
 
 signals:

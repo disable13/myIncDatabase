@@ -12,4 +12,7 @@
 #define _ERR_NS_TYPE 0x0104
 #define _ERR_NS_CNFNOLOADED 0x0105
 
+// URI
+#define _ERR_URI_SYNTAX 0x0201
+
 #endif // ERRORS_H
