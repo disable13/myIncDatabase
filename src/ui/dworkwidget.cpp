@@ -11,14 +11,6 @@ DWorkWidget::DWorkWidget(DProject * pro, QString & formName) :
 {
     l = new QGridLayout( this );
     setLayout( l );
-
-             /*
-            }
-            break;
-        }
-    }
-*/
-
 }
 
 DWorkWidget::~DWorkWidget()

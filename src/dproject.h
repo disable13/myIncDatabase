@@ -41,7 +41,7 @@ public:
     DProject( QString fileName );
     ~DProject();
 
-    bool save();
+    void save();
     bool load();
     bool loadSql();
     // propertes

@@ -7,8 +7,6 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 
-#include <QDebug>
-
 DProject::DProject(QString fileName)
 {
     //nspace = new DNamespace( this );
@@ -29,8 +27,9 @@ DProject::~DProject()
     delete nspace;
 }
 
-bool DProject::save()
+void DProject::save()
 {
+    qDebug("FIXME: bool DProject::save()");
     nspace->setConfig( "Database", dbDriver, "Driver" );
     nspace->setConfig( "Database", dbUser, "Username" );
     nspace->setConfig( "Database", dbPassord, "Password" );
@@ -40,7 +39,6 @@ bool DProject::save()
     nspace->setConfig( "Database", QString( dbPort ), "Driver" );
 
     isNew = false;
-    return true;
 }
 
 bool DProject::load()
@@ -50,8 +48,8 @@ bool DProject::load()
         return false;
     nspace->initConfig();
 
-    dbDriver = QString("Q").append( nspace->config( "Database", "Driver" ).toUpper() );
-    if ((dbDriver == "QNULL") || (dbDriver == "QERORR"))
+    dbDriver = nspace->config( "Database", "Driver" ).toUpper();
+    if ((dbDriver == "NULL") || (dbDriver == "ERORR"))
         return false;
     dbUser = nspace->config( "Database", "Username" );
     dbName = nspace->config( "Database", "Name" );
@@ -64,6 +62,8 @@ bool DProject::load()
 
     return true;
 }
+
+#warning "FIXME: DProject::loadSql()"
 
 bool DProject::loadSql()
 {
@@ -153,7 +153,6 @@ QString DProject::getOtherSqlQuerty(QString name) { return other[name]; }
 
 bool DProject::setDbDriver(QString nameDriver)
 {
-    qDebug("FIXME: bool DProject::setDbDriver(QString)\n\tAppend 'Q' char.");
     nameDriver = nameDriver.trimmed().toUpper() ;
     if (nameDriver == "")
         return false;
@@ -179,12 +178,14 @@ void DProject::setDbHost(QString hostName) { dbHost = hostName; }
 
 void DProject::setDbPort(int port) { dbPort = port; }
 
+#warning "FIXME: DProject::connectDatabase()"
+
 bool DProject::connectDatabase()
 {
     if ( !isLoad || isSql )
         return false;
 
-    QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver );
+    QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver, "Project" );
     if (dbHost != "NULL")
         db.setHostName( dbHost );
     if (dbName!="NULL")
@@ -206,11 +207,13 @@ bool DProject::connectDatabase()
     return isSql;
 }
 
+#warning "FIXME: DProject::disconnectDatabase()"
+
 void DProject::disconnectDatabase()
 {
-    /// TODO
-    qDebug("TODO: DProjct::disconnectDatabase()\n\tTest here plz!");
-    QSqlDatabase::removeDatabase( dbName );
+    /// FIXME: recurse closing QSqlQuery, QSqlError, QSqlDatabase etc...
+    qDebug("FIXME: DProjct::disconnectDatabase()");
+    QSqlDatabase::removeDatabase( "Project" );
     isSql = false;
 }
 

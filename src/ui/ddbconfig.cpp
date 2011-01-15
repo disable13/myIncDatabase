@@ -11,6 +11,10 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QLabel>
 #include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtGui/QMessageBox>
+
+#warning FIXME: class DDbConfig
 
 DDbConfig::DDbConfig(QWidget *parent) :
     QDialog(parent)
@@ -23,10 +27,6 @@ DDbConfig::DDbConfig(QWidget *parent) :
     cbDriver = new QComboBox(this);
     cbDriver->addItem( tr("NULL") );
     cbDriver->insertItems(1, QSqlDatabase::drivers());
-    for(int i = 1; i < cbDriver->count(); i++ ) {
-        if (cbDriver->itemText(i).startsWith("Q"))
-            cbDriver->setItemText(i, cbDriver->itemText(i).remove(0,1));
-    }
     edtDbHost = new QLineEdit(this);
     qDebug("FIXME: DDbConfig::DDbConfig()\n\tFull Input check.");
     sbDbPort = new QSpinBox(this);
@@ -49,21 +49,26 @@ DDbConfig::DDbConfig(QWidget *parent) :
     l->addRow( tr("Options"), edtDbOptions );
     l->addWidget( lStatus );
 
+    // Buttons
     QDialogButtonBox * btnBox = new QDialogButtonBox(this);
+
     QPushButton * btn = new QPushButton(tr("Ok"), this);
     connect( btn, SIGNAL(clicked()), this, SLOT(save())  );
     connect( this, SIGNAL(destroyed()), btn, SLOT(deleteLater()) );
     btnBox->addButton( btn, QDialogButtonBox::AcceptRole );
+
     btn = new QPushButton( tr("Cancel"), this);
     connect( btn, SIGNAL(clicked()), this, SLOT(reject())  );
     connect( this, SIGNAL(destroyed()), btn, SLOT(deleteLater()) );
     btnBox->addButton( btn, QDialogButtonBox::RejectRole );
+
     btn = new QPushButton( tr("Test"), this );
     connect( btn, SIGNAL(clicked()), this, SLOT(apply())  );
     connect( this, SIGNAL(destroyed()), btn, SLOT(deleteLater()) );
     btnBox->addButton( btn, QDialogButtonBox::ApplyRole );
 
     connect( this, SIGNAL(destroyed()), btnBox, SLOT(deleteLater()) );
+
     l->addWidget(btnBox);
 }
 
@@ -93,7 +98,7 @@ void DDbConfig::setProject(DProject * pro)
     sbDbPort->setValue( project->getDbPort() );
 
     qDebug("CHECKME: void DDbCOnfig::setProject(DProject*)");
-    QString drv = project->getDbDriver().remove(0, 1);
+    QString drv = project->getDbDriver();
     cbDriver->setCurrentIndex(0);
     for(int i = 1; i < cbDriver->count(); i++ )
         if (cbDriver->itemText(i) == drv) {
@@ -124,6 +129,30 @@ void DDbConfig::save()
 
 bool DDbConfig::apply()
 {
-    qDebug("TODO: bool DDbConfig::apply()");
-    return false;
+    bool isSql = false;
+    {
+        QSqlDatabase db = QSqlDatabase::addDatabase( cbDriver->currentText(), "test" );
+        db.setHostName( edtDbHost->text() );
+        db.setDatabaseName( edtDbName->text() );
+        db.setUserName( edtDbUser->text() );
+        db.setPassword( edtDbPassword->text() );
+        db.setPort( sbDbPort->value() );
+        db.setConnectOptions( edtDbOptions->toPlainText() );
+
+        isSql = db.open();
+
+        if (!isSql) { // Error
+            QSqlError err = db.lastError();
+            QMessageBox::warning( this, tr("Not connected"),
+                                 tr("Can't create connection to SQL server.\nError text: %1")
+                                 .arg(err.text()) );
+        } else { // Close connection
+            QMessageBox::information( this, tr("Connected"),
+                                     tr("Connection to SQL server succesful. Closing connection.") );
+            db.close();
+        }
+    }
+    QSqlDatabase::removeDatabase( "test" );
+
+    return isSql;
 }

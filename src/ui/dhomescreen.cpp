@@ -36,6 +36,8 @@ void DHomeScreen::setProject( DProject * project )
     lstBase->addItems( current->workTables() );
 }
 
+#warning "TODO: DHomeScreen::selectTable()"
+
 void DHomeScreen::selectTable(QListWidgetItem* item)
 {
     Q_UNUSED(item);

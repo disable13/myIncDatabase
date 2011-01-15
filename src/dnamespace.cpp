@@ -36,7 +36,7 @@ bool DNamespace::initConfig()
 
     doc = new QDomDocument( "Project" );
     QFile file( parent->getProjectFile() );
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadWrite )) {
         emit error( _ERR_CANTOPEN );
         delete doc;
         return false;
@@ -68,6 +68,8 @@ bool DNamespace::initConfig()
     isConfig = true;
     return true;
 }
+
+#warning "FIXME: DNamespace::initSql()"
 
 bool DNamespace::initSql()
 {
@@ -123,6 +125,8 @@ void DNamespace::setConfig(QString name, QString value, QString arrayElement)
         child.attributeNode("value").setValue( value );
 }
 
+#warning "FIXME: DNamespace::sql(QString,QList<QVariant>)"
+
 const QSqlResult * DNamespace::sql(QString queryName, QList<QVariant> bindValue)
 {
     Q_UNUSED(queryName);
@@ -139,6 +143,8 @@ const QSqlResult * DNamespace::sql(QString queryName, QList<QVariant> bindValue)
     query->exec();
     return query->result();
 }
+
+#warning "TODO: DNamespace::uri(QString,QVariant*)"
 
 void DNamespace::uri(QString uri, QVariant * var)
 {

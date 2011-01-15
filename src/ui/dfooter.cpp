@@ -90,6 +90,8 @@ void DFooter::progressStop()
     progressInicator->stopAnimation();
 }
 
+#warning "TODO: void DFooter::progressStop(bool) Add Icon"
+
 void DFooter::progressStop(bool state)
 {
     if (state)

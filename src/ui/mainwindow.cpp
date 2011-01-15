@@ -13,6 +13,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
+#warning "FIXME: class MainWindow. include qDebug()"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -105,6 +106,8 @@ void MainWindow::lockUI(bool lo)
     actUiSettings->setEnabled( lo );
 }
 
+#warning "FIXME: MainWindow::createProject()"
+
 void MainWindow::createProject()
 {
     /// FIXME
@@ -139,17 +142,23 @@ void MainWindow::openConnectionSettings()
     c.exec();
 }
 
+#warning "TODO: MainWindow::openQuerySettings()"
+
 void MainWindow::openQuerySettings()
 {
     /// TODO
     qDebug("TODO: MainWindow::openQuerySettings()");
 }
 
+#warning "TODO: MainWindow::openUiSettings()"
+
 void MainWindow::openUiSettings()
 {
     /// TODO
     qDebug("TODO: MainWindow::openUiSettings()");
 }
+
+#warning "TODO: MainWindow::connectDatabase()"
 
 void MainWindow::connectDatabase()
 {
