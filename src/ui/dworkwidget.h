@@ -2,30 +2,27 @@
 #define DWORKWIDGET_H
 
 #include <QWidget>
-#include <QList>
+//#include <QList>
 
-class DProject;
 class QGridLayout;
+class DProject;
 
 class DWorkWidget : public QWidget
 {
     Q_OBJECT
 private:
+    QWidget  * central;
     DProject * current;
 
     QGridLayout * l;
-    QWidget * central;
     QString formName;
 
 public:
-    DWorkWidget(DProject * pro, QString & formName);
+    DWorkWidget( QString formName);
     ~DWorkWidget();
 
     bool init();
-
-signals:
-
-public slots:
+    void setProject(DProject * );
 
 };
 

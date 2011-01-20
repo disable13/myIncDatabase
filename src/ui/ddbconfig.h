@@ -37,8 +37,6 @@ public:
 
     void setProject(DProject *);
 
-signals:
-
 public slots:
     void save();
     bool apply();

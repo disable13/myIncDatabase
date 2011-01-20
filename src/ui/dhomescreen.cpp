@@ -1,6 +1,7 @@
 #include "dhomescreen.h"
 
 #include "dproject.h"
+#include "dworkwidget.h"
 
 #include <QGridLayout>
 #include <QListWidget>
@@ -13,7 +14,8 @@ DHomeScreen::DHomeScreen(QWidget *parent) :
     lstBase = new QListWidget( this );
     l->addWidget( lstBase, 0, 0);
 
-    connect( lstBase, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(selectTable(QListWidgetItem*)) );
+    connect( lstBase, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+            this, SLOT(selectWorkspace(QListWidgetItem*)) );
 
 }
 
@@ -33,13 +35,26 @@ void DHomeScreen::setProject( DProject * project )
     clear();
 
     current = project;
-    lstBase->addItems( current->workTables() );
+    QStringList list = current->workspace();
+    for (int i = 0; i < list.count(); i ++) {
+        QListWidgetItem * item =
+                new QListWidgetItem( current->config( list[i], "Title"), lstBase );
+        item->setData( Qt::UserRole, list[i] );
+    }
 }
 
-#warning "TODO: DHomeScreen::selectTable()"
+#warning "TODO: DHomeScreen::selectWorkspace()"
 
-void DHomeScreen::selectTable(QListWidgetItem* item)
+void DHomeScreen::selectWorkspace(QListWidgetItem* item)
 {
-    Q_UNUSED(item);
-    qDebug("TODO: DHomeScreen::selectTable()");
+    qDebug("FIXME: DHomeScreen::selectWorkspace()");
+
+    DWorkWidget * widget =
+            new DWorkWidget(
+                   current->config(item->data(Qt::UserRole).toString(),"ui") );
+    widget->setProject( current );
+    if (widget->init())
+        widget->show();
+    else
+        qDebug("sad dsb");
 }

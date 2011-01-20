@@ -3,6 +3,8 @@
 
 #include <QtGui/QMainWindow>
 
+
+class QCloseEvent;
 // UI
 class QPushButton;
 class QLabel;
@@ -12,6 +14,7 @@ class QMenuBar;
 class DProject;
 class DHomeScreen;
 class DFooter;
+
 
 class MainWindow : public QMainWindow
 {
@@ -49,6 +52,9 @@ public:
     DProject * getProject();
 
     bool loadProject( QString & filename);
+
+protected:
+     void closeEvent( QCloseEvent * event );
 
 public slots:
     void lockUI( bool );

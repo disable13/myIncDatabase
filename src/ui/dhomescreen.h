@@ -23,12 +23,10 @@ public:
     DHomeScreen(QWidget *parent = 0);
     ~DHomeScreen();
 
-signals:
-
 public slots:
     void clear();
     void setProject( DProject * );
-    void selectTable(QListWidgetItem*);
+    void selectWorkspace(QListWidgetItem*);
 
 };
 

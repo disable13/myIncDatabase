@@ -3,8 +3,8 @@
 #include "dproject.h"
 #include "dhomescreen.h"
 #include "dfooter.h"
-#include "errors.h"
 #include "ddbconfig.h"
+#include "src/errors.h"
 
 #include <QGridLayout>
 #include <QMenu>
@@ -12,6 +12,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCloseEvent>
 
 #warning "FIXME: class MainWindow. include qDebug()"
 #include <QDebug>
@@ -30,9 +31,11 @@ MainWindow::MainWindow(QWidget *parent)
     menuBar = new QMenuBar( central );
     setMenuWidget( menuBar );
     menFile = menuBar->addMenu( tr("File") );
-    actCreateProject = menFile->addAction( tr("Create Project..."), this, SLOT(createProject()) );
+    actCreateProject = menFile->addAction( tr("Create Project..."),
+                                          this, SLOT(createProject()) );
     menFile->addSeparator();
-    actOpenProject = menFile->addAction( tr("Open Project..."), this, SLOT(openProjectPush()));
+    actOpenProject = menFile->addAction( tr("Open Project..."),
+                                        this, SLOT(openProjectPush()));
     actSave = menFile->addAction( tr("Save") );
     actSaveAs = menFile->addAction( tr("Save as...") );
     menFile->addSeparator();
@@ -40,11 +43,15 @@ MainWindow::MainWindow(QWidget *parent)
     actExit = menFile->addAction( tr("Exit"), qApp, SLOT(quit()) );
 
     menProject = menuBar->addMenu( tr("Project") );
-    actConnect = menProject->addAction( tr("Connect..."), this, SLOT(connectDatabase()) );
+    actConnect = menProject->addAction( tr("Connect..."),
+                                       this, SLOT(connectDatabase()) );
     menProject->addSeparator();
-    actDbSettings = menProject->addAction( tr("Connection settings"), this, SLOT(openConnectionSettings()) );
-    actQuerySettings = menProject->addAction( tr("Query settings"), this, SLOT(openQuerySettings()) );
-    actUiSettings = menProject->addAction( tr("User interface"), this, SLOT(openUiSettings()) );
+    actDbSettings = menProject->addAction( tr("Connection settings"),
+                                          this, SLOT(openConnectionSettings()) );
+    actQuerySettings = menProject->addAction( tr("Query settings"),
+                                             this, SLOT(openQuerySettings()) );
+    actUiSettings = menProject->addAction( tr("User interface"),
+                                          this, SLOT(openUiSettings()) );
 
     home = new DHomeScreen( central );
     l->addWidget( home, 0, 0);
@@ -91,6 +98,11 @@ bool MainWindow::loadProject( QString & filename)
     connect( current, SIGNAL(error(int)), this, SLOT(error(int)) );
     isOpened = true;
     return current->load();
+}
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    emit qApp->exit( 0x00 );
 }
 
 void MainWindow::lockUI(bool lo)
