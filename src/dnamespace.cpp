@@ -8,6 +8,7 @@
 #include <QFile>
 #include <QRegExp>
 #include <QStringList>
+#include <QTextStream>
 
 DNamespace::DNamespace(DProject * parent) :
     QObject(), parent(parent)
@@ -85,6 +86,18 @@ bool DNamespace::initSql()
     qDebug("FIXME: DNamespace::initSql()");
 
     return false;
+}
+
+#warning "TODO: DNamespace::saveXml()"
+
+void DNamespace::saveXml()
+{
+    qDebug("TODO: DNamespace::saveXml()");
+    QFile f(parent->getProjectFile());
+    f.open( QIODevice::ReadWrite );
+    QTextStream tx( &f );
+    cfg->save( tx, 0x00 );
+    f.close();
 }
 
 // <config>

@@ -4,6 +4,7 @@
 #include <QRunnable>
 
 #include <QStringList>
+#include <QVariant>
 class DProject;
 
 
@@ -15,10 +16,8 @@ private:
     DProject * project;
 
     QStringList path;
-
-    char type[2];
-    char * result;
-    int resultLength;
+    int m_err;
+    QVariant result;
 
 public:
     DThreadUri(QString Uri, DProject *);

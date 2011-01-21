@@ -9,7 +9,7 @@
 DThreadUri::DThreadUri(QString Uri, DProject * pro) :
     uri(Uri), project(pro)
 {
-    result = 0x00;
+
 }
 
 void DThreadUri::run()
@@ -77,7 +77,7 @@ void inline DThreadUri::config()
         error( _TRD_ERR_NS_NOCNFNODE );
         return;
     }
-     // getConfig(name, )
+    // getConfig(name, )
     QDomElement child = cfg.firstChildElement( name );
     if (child.childNodes().count() != 0 )  {// check array
         if (arrayElement == "") {
@@ -85,9 +85,11 @@ void inline DThreadUri::config()
         }
 
         child = child.firstChildElement( arrayElement );
-        //return child.attribute( "value", "NULL" );
+        result = child.attribute( "value", "NULL" );
+        return;
     } else {
-       ;// return child.attribute( "value", "NULL" );
+        result = child.attribute( "value", "NULL" );
+        return;
     }
 }
 
@@ -96,24 +98,4 @@ void inline DThreadUri::sql()
 
 }
 
-void inline DThreadUri::error(int e)
-{
-    type = QT_VERSION_CHECK(((char*)&e)[0],
-                            ((char*)&e)[1],0x00);
-    /*
-    resultLength = 2;
-    result = new char[2];
-    result[0] = ((char*)&e)[0];
-    result[1] = ((char*)&e)[1];
-    FLAG {
-    0, // no
-    2, // on
-    4, // off
-    8, // qwe
-    16 // 12eswq
-    }
-     2 | 4
-    10
-
-    */
-}
+void inline DThreadUri::error(int e ) { m_err = e; }

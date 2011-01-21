@@ -36,6 +36,8 @@ public:
     bool initConfig();
     bool initSql();
 
+    void saveXml();
+
     QString config(QString name, QString arrayElement );
     void setConfig(QString name, QString value, QString arrayElement );
 

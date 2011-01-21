@@ -9,7 +9,6 @@
 
 DProject::DProject(QString fileName)
 {
-    //nspace = new DNamespace( this );
     isNew = !QFile::exists(fileName);
     isLoad = false;
     isSql = false;
@@ -39,6 +38,7 @@ void DProject::save()
     nspace->setConfig( "Database", QString( dbPort ), "Driver" );
 
     isNew = false;
+    nspace->saveXml();
 }
 
 bool DProject::load()
@@ -139,7 +139,7 @@ int DProject::getDbPort() { return dbPort; }
 
 QString DProject::getProjectFile() { return filePath; }
 
-DNamespace * DProject::getNamespace() { return nspace; }
+DNamespace *  DProject::getNamespace() { return nspace; }
 
 QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
 
@@ -217,11 +217,29 @@ void DProject::disconnectDatabase()
     isSql = false;
 }
 
-QStringList DProject::workTables()
+QStringList DProject::workspace()
 {
-    int count = nspace->config( "WorkTables", "Count" ).toInt();
+    int count = nspace->config( "Workspace", "Count" ).toInt();
     QStringList list;
     for( int i = 0; i < count; i++ )
-        list << nspace->config( "WorkTables", QString("Table%1").arg(i) );
+        list << nspace->config( "Workspace", QString("Space_%1").arg(i) );
     return list;
+}
+
+#warning "TODO: DProject::config(QString,QString) to Multi-threaded."
+
+QString DProject::config(QString name, QString arrayElement)
+{
+    return nspace->config(name, arrayElement);
+}
+
+#warning "TODO DProject::uri(QString)"
+
+int DProject::uri(QString)
+{
+    // retrun ID_OBJ;
+    // start Thread with ID_OBJ
+    // exit ot main thread
+    // in Thread with ID_OBJ after complete return QVariant result and ID_OBJ
+    return 0x00;
 }
