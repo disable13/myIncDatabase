@@ -1,6 +1,7 @@
-#include "src/dnamespace.h"
-#include "src/dproject.h"
+#include "src/core/dnamespace.h"
+#include "src/core/dproject.h"
 #include "src/errors.h"
+#include "src/core/myincapplication.h"
 
 #include <QFile>
 #include <QtXml/QDomDocument>
@@ -15,30 +16,34 @@ DProject::DProject(QString fileName)
 
     filePath = fileName;
 
-    nspace = new DNamespace( this );
-
-    connect( nspace, SIGNAL(error(int)), this, SIGNAL(error(int)) );
+    //connect( nspace, SIGNAL(error(int)), this, SIGNAL(error(int)) );
 }
 
 DProject::~DProject()
 {
     disconnectDatabase();
-    delete nspace;
 }
 
 void DProject::save()
 {
     qDebug("FIXME: bool DProject::save()");
-    nspace->setConfig( "Database", dbDriver, "Driver" );
-    nspace->setConfig( "Database", dbUser, "Username" );
-    nspace->setConfig( "Database", dbPassord, "Password" );
-    nspace->setConfig( "Database", dbConnectOptions, "Options" );
-    nspace->setConfig( "Database", dbHost, "Hostname" );
-    nspace->setConfig( "Database", dbName, "Name" );
-    nspace->setConfig( "Database", QString( dbPort ), "Driver" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", dbDriver, "Driver" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", dbUser, "Username" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", dbPassord, "Password" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", dbConnectOptions, "Options" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", dbHost, "Hostname" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", dbName, "Name" );
+    MyIncApplication::uriNamespace()
+            ->setConfig( "Database", QString( dbPort ), "Driver" );
 
     isNew = false;
-    nspace->saveXml();
+    MyIncApplication::uriNamespace()->saveXml();
 }
 
 bool DProject::load()
@@ -46,17 +51,23 @@ bool DProject::load()
     isLoad = false;
     if (isNew)
         return false;
-    nspace->initConfig();
 
-    dbDriver = nspace->config( "Database", "Driver" ).toUpper();
+    dbDriver = MyIncApplication::uriNamespace()
+            ->config( "Database", "Driver" ).toUpper();
     if ((dbDriver == "NULL") || (dbDriver == "ERORR"))
         return false;
-    dbUser = nspace->config( "Database", "Username" );
-    dbName = nspace->config( "Database", "Name" );
-    dbPassord = nspace->config( "Database", "Password" );
-    dbConnectOptions = nspace->config( "Database", "Options" );
-    dbHost = nspace->config( "Database", "Hostname" );
-    dbPort = nspace->config( "Database", "Port" ).toInt();
+    dbUser = MyIncApplication::uriNamespace()
+            ->config( "Database", "Username" );
+    dbName = MyIncApplication::uriNamespace()
+            ->config( "Database", "Name" );
+    dbPassord = MyIncApplication::uriNamespace()
+            ->config( "Database", "Password" );
+    dbConnectOptions = MyIncApplication::uriNamespace()
+            ->config( "Database", "Options" );
+    dbHost = MyIncApplication::uriNamespace()
+            ->config( "Database", "Hostname" );
+    dbPort = MyIncApplication::uriNamespace()
+            ->config( "Database", "Port" ).toInt();
 
     isLoad = true;
 
@@ -114,7 +125,7 @@ bool DProject::loadSql()
         }
     }
     */
-    return true;
+    return false;
 }
 
 bool DProject::getIsNew() { return isNew; }
@@ -138,8 +149,6 @@ QString DProject::getDbName() { return dbName; }
 int DProject::getDbPort() { return dbPort; }
 
 QString DProject::getProjectFile() { return filePath; }
-
-DNamespace *  DProject::getNamespace() { return nspace; }
 
 QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
 
@@ -219,10 +228,12 @@ void DProject::disconnectDatabase()
 
 QStringList DProject::workspace()
 {
-    int count = nspace->config( "Workspace", "Count" ).toInt();
+    int count = MyIncApplication::uriNamespace()
+            ->config( "Workspace", "Count" ).toInt();
     QStringList list;
     for( int i = 0; i < count; i++ )
-        list << nspace->config( "Workspace", QString("Space_%1").arg(i) );
+        list << MyIncApplication::uriNamespace()
+                ->config( "Workspace", QString("Space_%1").arg(i) );
     return list;
 }
 
@@ -230,7 +241,7 @@ QStringList DProject::workspace()
 
 QString DProject::config(QString name, QString arrayElement)
 {
-    return nspace->config(name, arrayElement);
+    return MyIncApplication::uriNamespace()->config(name, arrayElement);
 }
 
 #warning "TODO DProject::uri(QString)"

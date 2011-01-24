@@ -1,7 +1,7 @@
 #include "ddbconfig.h"
-
-#include "dproject.h"
-
+//
+#include "src/core/dproject.h"
+//
 #include <QtGui/QFormLayout>
 #include <QtGui/QComboBox>
 #include <QtGui/QLineEdit>
@@ -13,9 +13,9 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 #include <QtGui/QMessageBox>
-
+//
 #warning FIXME: class DDbConfig
-
+//
 DDbConfig::DDbConfig(QWidget *parent) :
     QDialog(parent)
 {
@@ -28,6 +28,7 @@ DDbConfig::DDbConfig(QWidget *parent) :
     cbDriver->addItem( tr("NULL") );
     cbDriver->insertItems(1, QSqlDatabase::drivers());
     edtDbHost = new QLineEdit(this);
+#warning FIXME: DDbConfig::DDbConfig()\n\tFull Input check.
     qDebug("FIXME: DDbConfig::DDbConfig()\n\tFull Input check.");
     sbDbPort = new QSpinBox(this);
     sbDbPort->setMinimum(0);
@@ -71,7 +72,7 @@ DDbConfig::DDbConfig(QWidget *parent) :
 
     l->addWidget(btnBox);
 }
-
+//
 DDbConfig::~DDbConfig()
 {
     delete cbDriver;
@@ -84,8 +85,7 @@ DDbConfig::~DDbConfig()
 
     delete l;
 }
-
-
+//
 void DDbConfig::setProject(DProject * pro)
 {
     project = pro;
@@ -97,7 +97,7 @@ void DDbConfig::setProject(DProject * pro)
     edtDbUser->setText( project->getDbUser() );
     sbDbPort->setValue( project->getDbPort() );
 
-    qDebug("CHECKME: void DDbCOnfig::setProject(DProject*)");
+    qDebug("CHECKME: void DDbConfig::setProject(DProject*)");
     QString drv = project->getDbDriver();
     cbDriver->setCurrentIndex(0);
     for(int i = 1; i < cbDriver->count(); i++ )
@@ -106,7 +106,7 @@ void DDbConfig::setProject(DProject * pro)
             break;
         }
 }
-
+//
 void DDbConfig::save()
 {
     if (!apply()) {
@@ -126,7 +126,7 @@ void DDbConfig::save()
     project->connectDatabase();
     emit accept();
 }
-
+//
 bool DDbConfig::apply()
 {
     bool isSql = false;
@@ -146,11 +146,7 @@ bool DDbConfig::apply()
             QMessageBox::warning( this, tr("Not connected"),
                                  tr("Can't create connection to SQL server.\nError text: %1")
                                  .arg(err.text()) );
-        } else { // Close connection
-            QMessageBox::information( this, tr("Connected"),
-                                     tr("Connection to SQL server succesful. Closing connection.") );
-            db.close();
-        }
+        } else db.close();
     }
     QSqlDatabase::removeDatabase( "test" );
 

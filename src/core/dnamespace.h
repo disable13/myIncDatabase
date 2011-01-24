@@ -19,7 +19,6 @@ class DNamespace : public QObject
 
 private:
     QDomDocument * doc;
-    DProject * parent;
     bool isSql; // connected?
     bool isConfig; // open?
     QRegExp * rx; // uri
@@ -28,7 +27,7 @@ private:
     QDomNode * cfg;
 
 public:
-    DNamespace(DProject * parent);
+    DNamespace();
     ~DNamespace();
 
     enum Type { Sql, System, Config };

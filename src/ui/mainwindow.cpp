@@ -1,15 +1,15 @@
 #include "mainwindow.h"
 
-#include "dproject.h"
-#include "dhomescreen.h"
-#include "dfooter.h"
-#include "ddbconfig.h"
+#include "src/core/dproject.h"
+#include "src/core/myincapplication.h"
+#include "src/ui/dhomescreen.h"
+#include "src/ui/dfooter.h"
+#include "src/ui/ddbconfig.h"
 #include "src/errors.h"
 
 #include <QGridLayout>
 #include <QMenu>
 #include <QMenuBar>
-#include <QApplication>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QCloseEvent>
@@ -62,12 +62,12 @@ MainWindow::MainWindow(QWidget *parent)
     footer->setText( tr("Open MyInc Project File") );
 
     lockUI( true );
+
+    show();
 }
 
 MainWindow::~MainWindow()
 {
-    if (isOpened)
-       delete current;
     delete home;
     delete footer;
     delete actExit;
@@ -87,22 +87,18 @@ MainWindow::~MainWindow()
     delete central;
 }
 
-DProject * MainWindow::getProject()
+bool MainWindow::loadProject( QString & fileName)
 {
-    return current;
-}
-
-bool MainWindow::loadProject( QString & filename)
-{
-    current = new DProject( filename );
-    connect( current, SIGNAL(error(int)), this, SLOT(error(int)) );
+    MyIncApplication::instance()->openProject( fileName );
+    connect( MyIncApplication::project(), SIGNAL(error(int)),
+            this, SLOT(error(int)) );
     isOpened = true;
-    return current->load();
+    return MyIncApplication::project()->load();
 }
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    emit qApp->exit( 0x00 );
+    MyIncApplication::application()->exit( 0x00 );
 }
 
 void MainWindow::lockUI(bool lo)
@@ -127,7 +123,7 @@ void MainWindow::createProject()
 
     QFileDialog f(this, tr("Select MyInc Project"), "", "XML files (*.xml)" );
     if (f.exec()) {
-        current = new DProject( f.selectedFiles()[0] );
+        MyIncApplication::openProject( f.selectedFiles()[0] );
         lockUI( false );
     }
     qDebug("TODO: Run Wizard");
@@ -150,7 +146,7 @@ void MainWindow::openProjectPush()
 void MainWindow::openConnectionSettings()
 {
     DDbConfig c(this);
-    c.setProject( current );
+    c.setProject( MyIncApplication::project() );
     c.exec();
 }
 
@@ -178,16 +174,16 @@ void MainWindow::connectDatabase()
     qDebug("FIXME: MainWindow::connectDatabase()");
     footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
-        current->disconnectDatabase();
+        MyIncApplication::project()->disconnectDatabase();
     } else {
-        if (!current->connectDatabase()) {
+        if (!MyIncApplication::project()->connectDatabase()) {
             QMessageBox::warning( this, tr("Error"), tr("Can't connect to database.") );
             isConnected = false;
             footer->progressStop( false );
             return;
         }
         isConnected = true;
-        home->setProject( current );
+        home->setProject( MyIncApplication::project() );
     }
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
     footer->progressStop( true );
@@ -224,5 +220,5 @@ void MainWindow::error(int e)
         text = tr("Unknown");
     }
 
-    qDebug() << "Error: " << e;
+    qDebug() << "ERROR: " << text;
 }

@@ -6,14 +6,10 @@
 #include <QStringList>
 #include <QHash>
 
-class DNamespace;
-
 class DProject : public QObject
 {
     Q_OBJECT
 private:
-    DNamespace * nspace;
-
     bool isNew;
     bool isLoad;
     bool isSql;
@@ -26,8 +22,7 @@ private:
     QString dbConnectOptions;
     QString dbHost;
     int     dbPort;
-    QStringList dbTables; // список рабочих таблиц
-    // список полей для рабочих таблиц
+    QStringList dbTables;
 
 
     // FIXME:
@@ -56,7 +51,6 @@ public:
     QString getDbHost();
     int     getDbPort();
     QString getProjectFile();
-    DNamespace * getNamespace();
 
     QString getSelectSqlQuerty( QString name);
     QString getInsertSqlQuerty( QString name);

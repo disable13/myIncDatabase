@@ -11,7 +11,6 @@ class QLabel;
 class QGridLayout;
 class QMenuBar;
 
-class DProject;
 class DHomeScreen;
 class DFooter;
 
@@ -21,8 +20,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 private:
-    DProject * current;
-
     QWidget * central;
     QGridLayout * l;
     QMenuBar * menuBar;
@@ -48,8 +45,6 @@ private:
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
-    DProject * getProject();
 
     bool loadProject( QString & filename);
 

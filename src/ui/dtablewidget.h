@@ -1,13 +1,14 @@
 #ifndef DTABLEWIDGET_H
 #define DTABLEWIDGET_H
 
-#include <QWidget>
+#include "src/dwidget.h"
 
-class DTableWidget : public QWidget
+class DTableWidget : public DWidget
 {
     Q_OBJECT
 public:
-    explicit DTableWidget(QWidget *parent = 0);
+    DTableWidget(QWidget *parent = 0);
+    virtual ~DTableWidget();
 
 signals:
 

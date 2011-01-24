@@ -1,17 +1,8 @@
-#include <QtGui/QApplication>
-#include <QFile>
-#include "src/ui/mainwindow.h"
-
+#include "src/core/myincapplication.h"
+//
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-    if (argc != 0)
-        if (QFile::exists(argv[0])) { // Open DB-Connection
+    MyIncApplication app(argc, argv);
 
-    }
-
-    MainWindow w;
-    w.show();
-
-    return app.exec();
+    return app.application()->exec();
 }

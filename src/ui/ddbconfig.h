@@ -5,12 +5,8 @@
 
 class DProject;
 
-class QFormLayout;
-class QComboBox;
-class QLineEdit;
-class QTextEdit;
-class QSpinBox;
-class QLabel;
+class QFormLayout; class QComboBox; class QLineEdit; class QTextEdit; class
+QSpinBox; class QLabel;
 
 class DDbConfig : public QDialog
 {

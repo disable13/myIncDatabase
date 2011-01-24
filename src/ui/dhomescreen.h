@@ -1,7 +1,7 @@
 #ifndef DHOMESCREEN_H
 #define DHOMESCREEN_H
 
-#include <QWidget>
+#include "src/dwidget.h"
 
 class QGridLayout;
 class QListWidget;
@@ -9,7 +9,7 @@ class DProject;
 
 #include <QListWidgetItem>
 
-class DHomeScreen : public QWidget
+class DHomeScreen : public DWidget
 {
     Q_OBJECT
 private:
@@ -20,13 +20,13 @@ private:
     QListWidget * lstBase;
 
 public:
-    DHomeScreen(QWidget *parent = 0);
-    ~DHomeScreen();
+    DHomeScreen(QWidget * parent = 0);
+    virtual ~DHomeScreen();
 
 public slots:
     void clear();
     void setProject( DProject * );
-    void selectWorkspace(QListWidgetItem*);
+    void selectWorkspace( QListWidgetItem * );
 
 };
 

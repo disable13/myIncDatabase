@@ -1,6 +1,7 @@
-#include "src/dnamespace.h"
-#include "src/dproject.h"
+#include "src/core/dnamespace.h"
+#include "src/core/dproject.h"
 #include "src/errors.h"
+#include "src/core/myincapplication.h"
 
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
@@ -10,8 +11,8 @@
 #include <QStringList>
 #include <QTextStream>
 
-DNamespace::DNamespace(DProject * parent) :
-    QObject(), parent(parent)
+DNamespace::DNamespace() :
+    QObject()
 {
     isSql = false;
     isConfig = false;
@@ -32,12 +33,14 @@ DNamespace::~DNamespace()
 
 bool DNamespace::initConfig()
 {
-    if (isConfig)
-        return true;
+    if (isConfig) {
+        delete doc;
+        delete cfg;
+    }
 
     doc = new QDomDocument( "Project" );
-    QFile file( parent->getProjectFile() );
-    if (!file.open(QIODevice::ReadWrite )) {
+    QFile file( MyIncApplication::project()->getProjectFile() );
+    if (!file.open(QIODevice::ReadOnly)) {
         emit error( _ERR_CANTOPEN );
         delete doc;
         return false;
@@ -74,10 +77,7 @@ bool DNamespace::initConfig()
 
 bool DNamespace::initSql()
 {
-    if (isSql)
-        return true;
-
-    if ( !parent->getIsConnected() ) {
+    if ( !MyIncApplication::project()->getIsConnected() ) {
         emit error(_ERR_DB_CONNECT);
         return false;
     }
@@ -93,7 +93,7 @@ bool DNamespace::initSql()
 void DNamespace::saveXml()
 {
     qDebug("TODO: DNamespace::saveXml()");
-    QFile f(parent->getProjectFile());
+    QFile f(MyIncApplication::project()->getProjectFile());
     f.open( QIODevice::ReadWrite );
     QTextStream tx( &f );
     cfg->save( tx, 0x00 );

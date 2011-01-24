@@ -1,28 +1,25 @@
 #ifndef DWORKWIDGET_H
 #define DWORKWIDGET_H
 
-#include <QWidget>
-//#include <QList>
+#include "src/dwidget.h"
 
 class QGridLayout;
 class DProject;
 
-class DWorkWidget : public QWidget
+class DWorkWidget : public DWidget
 {
     Q_OBJECT
 private:
     QWidget  * central;
-    DProject * current;
 
     QGridLayout * l;
     QString formName;
 
 public:
-    DWorkWidget( QString formName);
+    DWorkWidget(QString formName);
     ~DWorkWidget();
 
     bool init();
-    void setProject(DProject * );
 
 };
 

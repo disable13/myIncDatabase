@@ -2,7 +2,7 @@
 
 #include <QGridLayout>
 #include <QProgressBar>
-#include "QProgressIndicator.h"
+#include "src/QProgressIndicator.h"
 #include <QLabel>
 
 DFooter::DFooter(QWidget *parent) :
@@ -25,8 +25,7 @@ DFooter::DFooter(QWidget *parent) :
     progressBar->setMinimum( 0 );
     progressBar->setValue( 0 );
     progressBar->setMaximum( 1 );
-    // progressInicator->setVisible( false );
-     progressInicator->setAnimationDelay( 70 );
+    progressInicator->setAnimationDelay( 70 );
 }
 
 DFooter::~DFooter()
@@ -90,15 +89,12 @@ void DFooter::progressStop()
     progressInicator->stopAnimation();
 }
 
-#warning "TODO: void DFooter::progressStop(bool) Add Icon"
-
 void DFooter::progressStop(bool state)
 {
     if (state)
         lText->setText( tr("Complete!") );
     else
         lText->setText( tr("Uncomplete...") );
-    qDebug("TODO: icon. DFooter::progressStop(bool)");
     progressInicator->stopAnimation();
 
 }

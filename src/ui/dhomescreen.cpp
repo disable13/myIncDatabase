@@ -1,13 +1,13 @@
 #include "dhomescreen.h"
 
-#include "dproject.h"
+#include "src/core/dproject.h"
 #include "dworkwidget.h"
 
 #include <QGridLayout>
 #include <QListWidget>
 
 DHomeScreen::DHomeScreen(QWidget *parent) :
-    QWidget(parent)
+    DWidget(parent)
 {
     l = new QGridLayout( this );
 
@@ -16,7 +16,6 @@ DHomeScreen::DHomeScreen(QWidget *parent) :
 
     connect( lstBase, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(selectWorkspace(QListWidgetItem*)) );
-
 }
 
 DHomeScreen::~DHomeScreen()
@@ -52,7 +51,6 @@ void DHomeScreen::selectWorkspace(QListWidgetItem* item)
     DWorkWidget * widget =
             new DWorkWidget(
                    current->config(item->data(Qt::UserRole).toString(),"ui") );
-    widget->setProject( current );
     if (widget->init())
         widget->show();
     else

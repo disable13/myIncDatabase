@@ -1,23 +1,33 @@
 #include "dthreaduri.h"
-
+//
+#include "src/core/myincapplication.h"
+//
 #include <QRegExp>
 #include <QtXml/QDomDocument>
 #include <QFile>
 #include "dproject.h"
-#include "errors.h"
-
-DThreadUri::DThreadUri(QString Uri, DProject * pro) :
-    uri(Uri), project(pro)
+#include "src/errors.h"
+//
+#include <QDebug>
+//
+DThreadUri::DThreadUri(QString Uri) :
+    QObject(), uri(Uri)
 {
 
 }
+//
+DThreadUri::~DThreadUri()
+{
 
+}
+//
 void DThreadUri::run()
 {
     QRegExp rx("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?");
 
     if (rx.indexIn( uri ) == -1) {
         error( _TRD_ERR_RX_SYNTAX );
+#warning "Always Error!!!!!"
         return;
     }
 
@@ -26,6 +36,7 @@ void DThreadUri::run()
             path = rx.cap(4).
                     split('/', QString::SkipEmptyParts );
             QString type = path.at(0).toLower();
+            qDebug() << (type);
             if (type=="system")
                 system();
             else if (type=="config")
@@ -43,19 +54,19 @@ void DThreadUri::run()
         /// TODO file,ftp,http
     }
 }
-
+//
 void inline DThreadUri::system()
 {
 
 }
-
+//
 #warning "TODO DThreadUri::config()"
-
+//
 void inline DThreadUri::config()
 {
     QString name, arrayElement;
     QDomDocument doc( "Project" );
-    QFile file( project->getProjectFile() );
+    QFile file( MyIncApplication::project()->getProjectFile() );
     if (!file.open(QIODevice::ReadOnly )) {
         error( _TRD_ERR_CONF_CANTOPEN );
         return;
@@ -77,25 +88,24 @@ void inline DThreadUri::config()
         error( _TRD_ERR_NS_NOCNFNODE );
         return;
     }
-    // getConfig(name, )
     QDomElement child = cfg.firstChildElement( name );
     if (child.childNodes().count() != 0 )  {// check array
         if (arrayElement == "") {
-            ;//return "Array";
+             complete( (int*)this, "Array" );
+            return;
         }
-
         child = child.firstChildElement( arrayElement );
-        result = child.attribute( "value", "NULL" );
+        complete( (int*)this, child.attribute( "value", "NULL" ) );
         return;
     } else {
-        result = child.attribute( "value", "NULL" );
+        complete( (int*)this, child.attribute( "value", "NULL" ) );
         return;
     }
 }
-
+//
 void inline DThreadUri::sql()
 {
-
+    complete( (int*)this, QVariant("SQL not finished") );
 }
-
+//
 void inline DThreadUri::error(int e ) { m_err = e; }
