@@ -27,6 +27,7 @@ void DThreadUri::run()
 
     if (rx.indexIn( uri ) == -1) {
         error( _TRD_ERR_RX_SYNTAX );
+        // BUG: Always Error!!!!
 #warning "Always Error!!!!!"
         return;
     }
@@ -51,7 +52,7 @@ void DThreadUri::run()
 
         }
     } else {
-        /// TODO file,ftp,http
+        // TODO file,ftp,http
     }
 }
 //
@@ -60,7 +61,7 @@ void inline DThreadUri::system()
 
 }
 //
-#warning "TODO DThreadUri::config()"
+//  TODO DThreadUri::config()
 //
 void inline DThreadUri::config()
 {
@@ -82,7 +83,7 @@ void inline DThreadUri::config()
         error( _TRD_ERR_NS_ROOT );
         return;
     }
-    /// TODO: Set config node;
+    // TODO: Set config node;
     QDomNode cfg( doc.documentElement().firstChildElement( "config" ) );
     if ( cfg.isNull() ) {
         error( _TRD_ERR_NS_NOCNFNODE );

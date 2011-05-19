@@ -14,7 +14,7 @@
 #include <QtSql/QSqlError>
 #include <QtGui/QMessageBox>
 //
-#warning FIXME: class DDbConfig
+// FIXME: class DDbConfig
 //
 DDbConfig::DDbConfig(QWidget *parent) :
     QDialog(parent)
@@ -28,7 +28,7 @@ DDbConfig::DDbConfig(QWidget *parent) :
     cbDriver->addItem( tr("NULL") );
     cbDriver->insertItems(1, QSqlDatabase::drivers());
     edtDbHost = new QLineEdit(this);
-#warning FIXME: DDbConfig::DDbConfig()\n\tFull Input check.
+// FIXME: DDbConfig::DDbConfig()\n\tFull Input check.
     qDebug("FIXME: DDbConfig::DDbConfig()\n\tFull Input check.");
     sbDbPort = new QSpinBox(this);
     sbDbPort->setMinimum(0);

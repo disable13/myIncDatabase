@@ -2,12 +2,12 @@
 #include "src/core/dproject.h"
 #include "src/errors.h"
 #include "src/core/myincapplication.h"
-
+//
 #include <QFile>
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
-
+//
 DProject::DProject(QString fileName)
 {
     isNew = !QFile::exists(fileName);
@@ -18,12 +18,12 @@ DProject::DProject(QString fileName)
 
     //connect( nspace, SIGNAL(error(int)), this, SIGNAL(error(int)) );
 }
-
+//
 DProject::~DProject()
 {
     disconnectDatabase();
 }
-
+//
 void DProject::save()
 {
     qDebug("FIXME: bool DProject::save()");
@@ -45,7 +45,7 @@ void DProject::save()
     isNew = false;
     MyIncApplication::uriNamespace()->saveXml();
 }
-
+//
 bool DProject::load()
 {
     isLoad = false;
@@ -74,11 +74,10 @@ bool DProject::load()
     return true;
 }
 
-#warning "FIXME: DProject::loadSql()"
+// FIXME: DProject::loadSql()
 
 bool DProject::loadSql()
 {
-    /// FIXME
     qDebug("FIXME: DProject::loadSql()");
     /*
     sel.clear();
@@ -129,37 +128,39 @@ bool DProject::loadSql()
 }
 
 bool DProject::getIsNew() { return isNew; }
-
+//
 bool DProject::getIsLoad() { return isLoad; }
-
+//
 bool DProject::getIsConnected() { return isSql; }
-
+//
+QString DProject::getLastError() { return lastError; }
+//
 QString DProject::getDbDriver() { return dbDriver; }
-
+//
 QString DProject::getDbUser() { return dbUser; }
-
+//
 QString DProject::getDbPassord() { return dbPassord; }
-
+//
 QString DProject::getDbConnectOptions() { return dbConnectOptions; }
-
+//
 QString DProject::getDbHost() {  return dbHost; }
-
+//
 QString DProject::getDbName() { return dbName; }
-
+//
 int DProject::getDbPort() { return dbPort; }
-
+//
 QString DProject::getProjectFile() { return filePath; }
-
+//
 QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
-
+//
 QString DProject::getInsertSqlQuerty(QString name) { return ins[name]; }
-
+//
 QString DProject::getDeleteSqlQuerty(QString name) { return del[name]; }
-
+//
 QString DProject::getUpdateSqlQuerty(QString name) { return upd[name]; }
-
+//
 QString DProject::getOtherSqlQuerty(QString name) { return other[name]; }
-
+//
 bool DProject::setDbDriver(QString nameDriver)
 {
     nameDriver = nameDriver.trimmed().toUpper() ;
@@ -174,20 +175,20 @@ bool DProject::setDbDriver(QString nameDriver)
     }
     return false;
 }
-
+//
 void DProject::setDbName(QString datebaseName) { dbName = datebaseName; }
-
+//
 void DProject::setDbUser(QString user) { dbUser = user; }
-
+//
 void DProject::setDbPassord(QString password) { dbPassord = password; }
-
+//
 void DProject::setDbConnectOptions(QString connectOptions) { dbConnectOptions = connectOptions; }
-
+//
 void DProject::setDbHost(QString hostName) { dbHost = hostName; }
-
+//
 void DProject::setDbPort(int port) { dbPort = port; }
 
-#warning "FIXME: DProject::connectDatabase()"
+// FIXME: DProject::connectDatabase()
 
 bool DProject::connectDatabase()
 {
@@ -209,23 +210,21 @@ bool DProject::connectDatabase()
         db.setConnectOptions( dbConnectOptions );
 
     isSql = db.open();
-    if (!isSql)
+    if (!isSql) {
+        lastError = db.lastError().text();
         emit error( _ERR_DB_CONNECT );
-    qDebug("FIXME: DProject::connectDatabase()");
-    //    qDebug(db.lastError().text());
+    }
     return isSql;
 }
-
-#warning "FIXME: DProject::disconnectDatabase()"
-
+//
 void DProject::disconnectDatabase()
 {
-    /// FIXME: recurse closing QSqlQuery, QSqlError, QSqlDatabase etc...
+    // FIXME: recurse closing QSqlQuery, QSqlError, QSqlDatabase etc...
     qDebug("FIXME: DProjct::disconnectDatabase()");
     QSqlDatabase::removeDatabase( "Project" );
     isSql = false;
 }
-
+//
 QStringList DProject::workspace()
 {
     int count = MyIncApplication::uriNamespace()
@@ -237,14 +236,14 @@ QStringList DProject::workspace()
     return list;
 }
 
-#warning "TODO: DProject::config(QString,QString) to Multi-threaded."
+// TODO: DProject::config(QString,QString) to Multi-threaded.
 
 QString DProject::config(QString name, QString arrayElement)
 {
     return MyIncApplication::uriNamespace()->config(name, arrayElement);
 }
 
-#warning "TODO DProject::uri(QString)"
+// TODO DProject::uri(QString)
 
 int DProject::uri(QString)
 {

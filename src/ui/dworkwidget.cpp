@@ -39,7 +39,7 @@ bool DWorkWidget::init()
     for(int i = 0; i < childs.count(); i++ ) {
         QWidget * obj = (QWidget*)childs.at(i);
 
-#warning "TODO: DWorkWidget::init() !!!!!!!!!!!"
+// TODO: DWorkWidget::init() !!!!!!!!!!!
         // need "URI" to myinc URI DNamespace::uri
         // also "PropertyValue" need for set value to this property
 

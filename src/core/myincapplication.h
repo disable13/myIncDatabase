@@ -25,11 +25,11 @@ public:
 
     static bool openProject( QString fileName );
 
-    static MyIncApplication * instance() { return self; };
-    static QApplication * application() { return m_app; };
-    static DNamespace * uriNamespace() { return m_namespace; };
-    static DProject * project() { return m_project; };
-    static DThreadPool * threadPool() { return m_pool; };
+    static MyIncApplication * instance() { return self; }
+    static QApplication * application() { return m_app; }
+    static DNamespace * uriNamespace() { return m_namespace; }
+    static DProject * project() { return m_project; }
+    static DThreadPool * threadPool() { return m_pool; }
 
 };
 

@@ -24,6 +24,7 @@ private:
     int     dbPort;
     QStringList dbTables;
 
+    QString lastError;
 
     // FIXME:
     QHash<QString, QString> sel;
@@ -43,6 +44,7 @@ public:
     bool getIsNew();
     bool getIsLoad();
     bool getIsConnected();
+    QString getLastError();
     QString getDbDriver();
     QString getDbName();
     QString getDbUser();

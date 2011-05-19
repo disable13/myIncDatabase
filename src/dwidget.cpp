@@ -9,7 +9,7 @@ DWidget::DWidget(QWidget *parent) :
     isThreadStart = false;
 }
 
-#warning "FIXME: DWidget::~DWidget()\n\tKill runed threads."
+// FIXME: DWidget::~DWidget()\n\tKill runed threads.
 
 DWidget::~DWidget()
 {
@@ -38,7 +38,7 @@ void DWidget::threadEnd(int* thread, QVariant result)
 {
     for (int i = 0; i < threadList.count(); i++)
         if (threadList[i].second == thread) {
-            /// TODO: get Widget value and set to him result;
+            // TODO: get Widget value and set to him result;
             if (threadList[i].first != 0x00)
                 threadList[i].first->setProperty(
     qPrintable(threadList[i].first->property("PropertyValue").toString()),

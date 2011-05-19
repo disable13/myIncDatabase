@@ -8,9 +8,9 @@ include(myinc.pri)
 TARGET = myinc
 TEMPLATE = app
 DESTDIR = bin
-OBJECTS_DIR = build
-MOC_DIR = build
-UI_DIR = build
+OBJECTS_DIR = .build
+MOC_DIR = .build
+UI_DIR = .build
 CONFIG += uitools
 
 SOURCES = src/main.cpp\

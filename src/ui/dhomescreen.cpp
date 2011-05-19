@@ -1,11 +1,11 @@
 #include "dhomescreen.h"
-
+//
 #include "src/core/dproject.h"
 #include "dworkwidget.h"
-
+//
 #include <QGridLayout>
 #include <QListWidget>
-
+//
 DHomeScreen::DHomeScreen(QWidget *parent) :
     DWidget(parent)
 {
@@ -17,18 +17,18 @@ DHomeScreen::DHomeScreen(QWidget *parent) :
     connect( lstBase, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(selectWorkspace(QListWidgetItem*)) );
 }
-
+//
 DHomeScreen::~DHomeScreen()
 {
     delete lstBase;
     delete l;
 }
-
+//
 void DHomeScreen::clear()
 {
     lstBase->clear();
 }
-
+//
 void DHomeScreen::setProject( DProject * project )
 {
     clear();
@@ -41,9 +41,7 @@ void DHomeScreen::setProject( DProject * project )
         item->setData( Qt::UserRole, list[i] );
     }
 }
-
-#warning "TODO: DHomeScreen::selectWorkspace()"
-
+// "TODO: DHomeScreen::selectWorkspace()"
 void DHomeScreen::selectWorkspace(QListWidgetItem* item)
 {
     qDebug("FIXME: DHomeScreen::selectWorkspace()");

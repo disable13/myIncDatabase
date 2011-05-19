@@ -14,7 +14,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 
-#warning "FIXME: class MainWindow. include qDebug()"
+// FIXME: class MainWindow. include qDebug()
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -114,11 +114,10 @@ void MainWindow::lockUI(bool lo)
     actUiSettings->setEnabled( lo );
 }
 
-#warning "FIXME: MainWindow::createProject()"
+// FIXME: MainWindow::createProject()
 
 void MainWindow::createProject()
 {
-    /// FIXME
     qDebug("FIXME: MainWindow::createProject()");
 
     QFileDialog f(this, tr("Select MyInc Project"), "", "XML files (*.xml)" );
@@ -128,7 +127,7 @@ void MainWindow::createProject()
     }
     qDebug("TODO: Run Wizard");
 }
-
+//
 void MainWindow::openProjectPush()
 {
     QFileDialog f(this, tr("Select MyInc Project"), "", "XML files (*.xml)" );
@@ -142,42 +141,43 @@ void MainWindow::openProjectPush()
         lockUI( false );
     }
 }
-
+//
 void MainWindow::openConnectionSettings()
 {
     DDbConfig c(this);
     c.setProject( MyIncApplication::project() );
     c.exec();
 }
-
-#warning "TODO: MainWindow::openQuerySettings()"
-
+// TODO: MainWindow::openQuerySettings()
 void MainWindow::openQuerySettings()
 {
-    /// TODO
     qDebug("TODO: MainWindow::openQuerySettings()");
 }
-
-#warning "TODO: MainWindow::openUiSettings()"
-
+// TODO: MainWindow::openUiSettings()
 void MainWindow::openUiSettings()
 {
-    /// TODO
     qDebug("TODO: MainWindow::openUiSettings()");
 }
-
-#warning "TODO: MainWindow::connectDatabase()"
-
+// TODO: MainWindow::connectDatabase()
 void MainWindow::connectDatabase()
 {
-    /// TODO
     qDebug("FIXME: MainWindow::connectDatabase()");
     footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
         MyIncApplication::project()->disconnectDatabase();
     } else {
         if (!MyIncApplication::project()->connectDatabase()) {
-            QMessageBox::warning( this, tr("Error"), tr("Can't connect to database.") );
+            QMessageBox msg;
+            msg.setIcon( QMessageBox::Critical );
+            //msg.setWindowTitle( app.tr("This is Title") );
+            msg.setStandardButtons( QMessageBox::Retry | QMessageBox::Cancel );
+            msg.setDefaultButton( QMessageBox::Cancel );
+            msg.setText( tr("Can't connect to SQL Server") );
+            msg.setDetailedText( MyIncApplication::project()->getLastError() );
+
+            if ( msg.exec() == QMessageBox::Retry ) // recurcive
+                this->connectDatabase();
+
             isConnected = false;
             footer->progressStop( false );
             return;
@@ -188,7 +188,7 @@ void MainWindow::connectDatabase()
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
     footer->progressStop( true );
 }
-
+//
 void MainWindow::error(int e)
 {
     QString text;

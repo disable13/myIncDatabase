@@ -10,7 +10,7 @@
 #include <QRegExp>
 #include <QStringList>
 #include <QTextStream>
-
+//
 DNamespace::DNamespace() :
     QObject()
 {
@@ -19,7 +19,7 @@ DNamespace::DNamespace() :
 
     rx = new QRegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?");
 }
-
+//
 DNamespace::~DNamespace()
 {
     if (isConfig) {
@@ -30,7 +30,7 @@ DNamespace::~DNamespace()
         delete query;
     delete rx;
 }
-
+//
 bool DNamespace::initConfig()
 {
     if (isConfig) {
@@ -72,9 +72,7 @@ bool DNamespace::initConfig()
     isConfig = true;
     return true;
 }
-
-#warning "FIXME: DNamespace::initSql()"
-
+// FIXME: DNamespace::initSql()
 bool DNamespace::initSql()
 {
     if ( !MyIncApplication::project()->getIsConnected() ) {
@@ -87,9 +85,7 @@ bool DNamespace::initSql()
 
     return false;
 }
-
-#warning "TODO: DNamespace::saveXml()"
-
+// TODO: DNamespace::saveXml()
 void DNamespace::saveXml()
 {
     qDebug("TODO: DNamespace::saveXml()");
@@ -123,7 +119,7 @@ QString DNamespace::config(QString name, QString arrayElement)
     } else
         return child.attribute( "value", "NULL" );
 }
-
+//
 void DNamespace::setConfig(QString name, QString value, QString arrayElement)
 {
     if (!isConfig) {
@@ -137,9 +133,7 @@ void DNamespace::setConfig(QString name, QString value, QString arrayElement)
     else
         child.attributeNode("value").setValue( value );
 }
-
-#warning "FIXME: DNamespace::sql(QString,QList<QVariant>)"
-
+// FIXME: DNamespace::sql(QString,QList<QVariant>)
 const QSqlResult * DNamespace::sql(QString queryName, QList<QVariant> bindValue)
 {
     Q_UNUSED(queryName);
@@ -156,20 +150,18 @@ const QSqlResult * DNamespace::sql(QString queryName, QList<QVariant> bindValue)
     query->exec();
     return query->result();
 }
-
-#warning "TODO: DNamespace::uri(QString,QVariant*)"
-
+// TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)
 {
     qDebug("TODO: DNamespace::uri(QString,QVariant*)");
 
     // parser string "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
     // example "http://www.ics.uci.edu/pub/ietf/uri/#Related"
-    // группа 2 — схема, (myinc)
-    // группа 4 — источник, (config|resourse|sql)
-    // группа 5 — путь, (Database/Username)
-    // группа 7 — запрос,
-    // группа 9 — фрагмент. (|Set)
+    // 2 (myinc)
+    // 4 (config|resourse|sql)
+    // 5 (Database/Username)
+    // 7
+    // 9 (|Set)
     //
 
     // 1) http:
@@ -177,8 +169,8 @@ void DNamespace::uri(QString uri, QVariant * var)
     // 3) //www.ics.uci.edu
     // 4) www.ics.uci.edu
     // 5) /pub/ietf/uri/
-    // 6) нет результата
-    // 7) нет результата
+    // 6)
+    // 7)
     // 8) #Related+
     // 9) Related
 
