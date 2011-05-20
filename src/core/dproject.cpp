@@ -73,33 +73,17 @@ bool DProject::load()
 
     return true;
 }
-
 // FIXME: DProject::loadSql()
-
-bool DProject::loadSql()
+bool DProject::loadSql(QDomElement docElem)
 {
     qDebug("FIXME: DProject::loadSql()");
-    /*
+
     sel.clear();
     del.clear();
     upd.clear();
     ins.clear();
     other.clear();
 
-    QDomDocument doc("SQL");
-    QFile file( dbSqlList );
-    if (!file.open(QIODevice::ReadOnly))
-        return false;
-    if (!doc.setContent(&file)) {
-        file.close();
-        return false;
-    }
-    file.close();
-
-    QDomElement docElem = doc.documentElement();
-
-    if (docElem.tagName().toLower() != "sql-list")
-        return 0x01;
     for ( QDomNode n = docElem.firstChildElement( "sql" ); !n.isNull(); n = n.nextSiblingElement("sql") ) {
         QDomElement e = n.toElement();
         if ( !e.isNull() ) {
@@ -123,10 +107,9 @@ bool DProject::loadSql()
             }
         }
     }
-    */
     return false;
 }
-
+//
 bool DProject::getIsNew() { return isNew; }
 //
 bool DProject::getIsLoad() { return isLoad; }
@@ -214,6 +197,7 @@ bool DProject::connectDatabase()
         lastError = db.lastError().text();
         emit error( _ERR_DB_CONNECT );
     }
+    MyIncApplication::uriNamespace()->initSql();
     return isSql;
 }
 //
@@ -227,24 +211,20 @@ void DProject::disconnectDatabase()
 //
 QStringList DProject::workspace()
 {
-    int count = MyIncApplication::uriNamespace()
-            ->config( "Workspace", "Count" ).toInt();
+    int count = MyIncApplication::uriNamespace()->configSize( "Workspace" );
+        //, "Count" ).toInt();
     QStringList list;
     for( int i = 0; i < count; i++ )
         list << MyIncApplication::uriNamespace()
                 ->config( "Workspace", QString("Space_%1").arg(i) );
     return list;
 }
-
 // TODO: DProject::config(QString,QString) to Multi-threaded.
-
 QString DProject::config(QString name, QString arrayElement)
 {
     return MyIncApplication::uriNamespace()->config(name, arrayElement);
 }
-
 // TODO DProject::uri(QString)
-
 int DProject::uri(QString)
 {
     // retrun ID_OBJ;

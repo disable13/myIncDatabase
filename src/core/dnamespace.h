@@ -1,8 +1,8 @@
 #ifndef DNAMESPACE_H
 #define DNAMESPACE_H
-
+//
 #include <QObject>
-
+//
 #include <QVariant>
 class QDomDocument;
 class QDomNode;
@@ -10,7 +10,7 @@ class DProject;
 class QRegExp;
 class QSqlQuery;
 class QSqlResult;
-
+//
 class DNamespace : public QObject
 {
     Q_OBJECT
@@ -38,6 +38,7 @@ public:
     void saveXml();
 
     QString config(QString name, QString arrayElement );
+    int configSize(QString name);
     void setConfig(QString name, QString value, QString arrayElement );
 
     const QSqlResult * sql(QString queryName, QList<QVariant> bindValue);
@@ -49,5 +50,5 @@ signals:
     void error(int);
 
 };
-
+//
 #endif // DNAMESPACE_H

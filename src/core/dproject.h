@@ -5,6 +5,7 @@
 
 #include <QStringList>
 #include <QHash>
+#include <QtXml/QDomElement>
 
 class DProject : public QObject
 {
@@ -39,7 +40,7 @@ public:
 
     void save();
     bool load();
-    bool loadSql();
+    bool loadSql(QDomElement);
     // propertes
     bool getIsNew();
     bool getIsLoad();

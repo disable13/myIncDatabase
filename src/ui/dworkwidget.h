@@ -21,6 +21,9 @@ public:
 
     bool init();
 
+protected:
+    int errorMessage( QString more );
+
 };
 
 #endif // DWORKWIDGET_H

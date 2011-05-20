@@ -83,7 +83,7 @@ bool DNamespace::initSql()
     /// FIXME: load sql procedures from xml
     qDebug("FIXME: DNamespace::initSql()");
 
-    return false;
+    return MyIncApplication::project()->loadSql( doc->firstChildElement("sql") );
 }
 // TODO: DNamespace::saveXml()
 void DNamespace::saveXml()
@@ -110,7 +110,7 @@ QString DNamespace::config(QString name, QString arrayElement)
         return "Error";
     }
     QDomElement child = cfg->firstChildElement( name );
-    if (child.childNodes().count() != 0 )  {// check array
+    if (child.childNodes().count() != 0 )  { // check array
         if (arrayElement == "")
             return "Array";
 
@@ -118,6 +118,15 @@ QString DNamespace::config(QString name, QString arrayElement)
         return child.attribute( "value", "NULL" );
     } else
         return child.attribute( "value", "NULL" );
+}
+// BUG : return comments too
+int DNamespace::configSize( QString name )
+{
+    if (!isConfig) {
+        emit error( _ERR_NS_CNFNOINIT );
+        return 0;
+    }
+    return cfg->firstChildElement( name ).childNodes().count();
 }
 //
 void DNamespace::setConfig(QString name, QString value, QString arrayElement)

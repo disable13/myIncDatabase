@@ -1,12 +1,13 @@
 #include "dworkwidget.h"
-
+//
 #include <QGridLayout>
 #include <QtUiTools/QUiLoader>
+#include <QMessageBox>
 #include <QVariant>
 #include <QFile>
-
+//
 #include "src/core/myincapplication.h"
-
+//
 DWorkWidget::DWorkWidget(QString formName) :
         DWidget(), formName(formName)
 {
@@ -14,24 +15,30 @@ DWorkWidget::DWorkWidget(QString formName) :
     l = new QGridLayout( this );
     setLayout( l );
 }
-
+//
 DWorkWidget::~DWorkWidget()
 {
     if (central)
         delete central;
     delete l;
 }
-
+//
 bool DWorkWidget::init()
 {
-    if (MyIncApplication::project() == 0x00)
+    // TODO: DWorkWidget::init() <===<<
+    qDebug( "TODO: DWorkWidget::init() " );
+
+    if (MyIncApplication::project() == 0x00) {
+        errorMessage( tr("Project not be opened") );
         return false;
+    }
 
     QUiLoader loader;
-    QFile f( QString("/home/dsb/Desktop/%1")
-            .arg(formName) );
-    if (!f.open(QFile::ReadOnly))
+    QFile f( formName );
+    if (!f.open(QFile::ReadOnly)){
+        errorMessage( tr("Can't read UI file ").append(formName) );
         return false;
+    }
     central = loader.load(&f, this);
     f.close();
 
@@ -39,7 +46,6 @@ bool DWorkWidget::init()
     for(int i = 0; i < childs.count(); i++ ) {
         QWidget * obj = (QWidget*)childs.at(i);
 
-// TODO: DWorkWidget::init() !!!!!!!!!!!
         // need "URI" to myinc URI DNamespace::uri
         // also "PropertyValue" need for set value to this property
 
@@ -50,4 +56,16 @@ bool DWorkWidget::init()
 
     l->addWidget( central );
     return true;
+}
+//
+int DWorkWidget::errorMessage(QString more)
+{
+    QMessageBox msg;
+    msg.setIcon( QMessageBox::Critical );
+    msg.setStandardButtons( QMessageBox::Retry | QMessageBox::Cancel );
+    msg.setDefaultButton( QMessageBox::Cancel );
+    msg.setText( tr("Work widget error") );
+    msg.setDetailedText( more );
+
+    return msg.exec();
 }

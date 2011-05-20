@@ -1,22 +1,22 @@
 #include "mainwindow.h"
-
+//
 #include "src/core/dproject.h"
 #include "src/core/myincapplication.h"
 #include "src/ui/dhomescreen.h"
 #include "src/ui/dfooter.h"
 #include "src/ui/ddbconfig.h"
 #include "src/errors.h"
-
+//
 #include <QGridLayout>
 #include <QMenu>
 #include <QMenuBar>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QCloseEvent>
-
+//
 // FIXME: class MainWindow. include qDebug()
 #include <QDebug>
-
+//
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     show();
 }
-
+//
 MainWindow::~MainWindow()
 {
     delete home;
@@ -86,7 +86,7 @@ MainWindow::~MainWindow()
     delete l;
     delete central;
 }
-
+//
 bool MainWindow::loadProject( QString & fileName)
 {
     MyIncApplication::instance()->openProject( fileName );
@@ -95,12 +95,12 @@ bool MainWindow::loadProject( QString & fileName)
     isOpened = true;
     return MyIncApplication::project()->load();
 }
-
+//
 void MainWindow::closeEvent(QCloseEvent *)
 {
     MyIncApplication::application()->exit( 0x00 );
 }
-
+//
 void MainWindow::lockUI(bool lo)
 {
     lo = !lo;
@@ -113,9 +113,7 @@ void MainWindow::lockUI(bool lo)
     actQuerySettings->setEnabled( lo );
     actUiSettings->setEnabled( lo );
 }
-
 // FIXME: MainWindow::createProject()
-
 void MainWindow::createProject()
 {
     qDebug("FIXME: MainWindow::createProject()");
@@ -158,10 +156,9 @@ void MainWindow::openUiSettings()
 {
     qDebug("TODO: MainWindow::openUiSettings()");
 }
-// TODO: MainWindow::connectDatabase()
+//
 void MainWindow::connectDatabase()
 {
-    qDebug("FIXME: MainWindow::connectDatabase()");
     footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
         MyIncApplication::project()->disconnectDatabase();
