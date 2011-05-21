@@ -39,6 +39,14 @@ bool MyIncApplication::openProject( QString fileName )
             m_project, SIGNAL(error(int)) );
     m_namespace->initConfig();
     m_namespace->initSql();
-    return false;
 
+    return true;
+}
+//
+bool MyIncApplication::closeProject()
+{
+    delete m_project;
+    m_project = 0x00;
+
+    return true;
 }

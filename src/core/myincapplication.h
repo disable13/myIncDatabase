@@ -24,6 +24,7 @@ public:
     virtual ~MyIncApplication();
 
     static bool openProject( QString fileName );
+    static bool closeProject();
 
     static MyIncApplication * instance() { return self; }
     static QApplication * application() { return m_app; }

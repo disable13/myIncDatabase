@@ -26,8 +26,8 @@ private:
     QMenu * menFile;
     QAction * actCreateProject;
     QAction * actOpenProject;
-    QAction * actSave;
-    QAction * actSaveAs;
+    //QAction * actSave;
+    //QAction * actSaveAs;
     QAction * actClose;
     QAction * actExit;
     QMenu *  menProject;
@@ -59,6 +59,7 @@ public slots:
     void openQuerySettings();
     void openUiSettings();
     void connectDatabase();
+    void closeProject();
     void error(int);
 
 };

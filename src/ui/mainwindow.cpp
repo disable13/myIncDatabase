@@ -36,10 +36,10 @@ MainWindow::MainWindow(QWidget *parent)
     menFile->addSeparator();
     actOpenProject = menFile->addAction( tr("Open Project..."),
                                         this, SLOT(openProjectPush()));
-    actSave = menFile->addAction( tr("Save") );
-    actSaveAs = menFile->addAction( tr("Save as...") );
+    //actSave = menFile->addAction( tr("Save") );
+    //actSaveAs = menFile->addAction( tr("Save as...") );
     menFile->addSeparator();
-    actClose = menFile->addAction( tr("Close") );
+    actClose = menFile->addAction( tr("Close"), this, SLOT(closeProject()) );
     actExit = menFile->addAction( tr("Exit"), qApp, SLOT(quit()) );
 
     menProject = menuBar->addMenu( tr("Project") );
@@ -72,8 +72,8 @@ MainWindow::~MainWindow()
     delete footer;
     delete actExit;
     delete actClose;
-    delete actSaveAs;
-    delete actSave;
+    //delete actSaveAs;
+    //delete actSave;
     delete actOpenProject;
     delete actCreateProject;
     delete actConnect;
@@ -105,8 +105,8 @@ void MainWindow::lockUI(bool lo)
 {
     lo = !lo;
 
-    actSave->setEnabled( lo );
-    actSaveAs->setEnabled( lo );
+    //actSave->setEnabled( lo );
+    //actSaveAs->setEnabled( lo );
     actClose->setEnabled( lo );
     actConnect->setEnabled( lo );
     actDbSettings->setEnabled( lo );
@@ -162,6 +162,7 @@ void MainWindow::connectDatabase()
     footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
         MyIncApplication::project()->disconnectDatabase();
+        isConnected = false;
     } else {
         if (!MyIncApplication::project()->connectDatabase()) {
             QMessageBox msg;
@@ -184,6 +185,15 @@ void MainWindow::connectDatabase()
     }
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
     footer->progressStop( true );
+}
+//
+void MainWindow::closeProject()
+{
+    if (isConnected)
+        connectDatabase(); // to disconnect from database
+    MyIncApplication::closeProject();
+    home->clear();
+    lockUI( true );
 }
 //
 void MainWindow::error(int e)

@@ -1,19 +1,22 @@
 #ifndef DHOMESCREEN_H
 #define DHOMESCREEN_H
-
+//
 #include "src/dwidget.h"
-
+//
 class QGridLayout;
 class QListWidget;
 class DProject;
-
+//
 #include <QListWidgetItem>
-
+//
+class DWorkWidget;
+//
 class DHomeScreen : public DWidget
 {
     Q_OBJECT
 private:
     DProject * current;
+    QList<DWorkWidget*> listWidget;
 
     QGridLayout * l;
 
@@ -29,5 +32,5 @@ public slots:
     void selectWorkspace( QListWidgetItem * );
 
 };
-
+//
 #endif // DHOMESCREEN_H

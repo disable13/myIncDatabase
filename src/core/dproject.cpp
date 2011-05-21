@@ -170,9 +170,7 @@ void DProject::setDbConnectOptions(QString connectOptions) { dbConnectOptions = 
 void DProject::setDbHost(QString hostName) { dbHost = hostName; }
 //
 void DProject::setDbPort(int port) { dbPort = port; }
-
 // FIXME: DProject::connectDatabase()
-
 bool DProject::connectDatabase()
 {
     if ( !isLoad || isSql )

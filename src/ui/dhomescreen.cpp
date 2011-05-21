@@ -20,6 +20,7 @@ DHomeScreen::DHomeScreen(QWidget *parent) :
 //
 DHomeScreen::~DHomeScreen()
 {
+    clear();
     delete lstBase;
     delete l;
 }
@@ -27,6 +28,12 @@ DHomeScreen::~DHomeScreen()
 void DHomeScreen::clear()
 {
     lstBase->clear();
+    // FIXME: it's bad
+    qDebug("FIXME: DHomeScreen::clear()");
+    for(int i = 0; i < listWidget.size(); i++ ) {
+        listWidget.at(i)->close();
+        delete listWidget.at(i);
+    }
 }
 //
 void DHomeScreen::setProject( DProject * project )
@@ -51,6 +58,10 @@ void DHomeScreen::selectWorkspace(QListWidgetItem* item)
     DWorkWidget * widget =
             new DWorkWidget(
                 current->config(item->data(Qt::UserRole).toString(), "ui") );
-    if (widget->init())
-        widget->show();    
+    if (widget->init()) {
+        listWidget.append( widget );
+        widget->show();
+    } else {
+        delete widget;
+    }
 }

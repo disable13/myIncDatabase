@@ -2,10 +2,10 @@
 #define DWORKWIDGET_H
 
 #include "src/dwidget.h"
-
+//
 class QGridLayout;
 class DProject;
-
+//
 class DWorkWidget : public DWidget
 {
     Q_OBJECT
@@ -25,5 +25,5 @@ protected:
     int errorMessage( QString more );
 
 };
-
+//
 #endif // DWORKWIDGET_H
