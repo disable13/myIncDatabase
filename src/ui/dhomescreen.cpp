@@ -34,6 +34,7 @@ void DHomeScreen::clear()
         listWidget.at(i)->close();
         delete listWidget.at(i);
     }
+    listWidget.clear();
 }
 //
 void DHomeScreen::setProject( DProject * project )

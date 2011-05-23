@@ -5,6 +5,7 @@
 #include "src/ui/dhomescreen.h"
 #include "src/ui/dfooter.h"
 #include "src/ui/ddbconfig.h"
+#include "src/ui/dsqlquertyviewer.h"
 #include "src/errors.h"
 //
 #include <QGridLayout>
@@ -22,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     isConnected = false;
     isOpened = false;
+    sqlQuertyViewer = 0x00;
 
     central = new QWidget();
     l = new QGridLayout( central );
@@ -68,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent)
 //
 MainWindow::~MainWindow()
 {
+    if (sqlQuertyViewer)
+        delete sqlQuertyViewer;
     delete home;
     delete footer;
     delete actExit;
@@ -146,10 +150,18 @@ void MainWindow::openConnectionSettings()
     c.setProject( MyIncApplication::project() );
     c.exec();
 }
-// TODO: MainWindow::openQuerySettings()
+//
 void MainWindow::openQuerySettings()
 {
-    qDebug("TODO: MainWindow::openQuerySettings()");
+    if ( sqlQuertyViewer ) { // created
+        sqlQuertyViewer->show();
+        qDebug("FIXME: MainWindow::openQuerySettings()");
+        // FIXME: why without focus
+        sqlQuertyViewer->setFocus();
+    } else {
+        sqlQuertyViewer = new DSqlQuertyViewer();
+        sqlQuertyViewer->show();
+    }
 }
 // TODO: MainWindow::openUiSettings()
 void MainWindow::openUiSettings()
@@ -161,6 +173,7 @@ void MainWindow::connectDatabase()
 {
     footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
+        home->clear();
         MyIncApplication::project()->disconnectDatabase();
         isConnected = false;
     } else {
@@ -189,10 +202,11 @@ void MainWindow::connectDatabase()
 //
 void MainWindow::closeProject()
 {
+    if (sqlQuertyViewer)
+        delete sqlQuertyViewer;
     if (isConnected)
         connectDatabase(); // to disconnect from database
     MyIncApplication::closeProject();
-    home->clear();
     lockUI( true );
 }
 //

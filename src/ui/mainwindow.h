@@ -1,20 +1,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+//
 #include <QtGui/QMainWindow>
-
-
+//
 class QCloseEvent;
 // UI
 class QPushButton;
 class QLabel;
 class QGridLayout;
 class QMenuBar;
-
+//
 class DHomeScreen;
 class DFooter;
-
-
+class DSqlQuertyViewer;
+//
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -38,6 +37,7 @@ private:
 
     DHomeScreen * home;
     DFooter * footer;
+    DSqlQuertyViewer * sqlQuertyViewer;
 
     bool isConnected;
     bool isOpened; // to ~MainWindow
@@ -63,5 +63,5 @@ public slots:
     void error(int);
 
 };
-
+//
 #endif // MAINWINDOW_H

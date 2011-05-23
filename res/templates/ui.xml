@@ -1,8 +1,0 @@
-<ui>
-    <form table="me"> <!-- NEED MAKE ATTR TO FORM -->
-        <lineedit name="unique-name" caption="Label near" value="sql:${name-query}(${query-argv})[${num}]" maxlength="32" />
-        <combobox name="combo" caption="combo test" comment="This is testing combobox" value="up" maxvisible="10" editable="false" />
-        <list name="multilist" caption="Multi select list" coment="This is testing list" value"up" />
-        <  />
-    </form>
-</ui>

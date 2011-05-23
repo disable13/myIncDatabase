@@ -1,0 +1,12 @@
+<root>
+<config>
+	<Database>
+		<Driver value="QSQLITE" />
+		<Hostname value="" />
+		<Port value="" />
+		<Username value="" />
+		<Password value="" />
+		<Name value="~/Sources/Qt/myinc/res/templates/myinc.sqlite" />
+	</Database>
+</config>
+</root>

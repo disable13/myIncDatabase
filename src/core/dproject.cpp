@@ -13,6 +13,7 @@ DProject::DProject(QString fileName)
     isNew = !QFile::exists(fileName);
     isLoad = false;
     isSql = false;
+    isReadOnly = true;
 
     filePath = fileName;
 
@@ -134,15 +135,35 @@ int DProject::getDbPort() { return dbPort; }
 //
 QString DProject::getProjectFile() { return filePath; }
 //
+int DProject::getSelectSqlQuertyCount() { return sel.count(); }
+//
 QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
+//
+QString DProject::getSelectSqlQuerty( int pos ) { return sel.keys().at( pos ); }
+//
+int DProject::getInsertSqlQuertyCount() { return ins.size(); }
 //
 QString DProject::getInsertSqlQuerty(QString name) { return ins[name]; }
 //
+QString DProject::getInsertSqlQuerty( int pos ) { return ins.keys().at( pos ); }
+//
+int DProject::getDeleteSqlQuertyCount() { return del.size(); }
+//
 QString DProject::getDeleteSqlQuerty(QString name) { return del[name]; }
+//
+QString DProject::getDeleteSqlQuerty( int pos ) { return del.keys().at( pos ); }
+//
+int DProject::getUpdateSqlQuertyCount() { return upd.size(); }
 //
 QString DProject::getUpdateSqlQuerty(QString name) { return upd[name]; }
 //
+QString DProject::getUpdateSqlQuerty( int pos ) { return upd.keys().at( pos ); }
+//
+int DProject::getOtherSqlQuertyCount() { return other.size(); }
+//
 QString DProject::getOtherSqlQuerty(QString name) { return other[name]; }
+//
+QString DProject::getOtherSqlQuerty( int pos ) { return other.keys().at( pos ); }
 //
 bool DProject::setDbDriver(QString nameDriver)
 {

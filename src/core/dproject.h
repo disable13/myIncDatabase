@@ -14,7 +14,9 @@ private:
     bool isNew;
     bool isLoad;
     bool isSql;
-
+    //
+    bool isReadOnly;
+    //
     QString filePath;
     QString dbDriver;
     QString dbName;
@@ -24,10 +26,9 @@ private:
     QString dbHost;
     int     dbPort;
     QStringList dbTables;
-
+    //
     QString lastError;
-
-    // FIXME:
+    //
     QHash<QString, QString> sel;
     QHash<QString, QString> ins;
     QHash<QString, QString> del;
@@ -37,7 +38,7 @@ private:
 public:
     DProject( QString fileName );
     ~DProject();
-
+    //
     void save();
     bool load();
     bool loadSql(QDomElement);
@@ -46,6 +47,7 @@ public:
     bool getIsLoad();
     bool getIsConnected();
     QString getLastError();
+    bool getIsReadOnly() { return isReadOnly; }
     QString getDbDriver();
     QString getDbName();
     QString getDbUser();
@@ -54,13 +56,27 @@ public:
     QString getDbHost();
     int     getDbPort();
     QString getProjectFile();
-
-    QString getSelectSqlQuerty( QString name);
-    QString getInsertSqlQuerty( QString name);
-    QString getDeleteSqlQuerty( QString name);
-    QString getUpdateSqlQuerty( QString name);
-    QString getOtherSqlQuerty( QString name);
-
+    //
+    int     getSelectSqlQuertyCount();
+    QString getSelectSqlQuerty( QString name );
+    QString getSelectSqlQuerty( int pos );
+    //
+    int     getInsertSqlQuertyCount();
+    QString getInsertSqlQuerty( QString name );
+    QString getInsertSqlQuerty( int pos );
+    //
+    int     getDeleteSqlQuertyCount();
+    QString getDeleteSqlQuerty( QString name );
+    QString getDeleteSqlQuerty( int pos );
+    //
+    int     getUpdateSqlQuertyCount();
+    QString getUpdateSqlQuerty( QString name );
+    QString getUpdateSqlQuerty( int pos );
+    //
+    int     getOtherSqlQuertyCount();
+    QString getOtherSqlQuerty( QString name );
+    QString getOtherSqlQuerty( int pos );
+    //
     bool setDbDriver(QString nameDriver);
     void setDbName(QString datebaseName);
     void setDbUser(QString user);
@@ -68,14 +84,14 @@ public:
     void setDbConnectOptions(QString connectOptions);
     void setDbHost(QString hostName);
     void setDbPort(int port);
-
+    //
     bool connectDatabase();
     void disconnectDatabase();
-
+    //
     QStringList workspace();
-
+    //
     QString config(QString, QString);
-
+    //
     int uri(QString);
 
 signals:
