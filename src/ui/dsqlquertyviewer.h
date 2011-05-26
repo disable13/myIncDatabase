@@ -3,6 +3,8 @@
 //
 #include <QWidget>
 //
+#include <QtGui/QListWidgetItem>
+//
 class QGridLayout;
 class QPushButton;
 class QLabel;
@@ -34,7 +36,8 @@ public:
     ~DSqlQuertyViewer();
 
 public slots:
-
+    void changeType(int);
+    void selectQuery(QListWidgetItem*);
 };
 //
 #endif // DSQLQUERTYVIEWER_H

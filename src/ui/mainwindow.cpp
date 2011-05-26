@@ -153,6 +153,8 @@ void MainWindow::openConnectionSettings()
 //
 void MainWindow::openQuerySettings()
 {
+    if (!isConnected)
+        connectDatabase();
     if ( sqlQuertyViewer ) { // created
         sqlQuertyViewer->show();
         qDebug("FIXME: MainWindow::openQuerySettings()");
