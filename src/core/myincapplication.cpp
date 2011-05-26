@@ -5,6 +5,9 @@
 #include "src/core/dproject.h"
 #include "src/ui/mainwindow.h"
 //
+#include <QFile>
+#include <QTimer>
+//
 MyIncApplication*   MyIncApplication::self          = 0x00;
 QApplication*       MyIncApplication::m_app         = 0x00;
 DNamespace*         MyIncApplication::m_namespace   = 0x00;
@@ -22,6 +25,30 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
     m_namespace = new DNamespace();
     m_pool = new DThreadPool();
 
+    // Check arguments
+    if (argc > 1)
+        for(int i = 0; i < argc; i++) {
+            QString arg = QString(argv[i]);
+            if (arg.startsWith("--")) {
+                if (arg == QString("--help") ) { // give help
+                    qDebug(qPrintable(tr("--drivers\tshow aviable SQL drivers")));
+                    qDebug(qPrintable(tr("--help\tshow this message")));
+                    QTimer::singleShot( 50, m_app, SLOT(quit()) );
+                    return;
+                }
+                if (arg == "--drivers") { // show aviable SQL drivers
+                    qDebug("QSQLITE ^^,");
+                    QTimer::singleShot( 50, m_app, SLOT(quit()) );
+                    return;
+                }
+            } else if (QFile::exists(arg) && arg.endsWith(".xml")) { // is file ?
+               MainWindow * mw = new MainWindow();
+               mw->loadProject(arg);
+               mw->connectDatabase();
+               return;
+            }
+        }
+
     new MainWindow();
 }
 //
@@ -38,7 +65,7 @@ bool MyIncApplication::openProject( QString fileName )
     connect( m_namespace, SIGNAL(error(int)),
             m_project, SIGNAL(error(int)) );
     m_namespace->initConfig();
-    m_namespace->initSql();
+    //m_namespace->initSql();
 
     return true;
 }
