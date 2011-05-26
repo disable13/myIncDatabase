@@ -83,7 +83,7 @@ bool DNamespace::initSql()
     /// FIXME: load sql procedures from xml
     qDebug("FIXME: DNamespace::initSql()");
 
-    return MyIncApplication::project()->loadSql( doc->firstChildElement("sql") );
+    return MyIncApplication::project()->loadSql( doc->firstChildElement( "root" ) );
 }
 // TODO: DNamespace::saveXml()
 void DNamespace::saveXml()
