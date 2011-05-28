@@ -51,6 +51,17 @@ void DHomeScreen::setProject( DProject * project )
         item->setData( Qt::UserRole, list[i] );
     }
 }
+//
+bool DHomeScreen::selectWorkspace( QString name )
+{
+    name = name.toLower();
+    for(int i = 0; i < lstBase->count(); i++ )
+        if (lstBase->item(i)->text().toLower() == name ) {
+            selectWorkspace( lstBase->item(i) );
+            return true;
+    }
+    return false;
+}
 // TODO: DHomeScreen::selectWorkspace()
 void DHomeScreen::selectWorkspace(QListWidgetItem* item)
 {

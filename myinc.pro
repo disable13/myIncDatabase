@@ -27,7 +27,8 @@ SOURCES = src/main.cpp\
     src/core/dthreadpool.cpp \
     src/dwidget.cpp \
     src/core/myincapplication.cpp \
-    src/ui/dsqlquertyviewer.cpp
+    src/ui/dsqlquertyviewer.cpp \
+    src/core/dsystemfuncs.cpp
 
 HEADERS =  src/core/dproject.h \
     src/core/dthreaduri.h \
@@ -43,7 +44,8 @@ HEADERS =  src/core/dproject.h \
     src/core/dthreadpool.h \
     src/dwidget.h \
     src/core/myincapplication.h \
-    src/ui/dsqlquertyviewer.h
+    src/ui/dsqlquertyviewer.h \
+    src/core/dsystemfuncs.h
 
 OTHER_FILES += \
     TODO.txt

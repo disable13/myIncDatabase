@@ -2,6 +2,7 @@
 #include "src/core/dproject.h"
 #include "src/errors.h"
 #include "src/core/myincapplication.h"
+#include "src/core/dsystemfuncs.h"
 //
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
@@ -17,6 +18,8 @@ DNamespace::DNamespace() :
     isSql = false;
     isConfig = false;
 
+    sys = new DSystemFuncs();
+
     rx = new QRegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?");
 }
 //
@@ -29,6 +32,7 @@ DNamespace::~DNamespace()
     if (isSql)
         delete query;
     delete rx;
+    delete sys;
 }
 //
 bool DNamespace::initConfig()
@@ -165,9 +169,9 @@ void DNamespace::uri(QString uri, QVariant * var)
     qDebug("TODO: DNamespace::uri(QString,QVariant*)");
 
     // parser string "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
-    // example "http://www.ics.uci.edu/pub/ietf/uri/#Related"
+    // example "http://www.ics.uci.edu/pub/ietf/uri/#Related&Relation"
     // 2 (myinc)
-    // 4 (config|resourse|sql)
+    // 4 (config|sql|system)
     // 5 (Database/Username)
     // 7
     // 9 (|Set)
@@ -180,8 +184,8 @@ void DNamespace::uri(QString uri, QVariant * var)
     // 5) /pub/ietf/uri/
     // 6)
     // 7)
-    // 8) #Related+
-    // 9) Related
+    // 8) #Related&Relation+
+    // 9) Related&Relation
 
     // myinc://host/Config/Database/User     // Socket
     // myinc:///Config/Database/User         // Without socket
@@ -197,7 +201,16 @@ void DNamespace::uri(QString uri, QVariant * var)
                 } else if ( q == "sql" ) {
                     qDebug("TODO: DNamespace::uri(QString,QVariant*)\n\tProcessing \"sql\"");
                 } else if ( q == "system" ) {
-                    qDebug("TODO: DNamespace::uri(QString,QVariant*)\n\tProcessing \"system\"");
+                    qDebug("FIXME: DNamespace::uri(QString,QVariant*)\n\tProcessing \"system\"");
+                    path.removeFirst();
+                    q = QString::null;
+                    for(int i = 0; i < path.count(); i++)
+                        q.append("/").append(path.at(i));
+                    q.remove(0,1);
+                    var = new QVariant(
+                                sys->run( q,
+                                         rx->cap(9).split('&', QString::SkipEmptyParts) )
+                                );
                 } else {
                     var->setValue(QString("Error"));
                     emit error(_ERR_URI_SYNTAX);

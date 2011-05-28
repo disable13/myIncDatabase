@@ -13,6 +13,7 @@ QApplication*       MyIncApplication::m_app         = 0x00;
 DNamespace*         MyIncApplication::m_namespace   = 0x00;
 DThreadPool*        MyIncApplication::m_pool        = 0x00;
 DProject*           MyIncApplication::m_project     = 0x00;
+MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
 //
 MyIncApplication::MyIncApplication(int &argc, char** argv) :
     QObject()
@@ -42,19 +43,23 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
                     return;
                 }
             } else if (QFile::exists(arg) && arg.endsWith(".xml")) { // is file ?
-               MainWindow * mw = new MainWindow();
-               mw->loadProject(arg);
-               mw->connectDatabase();
+               m_mainWindow = new MainWindow();
+               m_mainWindow->loadProject(arg);
+               m_mainWindow->connectDatabase();
                return;
             }
         }
 
-    new MainWindow();
+    m_mainWindow =  new MainWindow();
 }
 //
 MyIncApplication::~MyIncApplication()
 {
-
+    delete m_mainWindow;
+    delete m_project;
+    delete m_pool;
+    delete m_namespace;
+    QTimer::singleShot( 50, m_app, SLOT(quit()) );
 }
 //
 bool MyIncApplication::openProject( QString fileName )

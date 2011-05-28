@@ -10,38 +10,41 @@ class DProject;
 class QRegExp;
 class QSqlQuery;
 class QSqlResult;
+class DSystemFuncs;
 //
 class DNamespace : public QObject
 {
     Q_OBJECT
-
     Q_ENUMS(Type)
 
 private:
+    DSystemFuncs * sys;
+    //
     QDomDocument * doc;
     bool isSql; // connected?
     bool isConfig; // open?
     QRegExp * rx; // uri
     QSqlQuery * query;
-
+    //
     QDomNode * cfg;
 
 public:
     DNamespace();
     ~DNamespace();
-
+    //
     enum Type { Sql, System, Config };
-
+    //
     bool initConfig();
     bool initSql();
-
+    //
     void saveXml();
-
+    //
     QString config(QString name, QString arrayElement );
     int configSize(QString name);
     void setConfig(QString name, QString value, QString arrayElement );
-
+    //
     const QSqlResult * sql(QString queryName, QList<QVariant> bindValue);
+    //
 
 public slots:
     void uri(QString,QVariant*);

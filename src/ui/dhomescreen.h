@@ -17,14 +17,16 @@ class DHomeScreen : public DWidget
 private:
     DProject * current;
     QList<DWorkWidget*> listWidget;
-
+    //
     QGridLayout * l;
-
+    //
     QListWidget * lstBase;
 
 public:
     DHomeScreen(QWidget * parent = 0);
     virtual ~DHomeScreen();
+    //
+    bool selectWorkspace(QString name);
 
 public slots:
     void clear();

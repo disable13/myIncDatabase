@@ -34,19 +34,20 @@ private:
     QAction * actDbSettings;
     QAction * actQuerySettings;
     QAction * actUiSettings;
-
+    //
     DHomeScreen * home;
     DFooter * footer;
     DSqlQuertyViewer * sqlQuertyViewer;
-
+    //
     bool isConnected;
     bool isOpened; // to ~MainWindow
 
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+    //
     bool loadProject( QString & filename);
+    DHomeScreen * getHome();
 
 protected:
      void closeEvent( QCloseEvent * event );

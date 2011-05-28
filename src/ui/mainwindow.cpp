@@ -100,6 +100,11 @@ bool MainWindow::loadProject( QString & fileName)
     return MyIncApplication::project()->load();
 }
 //
+DHomeScreen * MainWindow::getHome()
+{
+    return home;
+}
+//
 void MainWindow::closeEvent(QCloseEvent *)
 {
     MyIncApplication::application()->exit( 0x00 );
