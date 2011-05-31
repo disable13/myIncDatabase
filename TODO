@@ -3,21 +3,3 @@
       ~ - need test,
       - - normal
 
-1) Namespace
-    ? Config read/write
-    ? System calls
-    - SQL procedures
-2) Project
-    ? Create new project (by programm)
-    ! SQL connectins
-    ! Threaded URI
-3) Threads
-    ~ Synced Pool
-    ~ Integration to widget
-4) Homescreen
-    ? Tree viewed (may be just groups)
-    ? Auth (root, user, guest)
-5) Work screen
-    ~ Threaded
-    - UI save in config xml ( also make by programm )
-    ! URI

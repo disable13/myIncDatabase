@@ -48,4 +48,7 @@ HEADERS =  src/core/dproject.h \
     src/core/dsystemfuncs.h
 
 OTHER_FILES += \
-    TODO.txt
+    TODO \
+    README
+
+TRANSLATIONS += ru.ts en.ts

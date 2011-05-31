@@ -29,22 +29,25 @@ DWorkWidget::~DWorkWidget()
 //
 bool DWorkWidget::init()
 {
-    // TODO: DWorkWidget::init() <===<<
+    // TODO: DWorkWidget::init()
     qDebug( "TODO: DWorkWidget::init() " );
 
     if (MyIncApplication::project() == 0x00) {
         errorMessage( tr("Project not be opened") );
         return false;
     }
-
-    QUiLoader loader;
-    QFile f( formName );
-    if (!f.open(QFile::ReadOnly)){
-        errorMessage( tr("Can't read UI file ").append(formName) );
-        return false;
+    try {
+        QUiLoader loader;
+        QFile f( formName );
+        if (!f.open(QFile::ReadOnly)){
+            errorMessage( tr("Can't read UI file ").append(formName) );
+            return false;
+        }
+        central = loader.load(&f, this);
+        f.close();
+    } catch (...) {
+        errorMessage( tr("Bad UI file") );
     }
-    central = loader.load(&f, this);
-    f.close();
 
     setObjectName( formName );
 
@@ -65,9 +68,9 @@ bool DWorkWidget::initUri()
                 errorMessage( tr("Can't create button %1").arg(obj->objectName()));
         } else if (obj->inherits("QLabel")) { /// Label
             initLabel(obj);
-        } else if ( obj->inherits("QAbstractListModel")) { /// tables and etc
+        } else if ( obj->inherits("QAbstractItemView")) { /// tables and etc
             if (!initList(static_cast<QAbstractItemView*>(obj)))
-                 errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QLineEdit") ) { /// edit
             initLabel(obj);
         } else if ( obj->inherits("QTextEdit") ) { /// text edit
@@ -78,8 +81,8 @@ bool DWorkWidget::initUri()
             if (!initDateTime(obj))
                 errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if (obj->inherits( "QSpinBox") || obj->inherits("QDoubleSpinBox")) { /// numbers edit
-                if (!initSpinBox(obj))
-                    errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+            if (!initSpinBox(obj))
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QCheckBox")) { /// check box
             initLabel(obj);
         }/* else if (obj->inherits("QProgressBar")) { /// progress bar
@@ -158,7 +161,6 @@ bool DWorkWidget::initDateTime(QWidget * w )
     } catch (...) {
         return false;
     }
-
     return true;
 }
 //
@@ -171,9 +173,9 @@ bool DWorkWidget::initList(QAbstractItemView * w)
             emit uri( value.toString().trimmed(), &v  );
             QSqlQueryModel * model = new QSqlQueryModel();
 #ifdef __x86_64
-            model->setQuery( ((QSqlQuery*)v.value<qint64>())[0] );
+            model->setQuery( ((QSqlQuery*)v.value<void*>())[0] );
 #else
-            model->setQuery( ((QSqlQuery*)v.value<qint32>())[0] );
+            model->setQuery( ((QSqlQuery*)v.value<void*>())[0] );
 #endif
             w->setModel( static_cast<QAbstractItemModel*>(model) );
         }
@@ -200,5 +202,5 @@ int DWorkWidget::errorMessage(QString more)
 //
 void DWorkWidget::clickEvent()
 {
-    emit uri( sender()->property( "OnClick" ).toString(), NULL );
+    emit uri( sender()->property( "OnClick" ).toString(), new QVariant() );
 }

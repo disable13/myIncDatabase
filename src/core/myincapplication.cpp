@@ -7,6 +7,9 @@
 //
 #include <QFile>
 #include <QTimer>
+#include <QTranslator>
+#include <QLocale>
+#include <QtSql/QSqlDatabase>
 //
 MyIncApplication*   MyIncApplication::self          = 0x00;
 QApplication*       MyIncApplication::m_app         = 0x00;
@@ -23,6 +26,11 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
     Q_ASSERT_X(!self, "MyIncApplication",
                "there should be only one application object");
     MyIncApplication::self = this;
+    // fixme: translator to global
+    QTranslator *myTranslator = new QTranslator();
+    myTranslator->load(QLocale::system().name());
+    m_app->installTranslator(myTranslator);
+    qDebug("FIXME: MyIncApplication::MyIncApplication(int, char**)");
 
     m_namespace = new DNamespace();
     m_pool = new DThreadPool();
@@ -33,13 +41,17 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
             QString arg = QString(argv[i]);
             if (arg.startsWith("--")) {
                 if (arg == QString("--help") ) { // give help
+                    qDebug(qPrintable(tr("Usage: myinc [--drivers|--help] [Project]\n")));
                     qDebug(qPrintable(tr("--drivers\tshow aviable SQL drivers")));
                     qDebug(qPrintable(tr("--help\tshow this message")));
                     QTimer::singleShot( 50, m_app, SLOT(quit()) );
                     return;
                 }
                 if (arg == "--drivers") { // show aviable SQL drivers
-                    qDebug("QSQLITE ^^,");
+                    qDebug( qPrintable(tr("Aviable SQL drivers in system:\n")) );
+                    QStringList drv = QSqlDatabase::drivers();
+                    for(int i = 0; i < drv.count(); i++)
+                        qDebug( qPrintable(QString("\t").append(drv.at(i))) );
                     QTimer::singleShot( 50, m_app, SLOT(quit()) );
                     return;
                 }

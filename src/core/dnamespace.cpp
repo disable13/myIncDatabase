@@ -232,9 +232,10 @@ void DNamespace::uri(QString uri, QVariant * var)
                     sql(t, path.at(2),
                                 rx.cap(9).split('&', QString::SkipEmptyParts) );
 #ifdef __x86_64
-                    var->setValue(((qint64)query));
+                    void * sds = (void*)query;
+                    var->setValue( (void*)query );
 #else
-                    var->setValue(((qint32)query));
+                    var->setValue( (void*)query );
 #endif
                     // TODO: result!! getting result
                     qDebug("TODO: getting result");
