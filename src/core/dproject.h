@@ -91,8 +91,6 @@ public:
     QStringList workspace();
     //
     QString config(QString, QString);
-    //
-    int uri(QString);
 
 signals:
     void error(int);

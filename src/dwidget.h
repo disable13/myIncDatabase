@@ -1,12 +1,12 @@
 #ifndef DWIDGET_H
 #define DWIDGET_H
-
+//
 #include <QWidget>
 #include <QVariant>
-
+//
 #include <QPair>
 #include <QList>
-
+//
 class DWidget : public QWidget
 {
     Q_OBJECT
@@ -29,5 +29,5 @@ public slots:
     void threadEnd(int*,QVariant);
 
 };
-
+//
 #endif // DWIDGET_H

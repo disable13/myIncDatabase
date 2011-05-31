@@ -1,27 +1,29 @@
 #ifndef DTHREADURI_H
 #define DTHREADURI_H
-
+//
 #include <QObject>
 #include <QRunnable>
-
+//
 #include <QStringList>
 #include <QVariant>
 class DProject;
-
+class QMutex;
+//
 class DThreadUri : public QObject, public QRunnable
 {
     Q_OBJECT
 private:
     QString uri;
-
+    //
     QStringList path;
     int m_err;
     QVariant result;
 
+
 public:
     DThreadUri(QString Uri);
     virtual ~DThreadUri();
-
+    //
     void run();
 
 private:

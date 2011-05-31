@@ -5,6 +5,7 @@
 #include <QRegExp>
 #include <QtXml/QDomDocument>
 #include <QFile>
+#include <QMutex>
 #include "dproject.h"
 #include "src/errors.h"
 //
@@ -23,6 +24,9 @@ DThreadUri::~DThreadUri()
 //
 void DThreadUri::run()
 {
+
+
+    /*
     QRegExp rx("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?");
 
     if (rx.indexIn( uri ) == -1) {
@@ -53,7 +57,7 @@ void DThreadUri::run()
         }
     } else {
         // TODO file,ftp,http
-    }
+    }*/
 }
 //
 void inline DThreadUri::system()
@@ -65,6 +69,7 @@ void inline DThreadUri::system()
 //
 void inline DThreadUri::config()
 {
+    /*
     QString name, arrayElement;
     QDomDocument doc( "Project" );
     QFile file( MyIncApplication::project()->getProjectFile() );
@@ -102,11 +107,12 @@ void inline DThreadUri::config()
         complete( (int*)this, child.attribute( "value", "NULL" ) );
         return;
     }
+*/
 }
 //
 void inline DThreadUri::sql()
 {
-    complete( (int*)this, QVariant("SQL not finished") );
+    //complete( (int*)this, QVariant("SQL not finished") );
 }
 //
 void inline DThreadUri::error(int e ) { m_err = e; }

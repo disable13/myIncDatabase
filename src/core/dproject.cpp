@@ -16,8 +16,6 @@ DProject::DProject(QString fileName)
     isReadOnly = true;
 
     filePath = fileName;
-
-    //connect( nspace, SIGNAL(error(int)), this, SIGNAL(error(int)) );
 }
 //
 DProject::~DProject()
@@ -28,6 +26,10 @@ DProject::~DProject()
 void DProject::save()
 {
     qDebug("FIXME: bool DProject::save()");
+
+    if (isReadOnly)
+        return;
+
     MyIncApplication::uriNamespace()
             ->setConfig( "Database", dbDriver, "Driver" );
     MyIncApplication::uriNamespace()
@@ -74,11 +76,9 @@ bool DProject::load()
 
     return true;
 }
-// FIXME: DProject::loadSql()
+//
 bool DProject::loadSql(QDomElement docElem)
 {
-    qDebug("FIXME: DProject::loadSql()");
-
     sel.clear();
     del.clear();
     upd.clear();
@@ -242,13 +242,4 @@ QStringList DProject::workspace()
 QString DProject::config(QString name, QString arrayElement)
 {
     return MyIncApplication::uriNamespace()->config(name, arrayElement);
-}
-// TODO DProject::uri(QString)
-int DProject::uri(QString)
-{
-    // retrun ID_OBJ;
-    // start Thread with ID_OBJ
-    // exit ot main thread
-    // in Thread with ID_OBJ after complete return QVariant result and ID_OBJ
-    return 0x00;
 }

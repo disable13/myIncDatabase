@@ -2,6 +2,8 @@
 //
 #include "src/core/dproject.h"
 #include "src/ui/dworkwidget.h"
+#include "src/core/myincapplication.h"
+#include "src/core/dnamespace.h"
 //
 #include <QGridLayout>
 #include <QListWidget>
@@ -28,8 +30,6 @@ DHomeScreen::~DHomeScreen()
 void DHomeScreen::clear()
 {
     lstBase->clear();
-    // FIXME: it's bad
-    qDebug("FIXME: DHomeScreen::clear()");
     for(int i = 0; i < listWidget.size(); i++ ) {
         listWidget.at(i)->close();
         delete listWidget.at(i);
@@ -62,14 +62,14 @@ bool DHomeScreen::selectWorkspace( QString name )
     }
     return false;
 }
-// TODO: DHomeScreen::selectWorkspace()
+//
 void DHomeScreen::selectWorkspace(QListWidgetItem* item)
 {
-    qDebug("FIXME: DHomeScreen::selectWorkspace()");
-
     DWorkWidget * widget =
             new DWorkWidget(
                 current->config(item->data(Qt::UserRole).toString(), "ui") );
+    connect( widget, SIGNAL(uri(QString,QVariant*)),
+            MyIncApplication::uriNamespace(), SLOT(uri(QString,QVariant*)) );
     if (widget->init()) {
         listWidget.append( widget );
         widget->show();

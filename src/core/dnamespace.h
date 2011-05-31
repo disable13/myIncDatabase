@@ -9,13 +9,14 @@ class QDomNode;
 class DProject;
 class QRegExp;
 class QSqlQuery;
-class QSqlResult;
 class DSystemFuncs;
+//class QMutex;
 //
 class DNamespace : public QObject
 {
     Q_OBJECT
     Q_ENUMS(Type)
+    Q_ENUMS(SqlType)
 
 private:
     DSystemFuncs * sys;
@@ -23,16 +24,20 @@ private:
     QDomDocument * doc;
     bool isSql; // connected?
     bool isConfig; // open?
-    QRegExp * rx; // uri
+    //QRegExp * rx; // uri
     QSqlQuery * query;
     //
     QDomNode * cfg;
+    //
+//    QMutex * muConfig;
+//    QMutex * muSql;
 
 public:
     DNamespace();
     ~DNamespace();
     //
     enum Type { Sql, System, Config };
+    enum SqlType { SELECT, INSERT, UPDATE, DELETE, Other };
     //
     bool initConfig();
     bool initSql();
@@ -43,7 +48,7 @@ public:
     int configSize(QString name);
     void setConfig(QString name, QString value, QString arrayElement );
     //
-    const QSqlResult * sql(QString queryName, QList<QVariant> bindValue);
+    QSqlQuery sql(SqlType type, QString queryName, QStringList bindValue);
     //
 
 public slots:

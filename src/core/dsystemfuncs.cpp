@@ -80,7 +80,7 @@ void DSystemFuncs::setVariable(QString widget, QString name, QString value)
 //  sample:  myinc:///System/Window/Close#HelloWindow
 //                  func = Window/Close
 //                  arg = HelloWindow
-QVariant DSystemFuncs::run(QString func, QStringList arg)
+QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender )
 {
     func = func .toLower();
     QStringList f = func.split('/', QString::SkipEmptyParts );
@@ -89,9 +89,9 @@ QVariant DSystemFuncs::run(QString func, QStringList arg)
     QString tmp = f.at(0).toLower();
     if ( tmp == QString("window") ) { /// window funcs
         tmp = f.at(1).toLower();
-        if ( arg.count() < 1 )
-            return QVariant("Error");
         if ( tmp == QString("close") ) {
+            if (arg.count() == 0)
+                arg.append( nativeSender->objectName() );
             closeWidget( arg.at(0) );
         } else if (tmp == QString("open")) {
             openWidget( arg.at(0) );

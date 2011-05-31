@@ -14,6 +14,7 @@ DNamespace*         MyIncApplication::m_namespace   = 0x00;
 DThreadPool*        MyIncApplication::m_pool        = 0x00;
 DProject*           MyIncApplication::m_project     = 0x00;
 MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
+bool                MyIncApplication::m_useThreads  = false;
 //
 MyIncApplication::MyIncApplication(int &argc, char** argv) :
     QObject()
@@ -45,6 +46,7 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
             } else if (QFile::exists(arg) && arg.endsWith(".xml")) { // is file ?
                m_mainWindow = new MainWindow();
                m_mainWindow->loadProject(arg);
+               m_mainWindow->lockUI( false );
                m_mainWindow->connectDatabase();
                return;
             }

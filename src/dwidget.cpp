@@ -1,21 +1,19 @@
 #include "dwidget.h"
-
+//
 #include "src/core/myincapplication.h"
 #include "src/core/dthreadpool.h"
-
+//
 DWidget::DWidget(QWidget *parent) :
     QWidget(parent)
 {
     isThreadStart = false;
 }
-
 // FIXME: DWidget::~DWidget()\n\tKill runed threads.
-
 DWidget::~DWidget()
 {
     qDebug("FIXME: DWidget::~DWidget()\n\tKill runed threads.");
 }
-
+//
 void DWidget::threadStart(QString uri,QWidget * widget)
 {
     isThreadStart = false;
@@ -27,13 +25,13 @@ void DWidget::threadStart(QString uri,QWidget * widget)
     while (!isThreadStart) // wait for getting result
         MyIncApplication::application()->processEvents();
 }
-
+//
 void DWidget::threadStarted(int * thread)
 {
     isThreadStart = true;
     threadList.last().second = thread;
 }
-
+//
 void DWidget::threadEnd(int* thread, QVariant result)
 {
     for (int i = 0; i < threadList.count(); i++)

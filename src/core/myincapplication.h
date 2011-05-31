@@ -20,6 +20,8 @@ private:
     static DProject * m_project;
     // UI
     static MainWindow * m_mainWindow;
+    // global settings
+    static bool m_useThreads;
 
 public:
     MyIncApplication(int &argc, char** argv);
@@ -34,7 +36,9 @@ public:
     static DProject * project() { return m_project; }
     static DThreadPool * threadPool() { return m_pool; }
     static MainWindow * mainWindow() { return m_mainWindow; }
-    //
+    // Settings
+    static bool useThreads() { return m_useThreads; }
+    static void setUseThreads(bool use) { m_useThreads = use; }
 
 };
 

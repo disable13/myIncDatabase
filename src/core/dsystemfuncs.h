@@ -39,7 +39,7 @@ signals:
 
 public slots:
     QVariant run( QString func,
-            QStringList arg = QStringList() );
+            QStringList arg = QStringList(), QObject * nativeSender = 0x00 );
 
 };
 //
