@@ -1,12 +1,13 @@
 #ifndef DPROJECT_H
 #define DPROJECT_H
-
+//
 #include <QObject>
-
+//
 #include <QStringList>
 #include <QHash>
 #include <QtXml/QDomElement>
-
+#include <QDataStream>
+//
 class DProject : public QObject
 {
     Q_OBJECT
@@ -15,7 +16,7 @@ private:
     bool isLoad;
     bool isSql;
     //
-    bool isReadOnly;
+    QDataStream * data;
     //
     QString filePath;
     QString dbDriver;
@@ -47,7 +48,7 @@ public:
     bool getIsLoad();
     bool getIsConnected();
     QString getLastError();
-    bool getIsReadOnly() { return isReadOnly; }
+    QDataStream * getData() { return data; }
     QString getDbDriver();
     QString getDbName();
     QString getDbUser();
@@ -96,5 +97,5 @@ signals:
     void error(int);
 
 };
-
+//
 #endif // DPROJECT_H

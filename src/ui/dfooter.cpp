@@ -1,10 +1,10 @@
 #include "dfooter.h"
-
+//
 #include <QGridLayout>
 #include <QProgressBar>
 #include "src/QProgressIndicator.h"
 #include <QLabel>
-
+//
 DFooter::DFooter(QWidget *parent) :
     QWidget(parent)
 {
@@ -27,7 +27,7 @@ DFooter::DFooter(QWidget *parent) :
     progressBar->setMaximum( 1 );
     progressInicator->setAnimationDelay( 70 );
 }
-
+//
 DFooter::~DFooter()
 {
     delete progressInicator;
@@ -36,17 +36,17 @@ DFooter::~DFooter()
 
     delete l;
 }
-
+//
 void DFooter::setText( QString text )
 {
     lText->setText( text );
 }
-
+//
 void DFooter::progressStart()
 {
     progressInicator->startAnimation();
 }
-
+//
 void DFooter::progressStart(int mx)
 {
     max = mx;
@@ -55,13 +55,13 @@ void DFooter::progressStart(int mx)
     if (!progressInicator->isAnimated())
         progressInicator->startAnimation();
 }
-
+//
 void DFooter::progressStart(QString text )
 {
     lText->setText( text );
     progressInicator->startAnimation();
 }
-
+//
 void DFooter::progressStart(QString text, int mx)
 {
     lText->setText( text );
@@ -71,7 +71,7 @@ void DFooter::progressStart(QString text, int mx)
     if (!progressInicator->isAnimated())
         progressInicator->startAnimation();
 }
-
+//
 void DFooter::progressChange(int cr)
 {
     if (max > cr ) { // then stop
@@ -83,12 +83,12 @@ void DFooter::progressChange(int cr)
     }
     progressBar->setValue( cr );
 }
-
+//
 void DFooter::progressStop()
 {
     progressInicator->stopAnimation();
 }
-
+//
 void DFooter::progressStop(bool state)
 {
     if (state)

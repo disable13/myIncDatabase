@@ -83,11 +83,6 @@ DSqlQuertyViewer::DSqlQuertyViewer( ) :
     teData = new QTextEdit( this );
     l->addWidget(teData, 1, 3, 1, 2 );
     //
-    if ( !MyIncApplication::project()->getIsReadOnly() ) {
-        btnSave = new QPushButton( tr("Save"), this );
-        l->addWidget( btnSave, 2, 3);
-    }
-    //
     btnCancel = new QPushButton( tr("Close"), this );
     btnCancel->setDefault( true );
     l->addWidget( btnCancel, 2, 4);
@@ -102,7 +97,6 @@ DSqlQuertyViewer::DSqlQuertyViewer( ) :
 //
 DSqlQuertyViewer::~DSqlQuertyViewer()
 {
-    delete btnSave;
     delete btnCancel;
     delete teData;
     delete lData;

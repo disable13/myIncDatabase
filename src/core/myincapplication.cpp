@@ -1,7 +1,6 @@
 #include "myincapplication.h"
 //
 #include "src/core/dnamespace.h"
-#include "src/core/dthreadpool.h"
 #include "src/core/dproject.h"
 #include "src/ui/mainwindow.h"
 //
@@ -14,10 +13,8 @@
 MyIncApplication*   MyIncApplication::self          = 0x00;
 QApplication*       MyIncApplication::m_app         = 0x00;
 DNamespace*         MyIncApplication::m_namespace   = 0x00;
-DThreadPool*        MyIncApplication::m_pool        = 0x00;
 DProject*           MyIncApplication::m_project     = 0x00;
 MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
-bool                MyIncApplication::m_useThreads  = false;
 //
 MyIncApplication::MyIncApplication(int &argc, char** argv) :
     QObject()
@@ -26,14 +23,12 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
     Q_ASSERT_X(!self, "MyIncApplication",
                "there should be only one application object");
     MyIncApplication::self = this;
-    // fixme: translator to global
+
     QTranslator *myTranslator = new QTranslator();
     myTranslator->load(QLocale::system().name());
     m_app->installTranslator(myTranslator);
-    qDebug("FIXME: MyIncApplication::MyIncApplication(int, char**)");
 
     m_namespace = new DNamespace();
-    m_pool = new DThreadPool();
 
     // Check arguments
     if (argc > 1)
@@ -71,7 +66,6 @@ MyIncApplication::~MyIncApplication()
 {
     delete m_mainWindow;
     delete m_project;
-    delete m_pool;
     delete m_namespace;
     QTimer::singleShot( 50, m_app, SLOT(quit()) );
 }
@@ -84,7 +78,6 @@ bool MyIncApplication::openProject( QString fileName )
     connect( m_namespace, SIGNAL(error(int)),
             m_project, SIGNAL(error(int)) );
     m_namespace->initConfig();
-    //m_namespace->initSql();
 
     return true;
 }

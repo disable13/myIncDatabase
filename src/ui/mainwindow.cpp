@@ -206,9 +206,10 @@ void MainWindow::connectDatabase()
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
     footer->progressStop( true );
 }
-//
+// BUGME: second close with crash
 void MainWindow::closeProject()
 {
+    qDebug("BUGME: void MainWindow::closeProject()");
     if (sqlQuertyViewer)
         delete sqlQuertyViewer;
     if (isConnected)

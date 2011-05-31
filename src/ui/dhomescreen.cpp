@@ -9,7 +9,7 @@
 #include <QListWidget>
 //
 DHomeScreen::DHomeScreen(QWidget *parent) :
-    DWidget(parent)
+    QWidget(parent)
 {
     l = new QGridLayout( this );
 

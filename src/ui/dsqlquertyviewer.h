@@ -28,7 +28,6 @@ private:
     QLabel * lData;
     QTextEdit * teData;
     //
-    QPushButton * btnSave;
     QPushButton * btnCancel;
 
 public:
