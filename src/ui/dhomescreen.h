@@ -1,7 +1,7 @@
 #ifndef DHOMESCREEN_H
 #define DHOMESCREEN_H
 //
-#include "src/dwidget.h"
+#include <QWidget>
 //
 class QGridLayout;
 class QListWidget;
@@ -11,7 +11,7 @@ class DProject;
 //
 class DWorkWidget;
 //
-class DHomeScreen : public DWidget
+class DHomeScreen : public QWidget
 {
     Q_OBJECT
 private:

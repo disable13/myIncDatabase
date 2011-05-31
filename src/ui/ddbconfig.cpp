@@ -120,7 +120,7 @@ void DDbConfig::save()
     project->setDbPort( sbDbPort->value() );
     project->setDbUser( edtDbUser->text() );
 
-    project->save();
+    qDebug("TODO: can't save new Database configuration");
     if (project->getIsConnected())
         project->disconnectDatabase();
     project->connectDatabase();

@@ -13,40 +13,41 @@ DProject::DProject(QString fileName)
     isNew = !QFile::exists(fileName);
     isLoad = false;
     isSql = false;
-    isReadOnly = true;
 
     filePath = fileName;
+
+    if (isNew) {
+        qDebug("Creation new project is blocked!");
+        MyIncApplication::application()->quit();
+    }
+    QFile f(fileName);
+    if (!f.open(QIODevice::ReadOnly)) {
+        qDebug("Error: can't open project file");
+    }
+    data = new QDataStream( f.readAll() );
+    quint32 magic = 0x00;
+    data[0] >> magic;
+
+    switch (magic) {
+    case 0x08435259: // cryped
+        qDebug("TODO: DProject::DProject()\n\t Cryped");
+        break;
+    case 0x085a4950: // siple ziped
+    {
+        QByteArray * buf = new QByteArray(
+                    qUncompress( data->device()->readAll() ));
+        delete data;
+        data = new QDataStream( buf, QIODevice::ReadOnly );
+    }
+        break;
+    default: // Native XML
+        data->device()->seek(0);
+    }
 }
 //
 DProject::~DProject()
 {
     disconnectDatabase();
-}
-//
-void DProject::save()
-{
-    qDebug("FIXME: bool DProject::save()");
-
-    if (isReadOnly)
-        return;
-
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", dbDriver, "Driver" );
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", dbUser, "Username" );
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", dbPassord, "Password" );
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", dbConnectOptions, "Options" );
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", dbHost, "Hostname" );
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", dbName, "Name" );
-    MyIncApplication::uriNamespace()
-            ->setConfig( "Database", QString( dbPort ), "Driver" );
-
-    isNew = false;
-    MyIncApplication::uriNamespace()->saveXml();
 }
 //
 bool DProject::load()
@@ -132,9 +133,9 @@ QString DProject::getDbHost() {  return dbHost; }
 QString DProject::getDbName() { return dbName; }
 //
 int DProject::getDbPort() { return dbPort; }
-//
+/*/
 QString DProject::getProjectFile() { return filePath; }
-//
+/*/
 int DProject::getSelectSqlQuertyCount() { return sel.count(); }
 //
 QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
@@ -174,9 +175,9 @@ bool DProject::setDbDriver(QString nameDriver)
     int n = QSqlDatabase::drivers().count();
     for (int i = 0; i < n; i++)
         if (nameDriver == QSqlDatabase::drivers().at(i) ) {
-        dbDriver = nameDriver;
-        return true;
-    }
+            dbDriver = nameDriver;
+            return true;
+        }
     return false;
 }
 //
@@ -231,7 +232,7 @@ void DProject::disconnectDatabase()
 QStringList DProject::workspace()
 {
     int count = MyIncApplication::uriNamespace()->configSize( "Workspace" );
-        //, "Count" ).toInt();
+    //, "Count" ).toInt();
     QStringList list;
     for( int i = 0; i < count; i++ )
         list << MyIncApplication::uriNamespace()

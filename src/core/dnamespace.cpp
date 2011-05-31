@@ -13,13 +13,15 @@
 #include <QTextStream>
 //
 static QString mid_uri_mask =
-    QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
 //
 DNamespace::DNamespace() :
     QObject()
 {
     isSql = false;
     isConfig = false;
+
+    setObjectName( "Namespace" );
 
     sys = new DSystemFuncs();
 }
@@ -33,7 +35,6 @@ DNamespace::~DNamespace()
     if (isSql) {
         delete query;
     }
-    //delete rx;
     delete sys;
 }
 //
@@ -45,19 +46,13 @@ bool DNamespace::initConfig()
     }
 
     doc = new QDomDocument( "Project" );
-    QFile file( MyIncApplication::project()->getProjectFile() );
-    if (!file.open(QIODevice::ReadOnly)) {
-        emit error( _ERR_CANTOPEN );
-        delete doc;
-        return false;
-    }
-    if (!doc->setContent(&file)) {
+
+    if (!doc->setContent(
+                MyIncApplication::project()->getData()->device())) {
         emit error( _ERR_NS_SYNTAX_PRO );
-        file.close();
         delete doc;
         return false;
     }
-    file.close();
 
     QDomElement docElem = doc->documentElement();
 
@@ -91,16 +86,6 @@ bool DNamespace::initSql()
     isSql = true;
 
     return MyIncApplication::project()->loadSql( doc->firstChildElement( "root" ) );
-}
-// TODO: DNamespace::saveXml()
-void DNamespace::saveXml()
-{
-    qDebug("TODO: DNamespace::saveXml()");
-    QFile f(MyIncApplication::project()->getProjectFile());
-    f.open( QIODevice::ReadWrite );
-    QTextStream tx( &f );
-    cfg->save( tx, 0x00 );
-    f.close();
 }
 // <config>
 //      <name value="value1" /> <!-- single -->     //
@@ -230,9 +215,8 @@ void DNamespace::uri(QString uri, QVariant * var)
                     else
                         t = Other;
                     sql(t, path.at(2),
-                                rx.cap(9).split('&', QString::SkipEmptyParts) );
+                        rx.cap(9).split('&', QString::SkipEmptyParts) );
 #ifdef __x86_64
-                    void * sds = (void*)query;
                     var->setValue( (void*)query );
 #else
                     var->setValue( (void*)query );

@@ -24,7 +24,6 @@ private:
     QDomDocument * doc;
     bool isSql; // connected?
     bool isConfig; // open?
-    //QRegExp * rx; // uri
     QSqlQuery * query;
     //
     QDomNode * cfg;
@@ -41,8 +40,6 @@ public:
     //
     bool initConfig();
     bool initSql();
-    //
-    void saveXml();
     //
     QString config(QString name, QString arrayElement );
     int configSize(QString name);
