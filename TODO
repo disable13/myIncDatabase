@@ -3,3 +3,18 @@
       ~ - need test,
       - - normal
 
+1) URI RegExp fix. Need slpit args from URI like that
+"myinc:///SQL/SELECT/name#arg1&{myinc:///SQL/SELECT/agr2#arg3},{myinc:///Window/name/Element/Text},arg4" to
+protocol:       myinc
+type:           SQL
+SQL type:       SELECT
+SQL Query name: name
+args:
+                1) "arg1"
+                2) result of myinc:///SQL/SELECT/agr2#arg3
+                3) result of myinc:///Window/name/Element/Text
+                4) "arg4"
+
+2) load UI files from xml project
+3) Add Authentication
+4) create Wizard "Create Project" or tool kit
