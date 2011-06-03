@@ -3,6 +3,7 @@
 #include "src/errors.h"
 #include "src/core/myincapplication.h"
 #include "src/core/dsystemfuncs.h"
+#include "src/core/durihelper.h"
 //
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
@@ -172,40 +173,18 @@ void DNamespace::uri(QString uri, QVariant * var)
                               tr("Your not be authorized. Running the procedure will be terminated") );
         return;
     }
-    QRegExp rx; //( mid_uri_mask );
+    DUriHelper ps(uri);
 
-    // parser string "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
-    // example "http://www.ics.uci.edu/pub/ietf/uri/#Related&Relation"
-    // 2 (myinc)
-    // 4 (config|sql|system)
-    // 5 (Database/Username)
-    // 7
-    // 9 (|Set)
-    //
-
-    // 1) http:
-    // 2) http
-    // 3) //www.ics.uci.edu
-    // 4) www.ics.uci.edu
-    // 5) /pub/ietf/uri/
-    // 6)
-    // 7)
-    // 8) #Related&Relation+
-    // 9) Related&Relation
-
-    // myinc://host/Config/Database/User     // Socket
-    // myinc:///Config/Database/User         // Without socket
-    // myinc://localhost/sql/%type/%name
-    if ( rx.indexIn( uri ) != -1)
-        if ( rx.cap(2) == "myinc" ) { // default
-            if (rx.cap(4) == "" ) {// localhost without socket
-                QStringList path = rx.cap(5).split('/', QString::SkipEmptyParts );
+    if ( ps.isUri() )
+        if ( ps.protocol() == "myinc" ) { // default
+            if (ps.host() == "" ) {// localhost without socket
                 // processing
-                QString q = path.at(0).toLower();
+                QString q = ps.path(0).toLower();
                 if ( q == "config" ) {
-                    var->setValue( config(path[1],path[2]) );
+                    qDebug("FIXME: void DNamespace::uri(QString,QVariant*)\n\tConfig node.Index out in array.");
+                    var->setValue( config(ps.path(1), ps.path(2) );
                 } else if ( q == "sql" ) { /// myinc:///sql/%type/%name#arg1&arg2
-                    q = path.at(1).toLower();
+                    q = ps.path(1).toLower();
                     SqlType t;
                     if (q == "select")
                         t = SELECT;
@@ -217,24 +196,20 @@ void DNamespace::uri(QString uri, QVariant * var)
                         t = DELETE;
                     else
                         t = Other;
-                    sql(t, path.at(2),
-                        rx.cap(9).split('&', QString::SkipEmptyParts) );
-#ifdef __x86_64
+                    sql(t, ps.path(2),
+                        ps.args() );
                     var->setValue( (void*)query );
-#else
-                    var->setValue( (void*)query );
-#endif
-                    // TODO: result!! getting result
-                    qDebug("TODO: getting result");
                 } else if ( q == "system" ) {
-                    path.removeFirst();
+                    qDebug("FIXME: void DNamespace::uri(QString,QVariant*)\n\tSystem node.Remove 'system' word from start.");
+                    QStringList pathFix = ps.path().split( '/', QString::SkipEmptyParts );
+                    pathFix.removeFirst();
                     q = QString::null;
-                    for(int i = 0; i < path.count(); i++)
-                        q.append("/").append(path.at(i));
+                    for(int i = 0; i < pathFix.count(); i++)
+                        q.append("/").append(pathFix.at(i));
                     q.remove(0,1);
                     var = new QVariant(
                                 sys->run( q,
-                                         rx.cap(9).split('&', QString::SkipEmptyParts), sender() )
+                                         ps.args(), sender() )
                                 );
                 } else {
                     var->setValue(QString("Error"));

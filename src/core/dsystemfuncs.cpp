@@ -114,6 +114,12 @@ QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender
                 return QVariant("Succses");
             }
         }
-    }
+    } else if ( tmp == "null" )
+        return QVariant("NULL");
+     else if ( tmp == "succses" )
+        return QVariant("Succses");
+    else if ( tmp == "error" )
+        return QVariant("Error");
+
     return QVariant("Error");
 }
