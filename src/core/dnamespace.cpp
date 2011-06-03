@@ -11,6 +11,7 @@
 #include <QRegExp>
 #include <QStringList>
 #include <QTextStream>
+#include <QtGui/QMessageBox>
 //
 static QString mid_uri_mask =
 QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
@@ -169,6 +170,11 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
 // TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)
 {
+    if (!MyIncApplication::project()->authorized()) {
+        QMessageBox::critical( NULL, tr("Authentication"),
+                              tr("Your not be authorized. Running the procedure will be terminated") );
+        return;
+    }
     QRegExp rx( mid_uri_mask );
 
     // parser string "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"

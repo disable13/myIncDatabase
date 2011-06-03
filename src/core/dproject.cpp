@@ -2,6 +2,7 @@
 #include "src/core/dproject.h"
 #include "src/errors.h"
 #include "src/core/myincapplication.h"
+#include "src/core/dauth.h"
 //
 #include <QFile>
 #include <QtXml/QDomDocument>
@@ -13,6 +14,8 @@ DProject::DProject(QString fileName)
     isNew = !QFile::exists(fileName);
     isLoad = false;
     isSql = false;
+
+    auth = new DAuth();
 
     filePath = fileName;
 
@@ -72,6 +75,9 @@ bool DProject::load()
             ->config( "Database", "Hostname" );
     dbPort = MyIncApplication::uriNamespace()
             ->config( "Database", "Port" ).toInt();
+    if (MyIncApplication::uriNamespace()->config( "Auth", "Enabled")
+            .trimmed().toLower() != "true")
+        auth->setAuth( true );
 
     isLoad = true;
 
@@ -111,6 +117,10 @@ bool DProject::loadSql(QDomElement docElem)
     }
     return false;
 }
+//
+bool DProject::authorized() { return auth->isAuthed(); }
+//
+bool DProject::getAuthorized(QWidget* parent) { return auth->setAuth(parent); }
 //
 bool DProject::getIsNew() { return isNew; }
 //

@@ -52,9 +52,12 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
                 }
             } else if (QFile::exists(arg) && arg.endsWith(".xml")) { // is file ?
                m_mainWindow = new MainWindow();
-               m_mainWindow->loadProject(arg);
-               m_mainWindow->lockUI( false );
-               m_mainWindow->connectDatabase();
+               if (m_mainWindow->loadProject(arg)) {
+                   m_mainWindow->lockUI( false );
+                   m_mainWindow->connectDatabase();
+
+               } else
+                   QTimer::singleShot( 50, m_app, SLOT(quit()) );
                return;
             }
         }

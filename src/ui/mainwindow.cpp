@@ -97,7 +97,15 @@ bool MainWindow::loadProject( QString & fileName)
     connect( MyIncApplication::project(), SIGNAL(error(int)),
             this, SLOT(error(int)) );
     isOpened = true;
-    return MyIncApplication::project()->load();
+    bool tmp = MyIncApplication::project()->load();
+    if (tmp) {
+        if (!MyIncApplication::project()->authorized())
+            if (!MyIncApplication::project()->getAuthorized( this )) {
+                MyIncApplication::instance()->closeProject();
+                tmp = false;
+            }
+    }
+    return tmp;
 }
 //
 DHomeScreen * MainWindow::getHome()

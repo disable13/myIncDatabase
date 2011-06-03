@@ -8,6 +8,8 @@
 #include <QtXml/QDomElement>
 #include <QDataStream>
 //
+class DAuth;
+//
 class DProject : public QObject
 {
     Q_OBJECT
@@ -15,6 +17,7 @@ private:
     bool isNew;
     bool isLoad;
     bool isSql;
+    DAuth * auth;
     //
     QDataStream * data;
     //
@@ -43,6 +46,8 @@ public:
     void save();
     bool load();
     bool loadSql(QDomElement);
+    bool authorized();
+    bool getAuthorized(QWidget*);
     // propertes
     bool getIsNew();
     bool getIsLoad();
