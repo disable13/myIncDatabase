@@ -16,5 +16,5 @@ args:
                 4) "arg4"
 2) finish DWorkWidget
 3) add report system
-4) load UI files from xml project
-5) create Wizard "Create Project" or tool kit
+4) load UI files from xml project (feature)
+5) create Wizard "Create Project" or tool kit (feature)

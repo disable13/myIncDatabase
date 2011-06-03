@@ -13,9 +13,6 @@
 #include <QTextStream>
 #include <QtGui/QMessageBox>
 //
-static QString mid_uri_mask =
-QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
-//
 DNamespace::DNamespace() :
     QObject()
 {
@@ -175,7 +172,7 @@ void DNamespace::uri(QString uri, QVariant * var)
                               tr("Your not be authorized. Running the procedure will be terminated") );
         return;
     }
-    QRegExp rx( mid_uri_mask );
+    QRegExp rx; //( mid_uri_mask );
 
     // parser string "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?"
     // example "http://www.ics.uci.edu/pub/ietf/uri/#Related&Relation"

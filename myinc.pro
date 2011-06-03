@@ -9,7 +9,7 @@ TARGET = myinc
 TEMPLATE = app
 DESTDIR = bin
 #
-TRANSLATIONS += ru.ts en.ts
+TRANSLATIONS = lang/ru.ts lang/en.ts
 #
 OBJECTS_DIR = .build
 MOC_DIR = .build
@@ -29,7 +29,8 @@ SOURCES = src/main.cpp\
     src/core/myincapplication.cpp \
     src/ui/dsqlquertyviewer.cpp \
     src/core/dsystemfuncs.cpp \
-    src/core/dauth.cpp
+    src/core/dauth.cpp \
+    src/core/durihelper.cpp
 #
 HEADERS =  src/core/dproject.h \
     src/core/dnamespace.h \
@@ -43,7 +44,8 @@ HEADERS =  src/core/dproject.h \
     src/core/myincapplication.h \
     src/ui/dsqlquertyviewer.h \
     src/core/dsystemfuncs.h \
-    src/core/dauth.h
+    src/core/dauth.h \
+    src/core/durihelper.h
 #
 OTHER_FILES += \
     TODO \
