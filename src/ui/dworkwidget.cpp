@@ -61,22 +61,28 @@ bool DWorkWidget::initUri()
 {
     const QObjectList childs = central->children();
     for(int i = 0; i < childs.count(); i++ ) {
-        QWidget * obj = (QWidget*)childs.at(i);
+        QWidget * obj = static_cast<QWidget*>(childs.at(i));
 
         if (obj->inherits("QAbstractButton" )) { /// Button
             if (!initLabel(obj) || !initButton(obj))
                 errorMessage( tr("Can't create button %1").arg(obj->objectName()));
         } else if (obj->inherits("QLabel")) { /// Label
-            initLabel(obj);
+            if (!initLabel(obj))
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QAbstractItemView")) { /// tables and etc
             if (!initList(static_cast<QAbstractItemView*>(obj)))
                 errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QLineEdit") ) { /// edit
-            initLabel(obj); initChangeText(obj);
+            if (!initLabel(obj) || !initChangeText(obj))
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QTextEdit") ) { /// text edit
-            initLabel(obj); initChangeText(obj);
+            if (!initLabel(obj) || !initChangeText(obj))
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QComboBox") ) { /// combo box
-
+            if (!initComboBoxItems(static_cast<QComboBox*>(obj)) ||
+                                   !initComboBoxChange(obj) ||
+                                   !initChangeText(obj) )
+                     errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QDateTimeEdit") ) { /// edit controls for time
             if (!initDateTime(obj))
                 errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
@@ -84,7 +90,8 @@ bool DWorkWidget::initUri()
             if (!initSpinBox(obj))
                 errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QCheckBox")) { /// check box
-            initLabel(obj);
+            if (!initLabel(obj))
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         }/* else if (obj->inherits("QProgressBar")) { /// progress bar
 
         }*/
@@ -192,9 +199,14 @@ bool DWorkWidget::initChangeText(QWidget * w)
             if (w->inherits("QTextEdit"))
                 connect( w, SIGNAL(textChanged()),
                         this, SLOT(changePlainTextEvent()) );
-            else
+            else if ( w->inherits("QLineEdit"))
                 connect( w, SIGNAL(textChanged()),
                         this, SLOT(changeTextEvent()) );
+            else if (w->inherits("QComboBox"))
+                connect( w, SIGNAL(currentIndexChanged(QString)),
+                        this, SLOT(changeItemIndex(QString)) );
+            else
+                return false;
         }
     } catch (...) {
         return false;
@@ -203,7 +215,7 @@ bool DWorkWidget::initChangeText(QWidget * w)
     return true;
 }
 //
-bool DWorkWidget::initComboBoxItems(QWidget * w)
+bool DWorkWidget::initComboBoxItems(QComboBox * w)
 {
     QVariant  v;
     QVariant value = w->property( "Model" );
@@ -211,12 +223,37 @@ bool DWorkWidget::initComboBoxItems(QWidget * w)
         if (value.isValid()) {
             emit uri( value.toString().trimmed(), &v  );
 
-            switch (v.type()) {
-            case QVariant::StringList:
+            w->clear();
+            switch (static_cast<QMetaType::Type>(v.type())) {
+            case QMetaType::QStringList: //
+                w->addItems( v.toStringList() );
                 break;
-            case QMetaType::VoidStar:
-                break;
+            case QMetaType::VoidStar: // SQL result
+            {
+                QSqlQuery *q = ((QSqlQuery*)v.value<void*>());
+
+                while (q->next())
+                    w->addItem( q->value(0).toString() );
             }
+                break;
+            default:
+                return false;
+            }
+        }
+    } catch (...) {
+        return false;
+    }
+
+    return true;
+}
+//
+bool DWorkWidget::initComboBoxChange(QWidget * w)
+{
+    QVariant value = w->property( "OnChangeIndex" );
+    try {
+        if (value.isValid()) {
+            connect( w, SIGNAL(currentIndexChanged(int)),
+                    this, SLOT(changeItemIndex(int)) );
         }
     } catch (...) {
         return false;
@@ -253,4 +290,16 @@ void DWorkWidget::changePlainTextEvent()
 {
     emit uri( sender()->property( "OnChangeText" ).toString()
              .arg(sender()->property( "plainText" ).toString() ), new QVariant() );
+}
+//
+void DWorkWidget::changeItemIndex(QString text)
+{
+    emit uri( sender()->property( "OnChangeText" ).toString()
+             .arg( text  ), new QVariant() );
+}
+//
+void DWorkWidget::changeItemIndex(int index)
+{
+    emit uri( sender()->property( "OnChangeIndex" ).toString()
+             .arg( index ), new QVariant() );
 }

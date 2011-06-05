@@ -2,8 +2,7 @@
 # Project created by Timoshenko Sergey 2010-11-26T10:50:18
 #---------------------------------------------------------
 QT = core gui xml sql
-#
-include(myinc.pri)
+include(ncreport.pri)
 #
 TARGET = myinc
 TEMPLATE = app
@@ -50,4 +49,8 @@ HEADERS =  src/core/dproject.h \
 OTHER_FILES += \
     TODO \
     README \
-    COPYING
+    COPYING \
+    INSTALL
+#
+INSTALLS = target
+target.path = /usr/local/bin

@@ -8,6 +8,7 @@
 class QGridLayout;
 class DProject;
 class QAbstractItemView;
+class QComboBox;
 //
 class DWorkWidget : public QWidget
 {
@@ -32,7 +33,8 @@ private:
     bool inline initDateTime(QWidget*);
     bool inline initList(QAbstractItemView*);
     bool inline initChangeText(QWidget*);
-    bool inline initComboBoxItems(QWidget*);
+    bool inline initComboBoxItems(QComboBox*);
+    bool inline initComboBoxChange(QWidget*);
 
 protected:
     int errorMessage( QString more );
@@ -41,6 +43,8 @@ private slots:
     void clickEvent();
     void changeTextEvent();
     void changePlainTextEvent();
+    void changeItemIndex(QString);
+    void changeItemIndex(int);
 
 signals:
     void uri(QString,QVariant*);
