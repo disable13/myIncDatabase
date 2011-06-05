@@ -8,6 +8,8 @@ TARGET = myinc
 TEMPLATE = app
 DESTDIR = bin
 #
+INCLUDEPATH += $$PWD/src
+#
 TRANSLATIONS = lang/ru.ts lang/en.ts
 #
 OBJECTS_DIR = .build

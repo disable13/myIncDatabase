@@ -1,9 +1,9 @@
-#include "src/core/dnamespace.h"
-#include "src/core/dproject.h"
-#include "src/errors.h"
-#include "src/core/myincapplication.h"
-#include "src/core/dsystemfuncs.h"
-#include "src/core/durihelper.h"
+#include "core/dnamespace.h"
+#include "core/dproject.h"
+#include "errors.h"
+#include "core/myincapplication.h"
+#include "core/dsystemfuncs.h"
+#include "core/durihelper.h"
 //
 #include "ncreport.h"
 //

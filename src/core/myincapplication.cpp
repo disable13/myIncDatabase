@@ -1,8 +1,8 @@
 #include "myincapplication.h"
 //
-#include "src/core/dnamespace.h"
-#include "src/core/dproject.h"
-#include "src/ui/mainwindow.h"
+#include "core/dnamespace.h"
+#include "core/dproject.h"
+#include "ui/mainwindow.h"
 //
 #include <QFile>
 #include <QTimer>

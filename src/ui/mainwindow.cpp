@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 //
-#include "src/core/dproject.h"
-#include "src/core/myincapplication.h"
-#include "src/ui/dhomescreen.h"
-#include "src/ui/dfooter.h"
-#include "src/ui/ddbconfig.h"
-#include "src/ui/dsqlquertyviewer.h"
-#include "src/errors.h"
+#include "core/dproject.h"
+#include "core/myincapplication.h"
+#include "ui/dhomescreen.h"
+#include "ui/dfooter.h"
+#include "ui/ddbconfig.h"
+#include "ui/dsqlquertyviewer.h"
+#include "errors.h"
 //
 #include <QGridLayout>
 #include <QMenu>

@@ -1,9 +1,9 @@
 #include "dsystemfuncs.h"
 //
-#include "src/core/myincapplication.h"
-#include "src/ui/dhomescreen.h"
-#include "src/ui/mainwindow.h"
-#include "src/ui/dworkwidget.h"
+#include "core/myincapplication.h"
+#include "ui/dhomescreen.h"
+#include "ui/mainwindow.h"
+#include "ui/dworkwidget.h"
 //
 DSystemFuncs::DSystemFuncs() :
     QObject()

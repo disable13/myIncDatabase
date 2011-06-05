@@ -1,6 +1,6 @@
 #include "ddbconfig.h"
 //
-#include "src/core/dproject.h"
+#include "core/dproject.h"
 //
 #include <QtGui/QFormLayout>
 #include <QtGui/QComboBox>

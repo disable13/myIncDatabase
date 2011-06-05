@@ -10,7 +10,7 @@
 //
 #include <QtGui>
 //
-#include "src/core/myincapplication.h"
+#include "core/myincapplication.h"
 //
 DWorkWidget::DWorkWidget(QString formName) :
     QWidget(), formName(formName)
@@ -317,4 +317,9 @@ void DWorkWidget::changeItemIndex(int index)
 {
     emit uri( sender()->property( "OnChangeIndex" ).toString()
              .arg( index ), new QVariant() );
+}
+//
+void DWorkWidget::listItemChange(QModelIndex)
+{
+
 }
