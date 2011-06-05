@@ -32,6 +32,9 @@ public:
     static DNamespace * uriNamespace() { return m_namespace; }
     static DProject * project() { return m_project; }
     static MainWindow * mainWindow() { return m_mainWindow; }
+    //
+    static void compressXmlProject(QString fileName);
+    static void unCompressXmlProject(QString fileName);
     // Settings
 
 };

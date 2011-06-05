@@ -37,8 +37,10 @@ DProject::DProject(QString fileName)
         break;
     case 0x085a4950: // siple ziped
     {
-        QByteArray * buf = new QByteArray(
-                    qUncompress( data->device()->readAll() ));
+        QByteArray * buf = new QByteArray();
+        data[0] >> buf[0];
+        buf = new QByteArray(
+                    qUncompress( buf[0] ));
         delete data;
         data = new QDataStream( buf, QIODevice::ReadOnly );
     }
