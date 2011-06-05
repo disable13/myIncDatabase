@@ -18,3 +18,5 @@ args:
 3) add report system
 4) load UI files from xml project (feature)
 5) create Wizard "Create Project" or tool kit (feature)
+6) add icons (feature)
+7) add tool bar in MainWindow (feature)

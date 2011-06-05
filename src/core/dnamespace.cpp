@@ -182,7 +182,7 @@ void DNamespace::uri(QString uri, QVariant * var)
                 QString q = ps.path(0).toLower();
                 if ( q == "config" ) {
                     qDebug("FIXME: void DNamespace::uri(QString,QVariant*)\n\tConfig node.Index out in array.");
-                    var->setValue( config(ps.path(1), ps.path(2) );
+                    var->setValue( config(ps.path(1), ps.path(2)) );
                 } else if ( q == "sql" ) { /// myinc:///sql/%type/%name#arg1&arg2
                     q = ps.path(1).toLower();
                     SqlType t;

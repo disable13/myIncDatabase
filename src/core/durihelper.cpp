@@ -20,9 +20,9 @@ DUriHelper::DUriHelper(QString  query) :
 DUriHelper::~DUriHelper()
 {
     delete rx;
-    if (p_path)
+    if (p_path == 0x00)
         delete p_path;
-    if (p_args)
+    if (p_args == 0x00)
         delete p_args;
 }
 //
@@ -70,7 +70,7 @@ unsigned int DUriHelper::pathItemsCount()
 {
     if (!isUri())
         return 0x00;
-    if (p_path)
+    if (p_path == 0x00)
         initPath();
 
     return p_path->count();
@@ -80,7 +80,7 @@ QString DUriHelper::path(int i)
 {
     if (!isUri())
         return QString();
-    if (p_path)
+    if (p_path == 0x00)
         initPath();
 
     return p_path->at(i);
@@ -90,7 +90,7 @@ QStringList DUriHelper::args()
 {
     if (!isUri())
         return QStringList();
-    if (p_args)
+    if (p_args == 0x00)
         initArg();
 
     return p_args[0];
@@ -100,7 +100,7 @@ QString DUriHelper::arg(int i)
 {
     if (!isUri())
         return QString();
-    if (p_args)
+    if (p_args != 0x00)
         initArg();
 
     return p_args->at(i);
@@ -110,7 +110,7 @@ unsigned int DUriHelper::argCount()
 {
     if (!isUri())
         return 0x00;
-    if (p_args)
+    if (p_args == 0x00)
         initArg();
 
     return p_args->count();

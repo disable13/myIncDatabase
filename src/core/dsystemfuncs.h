@@ -33,6 +33,8 @@ public:
                         QString name);
     void setVariable(QString widget,
                      QString name, QString value);
+    QVariant object(QString window, QString control, QString property);
+    void setObject(QString window, QString control,  QString property ,QString value);
 
 signals:
     void error( int );

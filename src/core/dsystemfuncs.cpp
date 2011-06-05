@@ -77,6 +77,31 @@ void DSystemFuncs::setVariable(QString widget, QString name, QString value)
     w->setProperty( qPrintable(QString("mib_").append(name)),
                    value );
 }
+//
+QVariant DSystemFuncs::object(QString window, QString control, QString property)
+{
+    QWidget* w = findWidget( window );
+    if (w == 0x00)
+        return QVariant("NULL");
+    QObject *obj = w->findChild<QObject*>( control );
+    if (obj == 0x00)
+        return QVariant("NULL");
+
+    return obj->property( qPrintable(property) );
+}
+//
+void DSystemFuncs::setObject(QString window, QString control,
+                             QString property, QString value)
+{
+    QWidget* w = findWidget( window );
+    if (w == 0x00)
+        return;
+    QObject *obj = w->findChild<QObject*>( control );
+    if (obj == 0x00)
+        return;
+
+     obj->setProperty( qPrintable(property), value );
+}
 //  sample:  myinc:///System/Window/Close#HelloWindow
 //                  func = Window/Close
 //                  arg = HelloWindow
@@ -95,6 +120,19 @@ QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender
             closeWidget( arg.at(0) );
         } else if (tmp == QString("open")) {
             openWidget( arg.at(0) );
+        } else if ( tmp == "object") {
+            if ((arg.count() == 0) || (arg.count() > 4))
+                return QVariant("Error");
+            if (arg.count() == 2)
+                arg.insert(0, nativeSender->objectName() );
+            return object( arg.at(0), arg.at(1), arg.at(2) );
+        } else if ( tmp == "setobject" ) {
+            if ((arg.count() == 0) || (arg.count() > 4))
+                return QVariant("Error");
+            if (arg.count() == 3)
+                arg.insert(0, nativeSender->objectName() );
+            setObject( arg.at(0), arg.at(1), arg.at(2), arg.at(3) );
+            return QVariant("Succses");
         }
     } else if ( tmp == QString("var") ) { // variable funcs
         tmp = f.at(1).toLower();
@@ -116,7 +154,7 @@ QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender
         }
     } else if ( tmp == "null" )
         return QVariant("NULL");
-     else if ( tmp == "succses" )
+    else if ( tmp == "succses" )
         return QVariant("Succses");
     else if ( tmp == "error" )
         return QVariant("Error");

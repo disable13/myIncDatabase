@@ -31,12 +31,16 @@ private:
     bool inline initSpinBox(QWidget*);
     bool inline initDateTime(QWidget*);
     bool inline initList(QAbstractItemView*);
+    bool inline initChangeText(QWidget*);
+    bool inline initComboBoxItems(QWidget*);
 
 protected:
     int errorMessage( QString more );
 
 private slots:
     void clickEvent();
+    void changeTextEvent();
+    void changePlainTextEvent();
 
 signals:
     void uri(QString,QVariant*);

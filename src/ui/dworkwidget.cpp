@@ -72,9 +72,9 @@ bool DWorkWidget::initUri()
             if (!initList(static_cast<QAbstractItemView*>(obj)))
                 errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
         } else if ( obj->inherits("QLineEdit") ) { /// edit
-            initLabel(obj);
+            initLabel(obj); initChangeText(obj);
         } else if ( obj->inherits("QTextEdit") ) { /// text edit
-            initLabel(obj);
+            initLabel(obj); initChangeText(obj);
         } else if ( obj->inherits("QComboBox") ) { /// combo box
 
         } else if ( obj->inherits("QDateTimeEdit") ) { /// edit controls for time
@@ -107,7 +107,7 @@ bool DWorkWidget::initButton(QWidget * w)
 bool DWorkWidget::initLabel(QWidget * w)
 {
     QVariant  v;
-    QVariant value = w->property( "TextValue" );;
+    QVariant value = w->property( "TextValue" );
     try {
         if (value.isValid()) {
             emit uri( value.toString().trimmed(), &v  );
@@ -172,11 +172,9 @@ bool DWorkWidget::initList(QAbstractItemView * w)
         if (value.isValid()) {
             emit uri( value.toString().trimmed(), &v  );
             QSqlQueryModel * model = new QSqlQueryModel();
-#ifdef __x86_64
+
             model->setQuery( ((QSqlQuery*)v.value<void*>())[0] );
-#else
-            model->setQuery( ((QSqlQuery*)v.value<void*>())[0] );
-#endif
+
             w->setModel( static_cast<QAbstractItemModel*>(model) );
         }
     } catch (...) {
@@ -185,7 +183,47 @@ bool DWorkWidget::initList(QAbstractItemView * w)
 
     return true;
 }
+//
+bool DWorkWidget::initChangeText(QWidget * w)
+{
+    QVariant value = w->property( "OnChangeText" );
+    try {
+        if (value.isValid()) {
+            if (w->inherits("QTextEdit"))
+                connect( w, SIGNAL(textChanged()),
+                        this, SLOT(changePlainTextEvent()) );
+            else
+                connect( w, SIGNAL(textChanged()),
+                        this, SLOT(changeTextEvent()) );
+        }
+    } catch (...) {
+        return false;
+    }
 
+    return true;
+}
+//
+bool DWorkWidget::initComboBoxItems(QWidget * w)
+{
+    QVariant  v;
+    QVariant value = w->property( "Model" );
+    try {
+        if (value.isValid()) {
+            emit uri( value.toString().trimmed(), &v  );
+
+            switch (v.type()) {
+            case QVariant::StringList:
+                break;
+            case QMetaType::VoidStar:
+                break;
+            }
+        }
+    } catch (...) {
+        return false;
+    }
+
+    return true;
+}
 //
 int DWorkWidget::errorMessage(QString more)
 {
@@ -203,4 +241,16 @@ int DWorkWidget::errorMessage(QString more)
 void DWorkWidget::clickEvent()
 {
     emit uri( sender()->property( "OnClick" ).toString(), new QVariant() );
+}
+//
+void DWorkWidget::changeTextEvent()
+{
+    emit uri( sender()->property( "OnChangeText" ).toString()
+             .arg(sender()->property( "text" ).toString() ), new QVariant() );
+}
+//
+void DWorkWidget::changePlainTextEvent()
+{
+    emit uri( sender()->property( "OnChangeText" ).toString()
+             .arg(sender()->property( "plainText" ).toString() ), new QVariant() );
 }

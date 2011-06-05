@@ -49,4 +49,5 @@ HEADERS =  src/core/dproject.h \
 #
 OTHER_FILES += \
     TODO \
-    README
+    README \
+    COPYING
