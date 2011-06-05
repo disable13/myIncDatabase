@@ -191,6 +191,21 @@ bool DWorkWidget::initList(QAbstractItemView * w)
     return true;
 }
 //
+bool DWorkWidget::initListItemChange(QAbstractItemView * w)
+{
+    QVariant value = w->property( "OnSelectItem" );
+    try {
+        if (value.isValid()) {
+            connect( w, SIGNAL(doubleClicked(QModelIndex)),
+                    this, SLOT(listItemChange(QModelIndex)) );
+        }
+    } catch (...) {
+        return false;
+    }
+
+    return true;
+}
+//
 bool DWorkWidget::initChangeText(QWidget * w)
 {
     QVariant value = w->property( "OnChangeText" );

@@ -33,9 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
     menuBar = new QMenuBar( central );
     setMenuWidget( menuBar );
     menFile = menuBar->addMenu( tr("File") );
-    actCreateProject = menFile->addAction( tr("Create Project..."),
-                                          this, SLOT(createProject()) );
-    menFile->addSeparator();
+//    actCreateProject = menFile->addAction( tr("Create Project..."),
+//                                          this, SLOT(createProject()) );
+//    menFile->addSeparator();
     actOpenProject = menFile->addAction( tr("Open Project..."),
                                         this, SLOT(openProjectPush()));
     //actSave = menFile->addAction( tr("Save") );
@@ -52,8 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
                                           this, SLOT(openConnectionSettings()) );
     actQuerySettings = menProject->addAction( tr("Query settings"),
                                              this, SLOT(openQuerySettings()) );
-    actUiSettings = menProject->addAction( tr("User interface"),
-                                          this, SLOT(openUiSettings()) );
+//    actUiSettings = menProject->addAction( tr("User interface"),
+//                                          this, SLOT(openUiSettings()) );
 
     home = new DHomeScreen( central );
     l->addWidget( home, 0, 0);
@@ -79,11 +79,11 @@ MainWindow::~MainWindow()
     //delete actSaveAs;
     //delete actSave;
     delete actOpenProject;
-    delete actCreateProject;
+    //delete actCreateProject;
     delete actConnect;
     delete actDbSettings;
     delete actQuerySettings;
-    delete actUiSettings;
+//    delete actUiSettings;
     delete menProject;
     delete menFile;
     delete menuBar;
@@ -128,7 +128,7 @@ void MainWindow::lockUI(bool lo)
     actConnect->setEnabled( lo );
     actDbSettings->setEnabled( lo );
     actQuerySettings->setEnabled( lo );
-    actUiSettings->setEnabled( lo );
+    //actUiSettings->setEnabled( lo );
 }
 // FIXME: MainWindow::createProject()
 void MainWindow::createProject()

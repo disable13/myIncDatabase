@@ -4,6 +4,7 @@
 #include <QWidget>
 //
 #include <QVariant>
+#include <QModelIndex>
 //
 class QGridLayout;
 class DProject;
@@ -32,6 +33,7 @@ private:
     bool inline initSpinBox(QWidget*);
     bool inline initDateTime(QWidget*);
     bool inline initList(QAbstractItemView*);
+    bool inline initListItemChange(QAbstractItemView*);
     bool inline initChangeText(QWidget*);
     bool inline initComboBoxItems(QComboBox*);
     bool inline initComboBoxChange(QWidget*);
@@ -45,6 +47,7 @@ private slots:
     void changePlainTextEvent();
     void changeItemIndex(QString);
     void changeItemIndex(int);
+    void listItemChange(QModelIndex);
 
 signals:
     void uri(QString,QVariant*);
