@@ -188,6 +188,8 @@ void DNamespace::report(QString name, QStringList args)
     for(int i = 0; i < args.count(); i++)
         report->addParameter( QString("arg_%1").arg(i), args.at(i) );
 
+    report->setDatabase( &QSqlDatabase::database("Project") );
+
     // set type
     QString type = config( name, "type" ).toLower();
     if (type=="Error") {
