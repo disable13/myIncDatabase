@@ -13,7 +13,7 @@ QAboutWidget::QAboutWidget() :
     setLayout( l );
 
     lLogo = new QLabel( this );
-    lLogo->setPixmap( QPixmap(":/image/logo.png") );
+    lLogo->setPixmap( QPixmap(":/icon/qrcode.png") );
     l->addWidget( lLogo, 0, 0, 2, 1, Qt::AlignTop );
 
     lSource = new QLabel( this );
@@ -36,6 +36,7 @@ QAboutWidget::QAboutWidget() :
     l->addWidget( btnOk, 1, 1, Qt::AlignBottom | Qt::AlignRight );
 
     setWindowTitle( "About programm..." );
+    setWindowIcon( QIcon(":/icon/info.png") );
 }
 //
 QAboutWidget::~QAboutWidget()

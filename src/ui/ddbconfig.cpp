@@ -73,6 +73,7 @@ DDbConfig::DDbConfig(QWidget *parent) :
     l->addWidget(btnBox);
 
     setWindowTitle( tr("SQL Connection settings") );
+    setWindowIcon( QIcon(":/icon/configure.png") );
 }
 //
 DDbConfig::~DDbConfig()

@@ -49,7 +49,7 @@ bool DWorkWidget::init()
         errorMessage( tr("Bad UI file") );
     }
 
-    setObjectName( formName );
+    setObjectName( central->objectName() );
 
     initUri();
 

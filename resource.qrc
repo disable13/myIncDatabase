@@ -1,5 +1,14 @@
 <RCC>
-    <qresource prefix="/">
-        <file alias="image/logo.png">res/logo.png</file>
+    <qresource prefix="/icon">
+        <file alias="configure.png">res/configure.png</file>
+        <file alias="halt.png">res/halt.png</file>
+        <file alias="home.png">res/home.png</file>
+        <file alias="info.png">res/info.png</file>
+        <file alias="question.png">res/question.png</file>
+        <file alias="qrcode.png">res/qrcode.png</file>
+        <file alias="folder.png">res/folder.png</file>
+        <file alias="qt-logo.png">res/qt-logo.png</file>
+        <file alias="apply.png">res/apply.png</file>
+        <file alias="cancel.png">res/cancel.png</file>
     </qresource>
 </RCC>

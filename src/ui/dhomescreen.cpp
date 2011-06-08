@@ -65,20 +65,18 @@ bool DHomeScreen::selectWorkspace( QString name )
 //
 void DHomeScreen::selectWorkspace(QListWidgetItem* item)
 {
-    qDebug("FIXME: void DHomeScreen::selectWorkspace(QListWidgetItem*)\n\tFix Name");
-    QString name = current->config(item->data(Qt::UserRole).toString(), "ui");
+    QString file = current->config(item->data(Qt::UserRole).toString(), "ui");
     for(int i = 0; i < listWidget.count(); i++)
-        if (listWidget.at(i)->objectName() == name) {
+        if (listWidget.at(i)->objectName() == file) {
             listWidget.at(i)->show();
             return;
     }
     DWorkWidget * widget =
             new DWorkWidget(
-                name );
+                file );
     connect( widget, SIGNAL(uri(QString,QVariant*)),
              MIA_NAMESPACE, SLOT(uri(QString,QVariant*)) );
     if (widget->init()) {
-        widget->setObjectName( name );
         listWidget.append( widget );
         widget->show();
     } else {

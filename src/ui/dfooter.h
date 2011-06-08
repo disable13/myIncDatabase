@@ -13,7 +13,7 @@ class DFooter : public QWidget
     Q_OBJECT
 public:
     DFooter(QWidget *parent = 0);
-    ~DFooter();
+    virtual ~DFooter();
 
 private:
     QGridLayout * l;

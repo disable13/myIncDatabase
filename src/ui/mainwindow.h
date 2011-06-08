@@ -13,6 +13,7 @@ class QMenuBar;
 class DHomeScreen;
 class DFooter;
 class DSqlQuertyViewer;
+class DDebugWidget;
 //
 class MainWindow : public QMainWindow
 {
@@ -41,6 +42,7 @@ private:
     //
     DHomeScreen * home;
     DFooter * footer;
+    DDebugWidget * debug;
     DSqlQuertyViewer * sqlQuertyViewer;
     //
     bool isConnected;
@@ -63,6 +65,7 @@ public slots:
     void openConnectionSettings();
     void openQuerySettings();
     void openUiSettings();
+    void openDebug();
     void connectDatabase();
     void closeProject();
     void error(int);

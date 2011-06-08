@@ -4,6 +4,7 @@
 #include "core/myincapplication.h"
 #include "core/dsystemfuncs.h"
 #include "core/durihelper.h"
+#include "core/ddebug.h"
 //
 #include "ncreport.h"
 //
@@ -253,7 +254,7 @@ void DNamespace::uri(QString uri, QVariant * var)
     }
     DUriHelper ps(uri);
 
-    if ( ps.isUri() )
+    if ( ps.isUri() ) {
         if ( ps.protocol() == "myinc" ) { // default
             if (ps.host() == "" ) {// localhost without socket
                 // processing
@@ -291,11 +292,14 @@ void DNamespace::uri(QString uri, QVariant * var)
                                 );
                 } else if (q == "report") {
                     report( ps.path(1).toLower(), ps.args() );
-                    var->setValue( QString("Succses") );
+                    var->setValue( QString("Success") );;
                 } else {
                     var->setValue(QString("Error"));
                     emit error(_ERR_URI_SYNTAX);
                 }
-            }
-        }
+            } else var->setValue(QString("Error"));
+        } else var->setValue(QString("Error"));
+    } else var->setValue(QString("Error"));
+    if (MyIncApplication::isDebug())
+        MIA_DEBUG->debug( uri, var[0], sender() );
 }

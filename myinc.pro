@@ -38,7 +38,9 @@ SOURCES = src/main.cpp\
     src/core/dsystemfuncs.cpp \
     src/core/dauth.cpp \
     src/core/durihelper.cpp \
-    src/ui/qaboutwidget.cpp
+    src/ui/qaboutwidget.cpp \
+    src/core/ddebug.cpp \
+    src/ui/ddebugwidget.cpp
 #
 HEADERS =  src/core/dproject.h \
     src/core/dnamespace.h \
@@ -54,7 +56,9 @@ HEADERS =  src/core/dproject.h \
     src/core/dsystemfuncs.h \
     src/core/dauth.h \
     src/core/durihelper.h \
-    src/ui/qaboutwidget.h
+    src/ui/qaboutwidget.h \
+    src/core/ddebug.h \
+    src/ui/ddebugwidget.h
 #
 OTHER_FILES += \
     TODO \

@@ -44,12 +44,14 @@ void DFooter::setText( QString text )
 //
 void DFooter::progressStart()
 {
+   //lText->setPixmap( QPixmap() );
     progressInicator->startAnimation();
 }
 //
 void DFooter::progressStart(int mx)
 {
     max = mx;
+   //lText->setPixmap( QPixmap() );
     progressBar->setMaximum( max );
     progressBar->setVisible( true );
     if (!progressInicator->isAnimated())
@@ -58,12 +60,14 @@ void DFooter::progressStart(int mx)
 //
 void DFooter::progressStart(QString text )
 {
+   //lText->setPixmap( QPixmap() );
     lText->setText( text );
     progressInicator->startAnimation();
 }
 //
 void DFooter::progressStart(QString text, int mx)
 {
+    //lText->setPixmap( QPixmap() );
     lText->setText( text );
     max = mx;
     progressBar->setMaximum( max );
@@ -91,10 +95,12 @@ void DFooter::progressStop()
 //
 void DFooter::progressStop(bool state)
 {
-    if (state)
+    if (state) {
+        //lText->setPixmap( QPixmap(":/icon/apply.png") );
         lText->setText( tr("Complete!") );
-    else
+    } else{
+        //lText->setPixmap( QPixmap(":/icon/cancel.png") );
         lText->setText( tr("Uncomplete...") );
+    }
     progressInicator->stopAnimation();
-
 }

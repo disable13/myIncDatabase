@@ -8,6 +8,7 @@
 #include "ui/ddbconfig.h"
 #include "ui/dsqlquertyviewer.h"
 #include "ui/qaboutwidget.h"
+#include "ui/ddebugwidget.h"
 #include "errors.h"
 //
 #include <QGridLayout>
@@ -26,11 +27,13 @@ MainWindow::MainWindow(QWidget *parent)
     isConnected = false;
     isOpened = false;
     sqlQuertyViewer = 0x00;
+    debug = 0x00;
 
     central = new QWidget();
     l = new QGridLayout( central );
 
     setCentralWidget( central );
+    setWindowIcon( QIcon( ":/icon/home.png") );
 
     menuBar = new QMenuBar( central );
     setMenuWidget( menuBar );
@@ -38,29 +41,33 @@ MainWindow::MainWindow(QWidget *parent)
 //    actCreateProject = menFile->addAction( tr("Create Project..."),
 //                                          this, SLOT(createProject()) );
 //    menFile->addSeparator();
-    actOpenProject = menFile->addAction( tr("Open Project..."),
+    actOpenProject = menFile->addAction( QIcon(":/icon/folder.png"), tr("Open Project..."),
                                         this, SLOT(openProjectPush()));
     //actSave = menFile->addAction( tr("Save") );
     //actSaveAs = menFile->addAction( tr("Save as...") );
     menFile->addSeparator();
     actClose = menFile->addAction( tr("Close"), this, SLOT(closeProject()) );
-    actExit = menFile->addAction( tr("Exit"), qApp, SLOT(quit()) );
+    actExit = menFile->addAction( QIcon(":/icon/halt.png"), tr("Exit"), qApp, SLOT(quit()) );
 
     menProject = menuBar->addMenu( tr("Project") );
     actConnect = menProject->addAction( tr("Connect..."),
                                        this, SLOT(connectDatabase()) );
     menProject->addSeparator();
-    actDbSettings = menProject->addAction( tr("Connection settings"),
+    actDbSettings = menProject->addAction( QIcon(":/icon/configure.png"), tr("Connection settings"),
                                           this, SLOT(openConnectionSettings()) );
     actQuerySettings = menProject->addAction( tr("Query settings"),
                                              this, SLOT(openQuerySettings()) );
 //    actUiSettings = menProject->addAction( tr("User interface"),
 //                                          this, SLOT(openUiSettings()) );
+    if (MyIncApplication::isDebug())
+        menProject->addAction( QIcon(":/icon/develop.png"), tr("Debug tool"),
+                           this, SLOT(openDebug()) );
+
     menHelp = menuBar->addMenu( tr("Help") );
-    actHelp = menHelp->addAction( tr("Help") );
-    actAbout = menHelp->addAction( tr("About programm..."),
+    actHelp = menHelp->addAction( QIcon(":/icon/question.png"), tr("Help") );
+    actAbout = menHelp->addAction( QIcon(":/icon/info.png"), tr("About programm..."),
                                    this, SLOT(about()) );
-    actAboutQt = menHelp->addAction( tr("About Qt..."),
+    actAboutQt = menHelp->addAction( QIcon(":/icon/qt-logo.png"), tr("About Qt..."),
                                      MIA_APP, SLOT(aboutQt()) );
 
     home = new DHomeScreen( central );
@@ -82,6 +89,8 @@ MainWindow::~MainWindow()
 {
     if (sqlQuertyViewer)
         delete sqlQuertyViewer;
+    if (debug)
+        delete debug;
     delete home;
     delete footer;
     delete actExit;
@@ -194,6 +203,13 @@ void MainWindow::openQuerySettings()
 void MainWindow::openUiSettings()
 {
     qDebug("TODO: MainWindow::openUiSettings()");
+}
+//
+void MainWindow::openDebug()
+{
+    if (debug == 0x00)
+        debug = new DDebugWidget( this );
+    debug->show();
 }
 //
 void MainWindow::connectDatabase()
