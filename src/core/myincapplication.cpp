@@ -17,10 +17,15 @@ DNamespace*         MyIncApplication::m_namespace   = 0x00;
 DProject*           MyIncApplication::m_project     = 0x00;
 MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
 //
-MyIncApplication::MyIncApplication(int &argc, char** argv) :
-    QObject()
+#define TR QApplication::instance()->tr
+//
+MyIncApplication::MyIncApplication(int &argc, char** argv)
 {
     MyIncApplication::m_app = new QApplication(argc,argv);
+    m_app->setApplicationName( "myIncDatabase" );
+    m_app->setApplicationVersion( "0.1a" );
+    m_app->setOrganizationDomain( "http://github.com/disable13/myIncDatabase" );
+    m_app->setOrganizationName( "disable13" );
     Q_ASSERT_X(!self, "MyIncApplication",
                "there should be only one application object");
     MyIncApplication::self = this;
@@ -38,15 +43,15 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
             QString arg = QString(argv[i]);
             if (arg.startsWith("--")) {
                 if (arg == QString("--help") ) { // give help
-                    qDebug(qPrintable(tr("Usage: myinc [--drivers|--help] [Project]")));
-                    qDebug(qPrintable(tr("Usage: myinc --compress [[Project1.xml] [[Project2.xml] [..]]\n")));
-                    qDebug(qPrintable(tr("--drivers\tshow aviable SQL drivers")));
-                    qDebug(qPrintable(tr("--help\tshow this message")));
-                    qDebug(qPrintable(tr("--compress\tCompressing XML project")));
+                    qDebug(qPrintable(TR("Usage: myinc [--drivers|--help] [Project]")));
+                    qDebug(qPrintable(TR("Usage: myinc --compress [[Project1.xml] [[Project2.xml] [..]]\n")));
+                    qDebug(qPrintable(TR("--drivers\tshow aviable SQL drivers")));
+                    qDebug(qPrintable(TR("--help\tshow this message")));
+                    qDebug(qPrintable(TR("--compress\tCompressing XML project")));
                     QTimer::singleShot( 50, m_app, SLOT(quit()) );
                     return;
                 } else if (arg == "--drivers") { // show aviable SQL drivers
-                    qDebug( qPrintable(tr("Aviable SQL drivers in system:\n")) );
+                    qDebug( qPrintable(TR("Aviable SQL drivers in system:\n")) );
                     QStringList drv = QSqlDatabase::drivers();
                     for(int i = 0; i < drv.count(); i++)
                         qDebug( qPrintable(QString("\t").append(drv.at(i))) );
@@ -58,7 +63,7 @@ MyIncApplication::MyIncApplication(int &argc, char** argv) :
             } else if (QFile::exists(arg) &&
                        (arg.endsWith(".xml") || arg.endsWith(".xml.flate")) ) { // is file ?
                 if (isCompress) { // compressing
-                    qDebug(qPrintable(tr("Compressing %1 file...").arg(arg)));
+                    qDebug(qPrintable(TR("Compressing %1 file...").arg(arg)));
                     compressXmlProject(arg);
                 } else { // opening
                     m_mainWindow = new MainWindow();
@@ -91,7 +96,7 @@ bool MyIncApplication::openProject( QString fileName )
     Q_ASSERT_X(!m_project, "Project",
                "You don't able to open more then one project.");
     MyIncApplication::m_project = new DProject(fileName);
-    connect( m_namespace, SIGNAL(error(int)),
+    QObject::connect( m_namespace, SIGNAL(error(int)),
             m_project, SIGNAL(error(int)) );
     m_namespace->initConfig();
 
@@ -130,7 +135,7 @@ void MyIncApplication::compressXmlProject(QString fileName)
                 << buf;
         dataOut.device()->close();
     } else {
-        qDebug(qPrintable(tr("This file already compressed. Skipping...")));
+        qDebug(qPrintable(TR("This file already compressed. Skipping...")));
     }
 }
 // TODO: finish this

@@ -33,38 +33,38 @@ DSqlQuertyViewer::DSqlQuertyViewer( ) :
     {
         // TODO: add icons
         qDebug(" DSqlQuertyViewer::DSqlQuertyViewer( )");
-        int count = MyIncApplication::project()->getSelectSqlQuertyCount();
+        int count = MIA_PROJECT->getSelectSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getSelectSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getSelectSqlQuerty( i ) );
             item->setData(Qt::UserRole, 1);
             //item->setIcon( QIcon(":/icons/sql/select.png") );
         }
-        count = MyIncApplication::project()->getInsertSqlQuertyCount();
+        count = MIA_PROJECT->getInsertSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getInsertSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getInsertSqlQuerty( i ) );
             item->setData(Qt::UserRole, 2);
             //item->setIcon( QIcon(":/icons/sql/insert.png") );
         }
-        count = MyIncApplication::project()->getUpdateSqlQuertyCount();
+        count = MIA_PROJECT->getUpdateSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getUpdateSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getUpdateSqlQuerty( i ) );
             item->setData(Qt::UserRole, 3);
             //item->setIcon( QIcon(":/icons/sql/update.png") );
         }
-        count = MyIncApplication::project()->getDeleteSqlQuertyCount();
+        count = MIA_PROJECT->getDeleteSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getDeleteSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getDeleteSqlQuerty( i ) );
             item->setData(Qt::UserRole, 4);
             //item->setIcon( QIcon(":/icons/sql/delete.png") );
         }
-        count = MyIncApplication::project()->getOtherSqlQuertyCount();
+        count = MIA_PROJECT->getOtherSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getOtherSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getOtherSqlQuerty( i ) );
             item->setData(Qt::UserRole, 5);
             //item->setIcon( QIcon(":/icons/sql/other.png") );
         }
@@ -114,83 +114,83 @@ void DSqlQuertyViewer::changeType(int type)
     lstQuery->clear();
     switch (type) {
     case 0: // All
-        count = MyIncApplication::project()->getSelectSqlQuertyCount();
+        count = MIA_PROJECT->getSelectSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getSelectSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getSelectSqlQuerty( i ) );
             item->setData(Qt::UserRole, 1);
             //item->setIcon( QIcon(":/icons/sql/select.png") );
         }
-        count = MyIncApplication::project()->getInsertSqlQuertyCount();
+        count = MIA_PROJECT->getInsertSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getInsertSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getInsertSqlQuerty( i ) );
             item->setData(Qt::UserRole, 2);
             //item->setIcon( QIcon(":/icons/sql/insert.png") );
         }
-        count = MyIncApplication::project()->getUpdateSqlQuertyCount();
+        count = MIA_PROJECT->getUpdateSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getUpdateSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getUpdateSqlQuerty( i ) );
             item->setData(Qt::UserRole, 3);
             //item->setIcon( QIcon(":/icons/sql/update.png") );
         }
-        count = MyIncApplication::project()->getDeleteSqlQuertyCount();
+        count = MIA_PROJECT->getDeleteSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getDeleteSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getDeleteSqlQuerty( i ) );
             item->setData(Qt::UserRole, 4);
             //item->setIcon( QIcon(":/icons/sql/delete.png") );
         }
-        count = MyIncApplication::project()->getOtherSqlQuertyCount();
+        count = MIA_PROJECT->getOtherSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getOtherSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getOtherSqlQuerty( i ) );
             item->setData(Qt::UserRole, 5);
             //item->setIcon( QIcon(":/icons/sql/other.png") );
         }
         return;
     case 1: // Select
-        count = MyIncApplication::project()->getSelectSqlQuertyCount();
+        count = MIA_PROJECT->getSelectSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getSelectSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getSelectSqlQuerty( i ) );
             item->setData(Qt::UserRole, type);
             //item->setIcon( QIcon(":/icons/sql/select.png") );
         }
         return;
     case 2: // Insert
-        count = MyIncApplication::project()->getInsertSqlQuertyCount();
+        count = MIA_PROJECT->getInsertSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getInsertSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getInsertSqlQuerty( i ) );
             item->setData(Qt::UserRole, type);
             //item->setIcon( QIcon(":/icons/sql/insert.png") );
         }
         return;
     case 3: // Update
-        count = MyIncApplication::project()->getUpdateSqlQuertyCount();
+        count = MIA_PROJECT->getUpdateSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getUpdateSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getUpdateSqlQuerty( i ) );
             item->setData(Qt::UserRole, type);
             //item->setIcon( QIcon(":/icons/sql/update.png") );
         }
         return;
     case 4: // Delete
-        count = MyIncApplication::project()->getDeleteSqlQuertyCount();
+        count = MIA_PROJECT->getDeleteSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getDeleteSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getDeleteSqlQuerty( i ) );
             item->setData(Qt::UserRole, type);
             //item->setIcon( QIcon(":/icons/sql/delete.png") );
         }
         return;
     case 5: // Other
-        count = MyIncApplication::project()->getOtherSqlQuertyCount();
+        count = MIA_PROJECT->getOtherSqlQuertyCount();
         for(int i = 0; i < count; i++ ) {
             QListWidgetItem * item = new QListWidgetItem( lstQuery );
-            item->setText( MyIncApplication::project()->getOtherSqlQuerty( i ) );
+            item->setText( MIA_PROJECT->getOtherSqlQuerty( i ) );
             item->setData(Qt::UserRole, type);
             //item->setIcon( QIcon(":/icons/sql/other.png") );
         }
@@ -204,19 +204,19 @@ void DSqlQuertyViewer::selectQuery(QListWidgetItem * item)
     leName->setText( name );
     switch (item->data(Qt::UserRole).toInt() ) {
     case 1:
-        teData->setText( MyIncApplication::project()->getSelectSqlQuerty( name ) );
+        teData->setText( MIA_PROJECT->getSelectSqlQuerty( name ) );
         return;
     case 2:
-        teData->setText( MyIncApplication::project()->getInsertSqlQuerty( name ) );
+        teData->setText( MIA_PROJECT->getInsertSqlQuerty( name ) );
         return;
     case 3:
-        teData->setText( MyIncApplication::project()->getUpdateSqlQuerty( name ) );
+        teData->setText( MIA_PROJECT->getUpdateSqlQuerty( name ) );
         return;
     case 4:
-        teData->setText( MyIncApplication::project()->getDeleteSqlQuerty( name ) );
+        teData->setText( MIA_PROJECT->getDeleteSqlQuerty( name ) );
         return;
     case 5:
-        teData->setText( MyIncApplication::project()->getOtherSqlQuerty( name ) );
+        teData->setText( MIA_PROJECT->getOtherSqlQuerty( name ) );
         return;
     }
 }

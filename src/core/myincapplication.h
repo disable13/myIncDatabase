@@ -7,9 +7,8 @@ class DProject;
 class DNamespace;
 class MainWindow;
 //
-class MyIncApplication : public QObject
+class MyIncApplication
 {
-    Q_OBJECT
 private:
     static MyIncApplication * self;
     static QApplication * m_app;
@@ -38,5 +37,10 @@ public:
     // Settings
 
 };
-
+//
+#define MIA_FOCUS MyIncApplication::application()->focusWidget()
+#define MIA_PROJECT MyIncApplication::project()
+#define MIA_NAMESPACE MyIncApplication::uriNamespace()
+#define MIA_APP MyIncApplication::application()
+//
 #endif // MYINCAPPLICATION_H

@@ -2,6 +2,7 @@
 //
 #include "core/dproject.h"
 #include "core/myincapplication.h"
+#include "core/dnamespace.h"
 #include "ui/dhomescreen.h"
 #include "ui/dfooter.h"
 #include "ui/ddbconfig.h"
@@ -62,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     l->addWidget( footer, 1, 0);
 
     footer->setText( tr("Open MyInc Project File") );
+    setWindowTitle( tr("No project").append(" - MyIncDatabase ver. ")
+                    .append(MIA_APP->applicationVersion()) );
 
     lockUI( true );
 
@@ -94,16 +97,18 @@ MainWindow::~MainWindow()
 bool MainWindow::loadProject( QString & fileName)
 {
     MyIncApplication::instance()->openProject( fileName );
-    connect( MyIncApplication::project(), SIGNAL(error(int)),
+    connect( MIA_PROJECT, SIGNAL(error(int)),
             this, SLOT(error(int)) );
     isOpened = true;
-    bool tmp = MyIncApplication::project()->load();
+    bool tmp = MIA_PROJECT->load();
     if (tmp) {
-        if (!MyIncApplication::project()->authorized())
-            if (!MyIncApplication::project()->getAuthorized( this )) {
+        if (!MIA_PROJECT->authorized())
+            if (!MIA_PROJECT->getAuthorized( this )) {
                 MyIncApplication::instance()->closeProject();
                 tmp = false;
             }
+        setWindowTitle( MIA_NAMESPACE->config("Title", "").append(" - MyIncDatabase ver. ")
+                        .append(MIA_APP->applicationVersion()) );
     }
     return tmp;
 }
@@ -115,7 +120,7 @@ DHomeScreen * MainWindow::getHome()
 //
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    MyIncApplication::application()->exit( 0x00 );
+    MIA_APP->exit( 0x00 );
 }
 //
 void MainWindow::lockUI(bool lo)
@@ -222,6 +227,8 @@ void MainWindow::closeProject()
         delete sqlQuertyViewer;
     if (isConnected)
         connectDatabase(); // to disconnect from database
+    setWindowTitle( tr("No project").append(" - MyIncDatabase ver. ")
+                    .append(MIA_APP->applicationVersion()) );
     MyIncApplication::closeProject();
     lockUI( true );
 }

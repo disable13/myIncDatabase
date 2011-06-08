@@ -188,7 +188,8 @@ void DNamespace::report(QString name, QStringList args)
     for(int i = 0; i < args.count(); i++)
         report->addParameter( QString("arg_%1").arg(i), args.at(i) );
 
-    report->setDatabase( &QSqlDatabase::database("Project") );
+    QSqlDatabase db = QSqlDatabase::database("Project");
+    report->setDatabase( &db );
 
     // set type
     QString type = config( name, "type" ).toLower();
@@ -208,14 +209,14 @@ void DNamespace::report(QString name, QStringList args)
         report->setCopies( 1 );
         report->setOutput( NCReport::Printer );
     } else if (type=="xml") {
-        QString fileName = QFileDialog::getSaveFileName( NULL, tr("Save XML File"),
+        QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save XML File"),
                                                         name.append(".xml"), tr("Xml files (*.xml)"));
         if ( !fileName.isEmpty() ) {
             report->setOutputFile( fileName );
             report->setOutput( NCReport::XML );
         }
     } else if (type=="pdf") {
-        QString fileName = QFileDialog::getSaveFileName( NULL, tr("Save PDF File"),
+        QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save PDF File"),
                                                         name.append(".pdf"), tr("Pdf files (*.pdf)"));
         if ( !fileName.isEmpty() ) {
             report->setShowPrintDialog( true );
@@ -224,7 +225,7 @@ void DNamespace::report(QString name, QStringList args)
             report->setOutput( NCReport::Pdf );
         }
     } else if (type=="text") {
-        QString fileName = QFileDialog::getSaveFileName( NULL, tr("Save TXT File"),
+        QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save TXT File"),
                                                         name.append(".txt"), tr("Text files (*.txt)"));
         if ( !fileName.isEmpty() ) {
             report->setOutputFile( fileName );
@@ -247,7 +248,7 @@ void DNamespace::report(QString name, QStringList args)
 void DNamespace::uri(QString uri, QVariant * var)
 {
     if (!MyIncApplication::project()->authorized()) {
-        QMessageBox::critical( NULL, tr("Authentication"),
+        QMessageBox::critical( MIA_FOCUS, tr("Authentication"),
                               tr("Your not be authorized. Running the procedure will be terminated") );
         return;
     }

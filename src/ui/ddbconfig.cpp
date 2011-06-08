@@ -146,7 +146,11 @@ bool DDbConfig::apply()
             QMessageBox::warning( this, tr("Not connected"),
                                  tr("Can't create connection to SQL server.\nError text: %1")
                                  .arg(err.text()) );
-        } else db.close();
+        } else {
+            db.close();
+            QMessageBox::information( this, tr("Connection sucsessfull"),
+                                      tr("Connection to data base succsessfully created.") );
+        }
     }
     QSqlDatabase::removeDatabase( "test" );
 

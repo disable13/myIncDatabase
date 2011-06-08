@@ -21,7 +21,7 @@ DProject::DProject(QString fileName)
 
     if (isNew) {
         qDebug("Creation new project is blocked!");
-        MyIncApplication::application()->quit();
+        MIA_APP->quit();
     }
     QFile f(fileName);
     if (!f.open(QIODevice::ReadOnly)) {
@@ -65,20 +65,13 @@ bool DProject::load()
             ->config( "Database", "Driver" ).toUpper();
     if ((dbDriver == "NULL") || (dbDriver == "ERORR"))
         return false;
-    dbUser = MyIncApplication::uriNamespace()
-            ->config( "Database", "Username" );
-    dbName = MyIncApplication::uriNamespace()
-            ->config( "Database", "Name" );
-    dbPassord = MyIncApplication::uriNamespace()
-            ->config( "Database", "Password" );
-    dbConnectOptions = MyIncApplication::uriNamespace()
-            ->config( "Database", "Options" );
-    dbHost = MyIncApplication::uriNamespace()
-            ->config( "Database", "Hostname" );
-    dbPort = MyIncApplication::uriNamespace()
-            ->config( "Database", "Port" ).toInt();
-    if (MyIncApplication::uriNamespace()->config( "Auth", "Enabled")
-            .trimmed().toLower() != "true")
+    dbUser = MIA_NAMESPACE->config( "Database", "Username" );
+    dbName = MIA_NAMESPACE->config( "Database", "Name" );
+    dbPassord = MIA_NAMESPACE->config( "Database", "Password" );
+    dbConnectOptions = MIA_NAMESPACE->config( "Database", "Options" );
+    dbHost = MIA_NAMESPACE->config( "Database", "Hostname" );
+    dbPort = MIA_NAMESPACE->config( "Database", "Port" ).toInt();
+    if (MIA_NAMESPACE->config( "Auth", "Enabled").trimmed().toLower() != "true")
         auth->setAuth( true );
 
     isLoad = true;
@@ -243,16 +236,15 @@ void DProject::disconnectDatabase()
 //
 QStringList DProject::workspace()
 {
-    int count = MyIncApplication::uriNamespace()->configSize( "Workspace" );
+    int count = MIA_NAMESPACE->configSize( "Workspace" );
     //, "Count" ).toInt();
     QStringList list;
     for( int i = 0; i < count; i++ )
-        list << MyIncApplication::uriNamespace()
-                ->config( "Workspace", QString("Space_%1").arg(i) );
+        list << MIA_NAMESPACE->config( "Workspace", QString("Space_%1").arg(i) );
     return list;
 }
 // TODO: DProject::config(QString,QString) to Multi-threaded.
 QString DProject::config(QString name, QString arrayElement)
 {
-    return MyIncApplication::uriNamespace()->config(name, arrayElement);
+    return MIA_NAMESPACE->config(name, arrayElement);
 }
