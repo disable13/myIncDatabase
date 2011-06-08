@@ -22,7 +22,7 @@ private:
 
 public:
     DWorkWidget(QString formName);
-    ~DWorkWidget();
+    virtual ~DWorkWidget();
     //
     bool init();
     bool initUri();

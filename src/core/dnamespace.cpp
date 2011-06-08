@@ -58,7 +58,7 @@ bool DNamespace::initConfig()
 
     QDomElement docElem = doc->documentElement();
 
-    if (docElem.tagName().toLower() != "root") {
+    if (docElem.tagName().toLower() != "myinc") {
         emit error( _ERR_NS_NOROOT );
         delete doc;
         return false;
@@ -87,7 +87,7 @@ bool DNamespace::initSql()
 
     isSql = true;
 
-    return MyIncApplication::project()->loadSql( doc->firstChildElement( "root" ) );
+    return MyIncApplication::project()->loadSql( doc->firstChildElement( "myinc" ) );
 }
 // <config>
 //      <name value="value1" /> <!-- single -->     //
@@ -160,18 +160,17 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
         MyIncApplication::project()->getOtherSqlQuerty(queryName);
     }
     query->prepare(src);
-    for (int i = 0; i > bindValue.count(); i++) {
+    for (int i = 0; i < bindValue.count(); i++) {
         query->addBindValue( bindValue.at(i) );
     }
     query->exec();
-
     // for future
     return QSqlQuery( query[0] );
 }
 //
 void DNamespace::report(QString name, QStringList args)
 {
-    QString reportFile = config( name, "file" );
+    QString reportFile = config( name, "File" );
     if ((reportFile == "NULL") || (reportFile == "Array") || (reportFile == "Error"))
         return;
     //NCReportLookup * lc = new NCReportLookup();
@@ -192,7 +191,7 @@ void DNamespace::report(QString name, QStringList args)
     report->setDatabase( &db );
 
     // set type
-    QString type = config( name, "type" ).toLower();
+    QString type = config( name, "Type" ).toLower();
     if (type=="Error") {
         delete report;
         //delete lc;
@@ -210,14 +209,14 @@ void DNamespace::report(QString name, QStringList args)
         report->setOutput( NCReport::Printer );
     } else if (type=="xml") {
         QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save XML File"),
-                                                        name.append(".xml"), tr("Xml files (*.xml)"));
+                                                         name.append(".xml"), tr("Xml files (*.xml)"));
         if ( !fileName.isEmpty() ) {
             report->setOutputFile( fileName );
             report->setOutput( NCReport::XML );
         }
     } else if (type=="pdf") {
         QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save PDF File"),
-                                                        name.append(".pdf"), tr("Pdf files (*.pdf)"));
+                                                         name.append(".pdf"), tr("Pdf files (*.pdf)"));
         if ( !fileName.isEmpty() ) {
             report->setShowPrintDialog( true );
             report->setCopies( 1 );
@@ -226,7 +225,7 @@ void DNamespace::report(QString name, QStringList args)
         }
     } else if (type=="text") {
         QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save TXT File"),
-                                                        name.append(".txt"), tr("Text files (*.txt)"));
+                                                         name.append(".txt"), tr("Text files (*.txt)"));
         if ( !fileName.isEmpty() ) {
             report->setOutputFile( fileName );
             report->setOutput( NCReport::TXT );
@@ -249,7 +248,7 @@ void DNamespace::uri(QString uri, QVariant * var)
 {
     if (!MyIncApplication::project()->authorized()) {
         QMessageBox::critical( MIA_FOCUS, tr("Authentication"),
-                              tr("Your not be authorized. Running the procedure will be terminated") );
+                               tr("Your not be authorized. Running the procedure will be terminated") );
         return;
     }
     DUriHelper ps(uri);
@@ -288,7 +287,7 @@ void DNamespace::uri(QString uri, QVariant * var)
                     q.remove(0,1);
                     var = new QVariant(
                                 sys->run( q,
-                                         ps.args(), sender() )
+                                          ps.args(), sender() )
                                 );
                 } else if (q == "report") {
                     report( ps.path(1).toLower(), ps.args() );

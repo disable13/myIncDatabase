@@ -78,6 +78,7 @@ void DHomeScreen::selectWorkspace(QListWidgetItem* item)
     connect( widget, SIGNAL(uri(QString,QVariant*)),
              MIA_NAMESPACE, SLOT(uri(QString,QVariant*)) );
     if (widget->init()) {
+        widget->setObjectName( name );
         listWidget.append( widget );
         widget->show();
     } else {

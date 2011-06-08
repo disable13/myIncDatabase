@@ -21,8 +21,8 @@ unix {
     target.path = /usr/local/bin
 }
 #
-CONFIG += uitools
-debug : CONFIG += console
+CONFIG += uitools console static
+release : CONFIG -= console
 #
 SOURCES = src/main.cpp\
     src/core/dproject.cpp \
@@ -60,7 +60,10 @@ OTHER_FILES += \
     TODO \
     README \
     COPYING \
-    INSTALL
+    INSTALL \
+    samples/simple-project.xml \
+    samples/sample-db.sqlite \
+    samples/sample-main.ui
 #
 RESOURCES += \
     resource.qrc

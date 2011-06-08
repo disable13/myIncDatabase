@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso8859-1"?>
+<myinc>
+<config>
+    <Title value="Simple project"/>
+<!-- Connect to database -->
+    <Database>
+        <Driver value="QSQLITE" />
+        <Name value="C:\Qt\myIncDatabase\samples\sample-db.sqlite" />
+    </Database>
+<!-- Access to project -->
+    <Auth>
+        <Enabled value="false" />
+    </Auth>
+    <Users>
+        <User_0 value="admin" />
+    </Users>
+    <admin>
+        <Password value="21232f297a57a5a743894a0e4a801fc3" />
+    </admin>
+<!-- User forms -->
+    <Workspace>
+        <Space_0 value="main" />
+    </Workspace>
+    <main>
+        <Title value="Work Form" />
+        <ui value="C:\Qt\myIncDatabase\samples\sample-main.ui" />
+    </main>
+<!-- Reports -->
+    <Reports>
+        <Report_0 value="mainreport" />
+    </Reports>
+    <mainreport>
+        <File value="C:\Qt\myIncDatabase\samples\sample-report-main.xml" />
+        <Type value="PreView" />
+    </mainreport>
+</config>
+<!-- SQL Queryes -->
+<sql type="select">
+    <query name="getName0">SELECT `name` FROM `humans` WHERE `id`=?</query>
+    <query name="getName1">SELECT `name1` FROM `humans` WHERE `id`=?</query>
+    <query name="getName2">SELECT `name2` FROM `humans` WHERE `id`=?</query>
+    <query name="getPasport">SELECT `pasport` FROM `humans` WHERE `id`=?</query>
+    <query name="getDR">SELECT `dr` FROM `humans` WHERE `id`=?</query>
+    <query name="getStreet">SELECT `street` FROM `humans` WHERE `id`=?</query>
+    <query name="getHouse">SELECT `house` FROM `humans` WHERE `id`=?</query>
+    <query name="getRoom">SELECT `room` FROM `humans` WHERE `id`=?</query>
+    <query name="getSmo">SELECT `smo` FROM `humans` WHERE `id`=?</query>
+    <query name="getPolis">SELECT `polis` FROM `humans` WHERE `id`=?</query>
+    <query name="getCount">SELECT `count` FROM `humans` WHERE `id`=?</query>
+</sql>
+<sql type="update">
+    <query name="count">UPDATE `humans` SET `count`=`count`+1 WHERE `id`=?</query>
+</sql>
+</myinc>

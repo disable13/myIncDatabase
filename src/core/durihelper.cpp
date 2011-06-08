@@ -3,6 +3,7 @@
 #include <QtCore/QRegExp>
 //
 #include <QStringList>
+#include <QDebug>
 //
 QString DUriHelper::uriMask =
 QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
