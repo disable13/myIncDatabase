@@ -26,6 +26,7 @@ MyIncApplication::MyIncApplication(int &argc, char** argv)
     m_app->setApplicationVersion( "0.1a" );
     m_app->setOrganizationDomain( "http://github.com/disable13/myIncDatabase" );
     m_app->setOrganizationName( "disable13" );
+    m_app->setWindowIcon( QIcon( ":/image/logo.png" ));
     Q_ASSERT_X(!self, "MyIncApplication",
                "there should be only one application object");
     MyIncApplication::self = this;

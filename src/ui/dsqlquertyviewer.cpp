@@ -93,6 +93,8 @@ DSqlQuertyViewer::DSqlQuertyViewer( ) :
             this, SLOT(selectQuery(QListWidgetItem*)) );
     connect( btnCancel, SIGNAL(clicked()),
             this, SLOT(close()) );
+
+    setWindowTitle( tr("SQL query viewer") );
 }
 //
 DSqlQuertyViewer::~DSqlQuertyViewer()

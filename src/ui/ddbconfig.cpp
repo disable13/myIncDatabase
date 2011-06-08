@@ -71,6 +71,8 @@ DDbConfig::DDbConfig(QWidget *parent) :
     connect( this, SIGNAL(destroyed()), btnBox, SLOT(deleteLater()) );
 
     l->addWidget(btnBox);
+
+    setWindowTitle( tr("SQL Connection settings") );
 }
 //
 DDbConfig::~DDbConfig()

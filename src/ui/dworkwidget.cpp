@@ -53,6 +53,9 @@ bool DWorkWidget::init()
 
     initUri();
 
+    setWindowTitle( central->windowTitle() );
+    setWindowIcon( central->windowIcon() );
+
     l->addWidget( central );
     return true;
 }

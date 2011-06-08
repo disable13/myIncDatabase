@@ -7,6 +7,7 @@
 #include "ui/dfooter.h"
 #include "ui/ddbconfig.h"
 #include "ui/dsqlquertyviewer.h"
+#include "ui/qaboutwidget.h"
 #include "errors.h"
 //
 #include <QGridLayout>
@@ -55,6 +56,12 @@ MainWindow::MainWindow(QWidget *parent)
                                              this, SLOT(openQuerySettings()) );
 //    actUiSettings = menProject->addAction( tr("User interface"),
 //                                          this, SLOT(openUiSettings()) );
+    menHelp = menuBar->addMenu( tr("Help") );
+    actHelp = menHelp->addAction( tr("Help") );
+    actAbout = menHelp->addAction( tr("About programm..."),
+                                   this, SLOT(about()) );
+    actAboutQt = menHelp->addAction( tr("About Qt..."),
+                                     MIA_APP, SLOT(aboutQt()) );
 
     home = new DHomeScreen( central );
     l->addWidget( home, 0, 0);
@@ -265,4 +272,11 @@ void MainWindow::error(int e)
     }
 
     qDebug() << "ERROR: " << text;
+}
+//
+void MainWindow::about()
+{
+    QAboutWidget * w = new QAboutWidget();
+
+    w->show();
 }

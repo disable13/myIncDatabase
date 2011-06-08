@@ -16,7 +16,13 @@ OBJECTS_DIR = .build
 MOC_DIR = .build
 UI_DIR = .build
 #
+unix {
+    INSTALLS = target
+    target.path = /usr/local/bin
+}
+#
 CONFIG += uitools
+debug : CONFIG += console
 #
 SOURCES = src/main.cpp\
     src/core/dproject.cpp \
@@ -31,7 +37,8 @@ SOURCES = src/main.cpp\
     src/ui/dsqlquertyviewer.cpp \
     src/core/dsystemfuncs.cpp \
     src/core/dauth.cpp \
-    src/core/durihelper.cpp
+    src/core/durihelper.cpp \
+    src/ui/qaboutwidget.cpp
 #
 HEADERS =  src/core/dproject.h \
     src/core/dnamespace.h \
@@ -46,7 +53,8 @@ HEADERS =  src/core/dproject.h \
     src/ui/dsqlquertyviewer.h \
     src/core/dsystemfuncs.h \
     src/core/dauth.h \
-    src/core/durihelper.h
+    src/core/durihelper.h \
+    src/ui/qaboutwidget.h
 #
 OTHER_FILES += \
     TODO \
@@ -54,5 +62,5 @@ OTHER_FILES += \
     COPYING \
     INSTALL
 #
-INSTALLS = target
-target.path = /usr/local/bin
+RESOURCES += \
+    resource.qrc

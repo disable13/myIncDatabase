@@ -34,6 +34,10 @@ private:
     QAction * actDbSettings;
     QAction * actQuerySettings;
     QAction * actUiSettings;
+    QMenu *  menHelp;
+    QAction * actHelp;
+    QAction * actAbout;
+    QAction * actAboutQt;
     //
     DHomeScreen * home;
     DFooter * footer;
@@ -44,7 +48,7 @@ private:
 
 public:
     MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    virtual ~MainWindow();
     //
     bool loadProject( QString & filename);
     DHomeScreen * getHome();
@@ -62,6 +66,7 @@ public slots:
     void connectDatabase();
     void closeProject();
     void error(int);
+    void about();
 
 };
 //
