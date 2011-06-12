@@ -1,9 +1,11 @@
 #include "durihelper.h"
 //
-#include <QtCore/QRegExp>
+#include "core/myincapplication.h"
+#include "core/dnamespace.h"
 //
+#include <QtCore/QRegExp>
+#include <QtSql/QSqlQuery>
 #include <QStringList>
-#include <QDebug>
 //
 QString DUriHelper::uriMask =
 QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
@@ -13,6 +15,9 @@ DUriHelper::DUriHelper(QString  query) :
 {
     rx = new QRegExp( uriMask );
     rx->indexIn( query );
+
+    connect( this, SIGNAL(uriArgument(QString,QVariant*)),
+             MIA_NAMESPACE, SLOT(uri(QString,QVariant*)) );
 
     p_path = 0x00;
     p_args = 0x00;
@@ -35,14 +40,71 @@ void DUriHelper::initPath()
 // TODO: see Global TODO (1).
 void DUriHelper::initArg()
 {
-    qDebug("TODO: void DUriHelper::initArg()");
-    p_args = new QStringList(
+    QStringList arg(
                 rx->cap(9).split('&', QString::SkipEmptyParts) );
+
+    p_args = new QStringList();
+    QString buf = "";
+    int open = 0;
+    for(int i = 0; i < arg.count(); i++) {
+        QString tmp = arg.at(i).trimmed();
+        for( int ii = 0; ii < tmp.length(); ii++) // get count of '{}'
+            if ( tmp.at(ii) == '{' )
+                open++;
+            else if ( tmp.at(ii) == '}')
+                open--;
+        if (buf.size() != 0)
+            tmp = buf.append("&").append(tmp);
+        if (open == 0) {
+            if (tmp.startsWith('{')) {
+                tmp.remove(0, 1);
+                tmp.resize(tmp.size() - 1);
+            }
+            DUriHelper uri(tmp);
+            if (uri.isUri())
+                if (uri.protocol() == "myinc") {
+
+                    uri.pathItemsCount();
+                    uri.args();
+                    QVariant v;
+                    emit uriArgument(tmp, &v);
+agais:
+                    switch (static_cast<QMetaType::Type>(v.type())) {
+                    case QMetaType::QString:
+                        tmp = v.toString();
+                        break;
+                    case QMetaType::VoidStar: {
+                        QSqlQuery *q = ((QSqlQuery*)v.value<void*>());
+                        if (!q->first())
+                            q->next();
+                        v = q->value(0);
+                        goto agais;
+                    }
+                    default:
+                        if (!v.convert(QVariant::String))
+                            tmp = "Error";
+                        else
+                            tmp = v.toString();
+                    }
+                }
+        } else {
+            buf = tmp;
+            continue;
+        }
+        buf = "";
+        p_args->append( tmp ); // add in args
+    }
+    if (open != 0){ // check for too more '{}'
+        if (p_args == 0x00)
+            delete p_args;
+        p_args = new QStringList( "Error" );
+        return;
+    }
 }
 //
 bool DUriHelper::isUri()
 {
-    return (rx->captureCount() != 0);
+    return (rx->captureCount() != -1);
 }
 //
 QString DUriHelper::protocol()

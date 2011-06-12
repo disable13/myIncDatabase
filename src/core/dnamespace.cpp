@@ -286,7 +286,7 @@ void DNamespace::uri(QString uri, QVariant * var)
                     for(int i = 0; i < pathFix.count(); i++)
                         q.append("/").append(pathFix.at(i));
                     q.remove(0,1);
-                    var = new QVariant(
+                    var->setValue(
                                 sys->run( q,
                                           ps.args(), sender() )
                                 );

@@ -49,7 +49,7 @@ bool DWorkWidget::init()
         errorMessage( tr("Bad UI file") );
     }
 
-    setObjectName( central->objectName() );
+    setObjectName( QString("ww_").append(central->objectName()) );
 
     initUri();
 
@@ -62,6 +62,16 @@ bool DWorkWidget::init()
 //
 bool DWorkWidget::initUri()
 {
+    try {
+        QVariant  v;
+        QVariant value = central->property( "InitMe" );
+        if (value.isValid()) {
+            emit uri( value.toString().trimmed(), &v  );
+        }
+    } catch (...) {
+        errorMessage("Can't be initialized");
+    }
+
     const QObjectList childs = central->children();
     for(int i = 0; i < childs.count(); i++ ) {
         QWidget * obj = static_cast<QWidget*>(childs.at(i));

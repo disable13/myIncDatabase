@@ -35,6 +35,9 @@ public:
     QString arg(int);
     unsigned int argCount();
 
+signals:
+    void uriArgument(QString,QVariant*);
+
 };
 //
 #endif // DURIHELPER_H

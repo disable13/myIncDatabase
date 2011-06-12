@@ -3,7 +3,6 @@
       ~ - need test,
       - - normal
 
-1) URI RegExp fix. Need slpit args from URI like that
 "myinc:///SQL/SELECT/name#arg1&{myinc:///SQL/SELECT/agr2#arg3}&{myinc:///Window/name/Element/Text}&arg4" to
 protocol:       myinc
 host:           native
@@ -15,8 +14,12 @@ Arguments:
                 2) result of myinc:///SQL/SELECT/agr2#arg3
                 3) result of myinc:///Window/name/Element/Text
                 4) "arg4"
-2) load UI files from xml project (feature)
-3) create Wizard "Create Project" or tool kit (feature)
-4) add icons (feature)
-5) add tool bar in MainWindow (feature)
-6) add preview runed windows on Home Screen (feature)
+
+
+1) load UI files from xml project (feature)
+2) create Wizard "Create Project" or tool kit (feature)
+3) add icons (feature)
+4) add tool bar in MainWindow (feature)
+5) add preview runed windows on Home Screen (feature)
+6) finish debug menu (feature)
+7) add math elements in URI

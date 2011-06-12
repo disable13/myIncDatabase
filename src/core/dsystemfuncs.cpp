@@ -19,6 +19,10 @@ DSystemFuncs::~DSystemFuncs()
 //
 QWidget* DSystemFuncs::findWidget(QString name)
 {
+    name = name.trimmed();
+    if (name == "")
+        return 0x00;
+    name = QString("ww_").append(name);
     QWidgetList lst = MyIncApplication::application()->allWidgets();
     for(int i = 0; i < lst.count(); i++)
         if (lst.at(i)->objectName() == name )
@@ -53,7 +57,7 @@ bool DSystemFuncs::refreshWidget(QString widget)
     QWidget* w = findWidget( widget );
     if (w == 0x00)
         return false;
-    if (w->inherits( "DWorkWidget" ))
+    if (!w->inherits( "DWorkWidget" ))
         return false;
     return static_cast<DWorkWidget*>(w)->refreshUri();
 }
@@ -61,7 +65,7 @@ bool DSystemFuncs::refreshWidget(QString widget)
 //
 QString DSystemFuncs::getGlobalVariable(QString name)
 {
-    name = name.toLower();
+    name = name.trimmed().toLower();
     for(int i = 0; i < var.size(); i++)
         if (var.at(i).first == name)
             return var.at(i).second;
@@ -71,6 +75,7 @@ QString DSystemFuncs::getGlobalVariable(QString name)
 //
 void DSystemFuncs::setGlobalVariable(QString name, QString value)
 {
+    name = name.trimmed().toLower();
     // check for exists
     for(int i = 0; i < var.size(); i++)
         if (var.at(i).first == name) {
@@ -171,6 +176,20 @@ QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender
                 if (arg.count() < 2 )
                     return QVariant("Error");
                 setGlobalVariable( arg.at(0),arg.at(1) );
+                return QVariant("Succses");
+            }
+        } else if ( tmp == QString("local")) {
+            if (f.count() != 3)
+                return QVariant("Error");
+            if (arg.count() < 2 )
+                return QVariant("Error");
+            tmp = f.at(2).toLower();
+            if (tmp == QString("get"))
+                return getVariable( arg.at(0), arg.at(1) );
+            else if (tmp == QString("set")) {
+                if (arg.count() < 3 )
+                    return QVariant("Error");
+                setVariable( arg.at(0),arg.at(1),arg.at(2) );
                 return QVariant("Succses");
             }
         }

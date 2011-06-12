@@ -48,6 +48,7 @@
     <query name="getSmo">SELECT `smo` FROM `humans` WHERE `id`=?</query>
     <query name="getPolis">SELECT `polis` FROM `humans` WHERE `id`=?</query>
     <query name="getCount">SELECT `count` FROM `humans` WHERE `id`=?</query>
+    <query name="getId">SELECT `id` FROM `humans` WHERE `id`=?+1</query>
 </sql>
 <sql type="update">
     <query name="count">UPDATE `humans` SET `count`=`count`+1 WHERE `id`=?</query>
