@@ -16,7 +16,9 @@
 #include <QMenuBar>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QCloseEvent>
+//#include <QCloseEvent>
+#include <QStatusBar>
+#include <QSystemTrayIcon>
 //
 // FIXME: class MainWindow. include qDebug()
 #include <QDebug>
@@ -69,12 +71,23 @@ MainWindow::MainWindow(QWidget *parent)
                                    this, SLOT(about()) );
     actAboutQt = menHelp->addAction( QIcon(":/icon/qt-logo.png"), tr("About Qt..."),
                                      MIA_APP, SLOT(aboutQt()) );
+    // Tray
+    trayMenu = new QMenu(tr("Tray menu"), this);
+    trayMenu->addAction( tr("Show/Hide programm"), this, SLOT(showHideMain()) );
+    trayMenu->addSeparator();
+    trayMenu->addAction( tr("Exit"), qApp, SLOT(quit()) );
+
+    tray = new QSystemTrayIcon( QIcon(":/icon/qrcode.png") );
+    tray->setObjectName( "tray" );
+    tray->setContextMenu( trayMenu );
 
     home = new DHomeScreen( central );
     l->addWidget( home, 0, 0);
 
+    QStatusBar * sb = new QStatusBar( this );
+    setStatusBar( sb );
     footer = new DFooter( central );
-    l->addWidget( footer, 1, 0);
+    sb->addWidget( footer );
 
     footer->setText( tr("Open MyInc Project File") );
     setWindowTitle( tr("No project").append(" - MyIncDatabase ver. ")
@@ -106,6 +119,8 @@ MainWindow::~MainWindow()
     delete menProject;
     delete menFile;
     delete menuBar;
+    delete trayMenu;
+    delete tray;
     delete l;
     delete central;
 }
@@ -133,10 +148,21 @@ DHomeScreen * MainWindow::getHome()
 {
     return home;
 }
+bool MainWindow::openManualWorkspace()
+{
+    if (!isOpened || !isConnected)
+        return false;
+    return home->selectManualWorkspace();
+}
 //
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    MIA_APP->exit( 0x00 );
+    tray->show();
+}
+//
+void MainWindow::showEvent(QShowEvent *)
+{
+    tray->hide();
 }
 //
 void MainWindow::lockUI(bool lo)
@@ -150,6 +176,11 @@ void MainWindow::lockUI(bool lo)
     actDbSettings->setEnabled( lo );
     actQuerySettings->setEnabled( lo );
     //actUiSettings->setEnabled( lo );
+}
+//
+void MainWindow::showHideMain()
+{
+    setHidden( ! isHidden() );
 }
 // FIXME: MainWindow::createProject()
 void MainWindow::createProject()

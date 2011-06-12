@@ -101,10 +101,50 @@ bool DWorkWidget::initUri()
     }
     return true;
 }
+//
+bool DWorkWidget::refreshUri()
+{
+    const QObjectList childs = central->children();
+    for(int i = 0; i < childs.count(); i++ ) {
+        QWidget * obj = static_cast<QWidget*>(childs.at(i));
+
+        if (obj->inherits("QAbstractButton" )) { /// Button
+            if ( !initLabel(obj) )
+                errorMessage( tr("Can't create button %1").arg(obj->objectName()));
+        } else if (obj->inherits("QLabel")) { /// Label
+            if ( !initLabel(obj))
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if ( obj->inherits("QAbstractItemView")) { /// tables and etc
+            if ( !initList(static_cast<QAbstractItemView*>(obj)) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if ( obj->inherits("QLineEdit") ) { /// edit
+            if ( !initLabel(obj) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if ( obj->inherits("QTextEdit") ) { /// text edit
+            if ( !initLabel(obj) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if ( obj->inherits("QComboBox") ) { /// combo box
+            if ( !initComboBoxItems(static_cast<QComboBox*>(obj)) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if ( obj->inherits("QDateTimeEdit") ) { /// edit controls for time
+            if ( !initDateTime(obj) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if (obj->inherits( "QSpinBox") || obj->inherits("QDoubleSpinBox")) { /// numbers edit
+            if ( !initSpinBox(obj) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        } else if ( obj->inherits("QCheckBox")) { /// check box
+            if ( !initLabel(obj) )
+                errorMessage( tr("Can't assign a value in the %1").arg(obj->objectName()) );
+        }/* else if (obj->inherits("QProgressBar")) { /// progress bar
+
+        }*/
+    }
+    return true;
+}
 // TODO: need finish
 bool DWorkWidget::initButton(QWidget * w)
 {
-    QAbstractButton * b = (QAbstractButton *)w;
+    QAbstractButton * b = static_cast<QAbstractButton *>(w);
     QVariant value;
     value = w->property( "OnClick" );
     if (!value.isNull())
@@ -145,10 +185,21 @@ again:
             case QMetaType::QString:
                 w->setProperty( "text", v );
                 break;
+            case QMetaType::QStringList:
+                qDebug( "TODO: bool DWorkWidget::initLabel(QWidget *)\n\tAdd StringList support" );
+                break;
+            case QMetaType::QDate:
+                w->setProperty( "text", v.toDate().toString() );
+                break;
+            case QMetaType::QTime:
+                w->setProperty( "text", v.toTime().toString() );
+                break;
+            case QMetaType::QDateTime:
+                w->setProperty( "text", v.toDateTime().toString() );
+                break;
             default:
                 return false;
             }
-
         }
     } catch (...) {
         return false;
@@ -212,8 +263,6 @@ again:
                 return false;
             case QMetaType::QString:
                 v = QDateTime::fromString(v.toString(), "yyyy-MM-dd");
-                //if (!v.toDateTime().isValid())
-                //    return false;
                 goto again;
             case QMetaType::QDate:
             case QMetaType::QTime:

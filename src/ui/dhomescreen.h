@@ -26,6 +26,7 @@ public:
     DHomeScreen(QWidget * parent = 0);
     virtual ~DHomeScreen();
     //
+    bool selectManualWorkspace();
     bool selectWorkspace(QString name);
 
 public slots:

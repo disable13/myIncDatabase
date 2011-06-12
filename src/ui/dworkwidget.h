@@ -27,6 +27,9 @@ public:
     bool init();
     bool initUri();
 
+public slots:
+    bool refreshUri();
+
 private:
     bool inline initButton(QWidget*);
     bool inline initLabel(QWidget*);

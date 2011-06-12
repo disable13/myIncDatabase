@@ -29,7 +29,7 @@ MyIncApplication::MyIncApplication(int &argc, char** argv)
     m_app->setApplicationVersion( "0.1a" );
     m_app->setOrganizationDomain( "http://github.com/disable13/myIncDatabase" );
     m_app->setOrganizationName( "disable13" );
-    m_app->setWindowIcon( QIcon( ":/image/logo.png" ));
+    m_app->setWindowIcon( QIcon( ":/icon/qrcode.png" ));
     Q_ASSERT_X(!self, "MyIncApplication",
                "there should be only one application object");
     MyIncApplication::self = this;
@@ -79,6 +79,11 @@ MyIncApplication::MyIncApplication(int &argc, char** argv)
                     if (m_mainWindow->loadProject(arg)) {
                         m_mainWindow->lockUI( false );
                         m_mainWindow->connectDatabase();
+                        if (!m_mainWindow->openManualWorkspace())
+                            qDebug(qPrintable(TR("Please set manual form for project")));
+                        else
+                            m_mainWindow->close();
+
                     } else
                         QTimer::singleShot( 50, m_app, SLOT(quit()) );
                     return;
@@ -108,7 +113,7 @@ bool MyIncApplication::openProject( QString fileName )
                "You don't able to open more then one project.");
     MyIncApplication::m_project = new DProject(fileName);
     QObject::connect( m_namespace, SIGNAL(error(int)),
-            m_project, SIGNAL(error(int)) );
+                      m_project, SIGNAL(error(int)) );
     m_namespace->initConfig();
 
     return true;

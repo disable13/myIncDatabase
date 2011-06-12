@@ -52,6 +52,17 @@ void DHomeScreen::setProject( DProject * project )
     }
 }
 //
+bool DHomeScreen::selectManualWorkspace()
+{
+    for(int i = 0; i < lstBase->count(); i++ )
+    if ( current->config(lstBase->item(i)->data(Qt::UserRole).toString(), "Manual")
+         .toLower().trimmed() == "true") {
+            selectWorkspace( lstBase->item(i) );
+            return true;
+    }
+    return false;
+}
+//
 bool DHomeScreen::selectWorkspace( QString name )
 {
     name = name.toLower();

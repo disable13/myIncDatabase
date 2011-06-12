@@ -5,7 +5,7 @@
 <!-- Connect to database -->
     <Database>
         <Driver value="QSQLITE" />
-        <Name value="..\..\myIncDatabase\samples\sample-db.sqlite" />
+        <Name value="../../myIncDatabase/samples/sample-db.sqlite" />
     </Database>
 <!-- Access to project -->
     <Auth>
@@ -23,14 +23,15 @@
     </Workspace>
     <main>
         <Title value="Work Form" />
-        <ui value="..\..\myIncDatabase\samples\sample-main.ui" />
+        <ui value="../../myIncDatabase/samples/sample-main.ui" />
+        <Manual value="true" />
     </main>
 <!-- Reports -->
     <Reports>
         <Report_0 value="mainreport" />
     </Reports>
     <mainreport>
-        <File value="..\..\myIncDatabase\samples\sample-report-main.xml" />
+        <File value="../../myIncDatabase/samples/sample-report-main.xml" />
         <Type value="PreView" />
     </mainreport>
 </config>

@@ -14,6 +14,7 @@ class DHomeScreen;
 class DFooter;
 class DSqlQuertyViewer;
 class DDebugWidget;
+class QSystemTrayIcon;
 //
 class MainWindow : public QMainWindow
 {
@@ -39,6 +40,9 @@ private:
     QAction * actHelp;
     QAction * actAbout;
     QAction * actAboutQt;
+    // Tray
+    QSystemTrayIcon * tray;
+    QMenu * trayMenu;
     //
     DHomeScreen * home;
     DFooter * footer;
@@ -54,12 +58,15 @@ public:
     //
     bool loadProject( QString & filename);
     DHomeScreen * getHome();
+    bool openManualWorkspace();
 
 protected:
-     void closeEvent( QCloseEvent * event );
+     void closeEvent(QCloseEvent *);
+     void showEvent(QShowEvent *);
 
 public slots:
     void lockUI( bool );
+    void showHideMain();
     void createProject();
     void openProjectPush();
     void openConnectionSettings();

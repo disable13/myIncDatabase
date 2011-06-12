@@ -25,6 +25,14 @@ QWidget* DSystemFuncs::findWidget(QString name)
             return lst.at(i);
     return 0x00;
 }
+//
+QVariant DSystemFuncs::returnBool(bool ret)
+{
+    if (ret)
+        return QVariant("Success");
+    else
+        return QVariant("Error");
+}
 // like myinc:///System/Window/Close - kill "sender" window
 //      myinc:///System/Window/Close#HelloWindow - kill window with name "HelloWindow"
 bool DSystemFuncs::openWidget(QString widget)
@@ -39,6 +47,16 @@ void DSystemFuncs::closeWidget(QString widget)
         return;
     w->close();
 }
+//
+bool DSystemFuncs::refreshWidget(QString widget)
+{
+    QWidget* w = findWidget( widget );
+    if (w == 0x00)
+        return false;
+    if (w->inherits( "DWorkWidget" ))
+        return false;
+    return static_cast<DWorkWidget*>(w)->refreshUri();
+}
 /// Variables
 //
 QString DSystemFuncs::getGlobalVariable(QString name)
@@ -48,7 +66,7 @@ QString DSystemFuncs::getGlobalVariable(QString name)
         if (var.at(i).first == name)
             return var.at(i).second;
 
-    return QString("");
+    return QString("NULL");
 }
 //
 void DSystemFuncs::setGlobalVariable(QString name, QString value)
@@ -119,7 +137,7 @@ QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender
                 arg.append( nativeSender->objectName() );
             closeWidget( arg.at(0) );
         } else if (tmp == QString("open")) {
-            openWidget( arg.at(0) );
+            return returnBool(openWidget( arg.at(0) ));
         } else if ( tmp == "object") {
             if ((arg.count() == 0) || (arg.count() > 4))
                 return QVariant("Error");
@@ -133,6 +151,10 @@ QVariant DSystemFuncs::run(QString func, QStringList arg, QObject * nativeSender
                 arg.insert(0, nativeSender->objectName() );
             setObject( arg.at(0), arg.at(1), arg.at(2), arg.at(3) );
             return QVariant("Succses");
+        } else if ( tmp == "refresh" ) {
+            if (arg.count() == 0)
+                arg.append( nativeSender->objectName() );
+            return returnBool(refreshWidget( arg.at(0) ));
         }
     } else if ( tmp == QString("var") ) { // variable funcs
         tmp = f.at(1).toLower();

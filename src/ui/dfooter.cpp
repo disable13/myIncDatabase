@@ -10,6 +10,9 @@ DFooter::DFooter(QWidget *parent) :
 {
     max = -1;
 
+    setObjectName( "Footer" );
+    setMinimumHeight( 33 );
+
     l = new QGridLayout( this );
     setLayout( l );
 

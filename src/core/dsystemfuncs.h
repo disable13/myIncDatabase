@@ -17,7 +17,9 @@ class DSystemFuncs : public QObject
 private:
     QList< QPair<QString,QString> > var;
     //
-    QWidget * findWidget( QString name );
+    QWidget* findWidget( QString name );
+    //
+    QVariant inline returnBool(bool);
 
 public:
     DSystemFuncs();
@@ -25,6 +27,7 @@ public:
     //
     bool openWidget(QString widget);
     void closeWidget(QString widget);
+    bool refreshWidget(QString widget);
     // Variables
     QString getGlobalVariable(QString name);
     void setGlobalVariable(QString name,
