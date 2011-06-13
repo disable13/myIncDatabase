@@ -169,13 +169,15 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
     return QSqlQuery( query[0] );
 }
 //
-void DNamespace::report(QString name, QStringList args)
+bool DNamespace::report(QString name, QStringList args)
 {
     QString reportFile = config( name, "File" );
     if ((reportFile == "NULL") || (reportFile == "Array") || (reportFile == "Error"))
-        return;
+        return false;
     //NCReportLookup * lc = new NCReportLookup();
     //lc->setName( name );
+
+    qDebug("180");
 
     NCReport * report = new NCReport( );
     // configure
@@ -196,7 +198,8 @@ void DNamespace::report(QString name, QStringList args)
     if (type=="Error") {
         delete report;
         //delete lc;
-        return;
+        qDebug("199");
+        return false;
     }
     bool isPreview = false;
     if (type == "preview") {
@@ -240,9 +243,11 @@ void DNamespace::report(QString name, QStringList args)
 
     if ( !isPreview )	//  delete report object if report has done directly to printer
         delete report;
-    if ( error )
+    if ( error ) {
         QMessageBox::information( 0, tr("Report error"), err );
-
+        return false;
+    }
+    return true;
 }
 // TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)
@@ -291,8 +296,10 @@ void DNamespace::uri(QString uri, QVariant * var)
                                           ps.args(), sender() )
                                 );
                 } else if (q == "report") {
-                    report( ps.path(1).toLower(), ps.args() );
-                    var->setValue( QString("Success") );;
+                    if (report( ps.path(1).toLower(), ps.args() ))
+                        var->setValue( QString("Success") );
+                    else
+                        var->setValue( QString("Error") );
                 } else {
                     var->setValue(QString("Error"));
                     emit error(_ERR_URI_SYNTAX);

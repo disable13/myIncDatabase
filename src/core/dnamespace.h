@@ -47,7 +47,7 @@ public:
     //
     QSqlQuery sql(SqlType type, QString queryName, QStringList bindValue);
     //
-    void report(QString name, QStringList args);
+    bool report(QString name, QStringList args);
 
 public slots:
     void uri(QString,QVariant*);

@@ -105,27 +105,67 @@
         <translation>Проверка</translation>
     </message>
     <message>
-        <location filename="../src/ui/ddbconfig.cpp" line="146"/>
+        <location filename="../src/ui/ddbconfig.cpp" line="75"/>
+        <source>SQL Connection settings</source>
+        <translation>Настройки SQL соединения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/ddbconfig.cpp" line="149"/>
         <source>Not connected</source>
         <translation>Нет соединения</translation>
     </message>
     <message>
-        <location filename="../src/ui/ddbconfig.cpp" line="147"/>
+        <location filename="../src/ui/ddbconfig.cpp" line="150"/>
         <source>Can&apos;t create connection to SQL server.
 Error text: %1</source>
         <translation>Невозможно установить соединение с SQL сервером.
 Текст ошибки: %1</translation>
     </message>
+    <message>
+        <location filename="../src/ui/ddbconfig.cpp" line="154"/>
+        <source>Connection sucsessfull</source>
+        <translation>Соединение успешно</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/ddbconfig.cpp" line="155"/>
+        <source>Connection to data base succsessfully created.</source>
+        <translation>Соединение к базе данных успешно установленно.</translation>
+    </message>
+</context>
+<context>
+    <name>DDebugWidget</name>
+    <message>
+        <location filename="../src/ui/ddebugwidget.cpp" line="17"/>
+        <source>Debug tool</source>
+        <translation>Отладка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/ddebugwidget.cpp" line="31"/>
+        <source>Open in URI viewer</source>
+        <translation>Открыть URI браузер</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/ddebugwidget.cpp" line="33"/>
+        <source> Open in object viewer</source>
+        <translation>Открыть браузер объектов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/ddebugwidget.cpp" line="37"/>
+        <location filename="../src/ui/ddebugwidget.cpp" line="40"/>
+        <location filename="../src/ui/ddebugwidget.cpp" line="43"/>
+        <source>Show/Hide URI with </source>
+        <translation>Показать / Скрыть URI с</translation>
+    </message>
 </context>
 <context>
     <name>DFooter</name>
     <message>
-        <location filename="../src/ui/dfooter.cpp" line="95"/>
+        <location filename="../src/ui/dfooter.cpp" line="103"/>
         <source>Complete!</source>
         <translation>Выполнено!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dfooter.cpp" line="97"/>
+        <location filename="../src/ui/dfooter.cpp" line="106"/>
         <source>Uncomplete...</source>
         <translation>Ошибка выполнения...</translation>
     </message>
@@ -133,47 +173,47 @@ Error text: %1</source>
 <context>
     <name>DNamespace</name>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="209"/>
+        <location filename="../src/core/dnamespace.cpp" line="212"/>
         <source>Save XML File</source>
         <translation>Сохранение XML файла</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="210"/>
+        <location filename="../src/core/dnamespace.cpp" line="213"/>
         <source>Xml files (*.xml)</source>
         <translation>XML файлы (*.xml)</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="216"/>
+        <location filename="../src/core/dnamespace.cpp" line="219"/>
         <source>Save PDF File</source>
         <translation>Сохранение PDF файла</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="217"/>
+        <location filename="../src/core/dnamespace.cpp" line="220"/>
         <source>Pdf files (*.pdf)</source>
         <translation>Файлы формата PDF (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="225"/>
+        <location filename="../src/core/dnamespace.cpp" line="228"/>
         <source>Save TXT File</source>
         <translation>Сохранение в текстовом файле</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="226"/>
+        <location filename="../src/core/dnamespace.cpp" line="229"/>
         <source>Text files (*.txt)</source>
         <translation>Текстовые файлы (*.txt)</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="241"/>
+        <location filename="../src/core/dnamespace.cpp" line="244"/>
         <source>Report error</source>
         <translation>Ошибка отчета</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="248"/>
+        <location filename="../src/core/dnamespace.cpp" line="251"/>
         <source>Authentication</source>
         <translation>Авторизация</translation>
     </message>
     <message>
-        <location filename="../src/core/dnamespace.cpp" line="249"/>
+        <location filename="../src/core/dnamespace.cpp" line="252"/>
         <source>Your not be authorized. Running the procedure will be terminated</source>
         <translation>Вы не авторизованы. Запущенная процедура будет прекращена</translation>
     </message>
@@ -206,6 +246,11 @@ Error text: %1</source>
         <translation>Содержание</translation>
     </message>
     <message>
+        <location filename="../src/ui/dsqlquertyviewer.cpp" line="97"/>
+        <source>SQL query viewer</source>
+        <translation>Браузер SQL запросов</translation>
+    </message>
+    <message>
         <source>Save</source>
         <translation type="obsolete">Сохранить</translation>
     </message>
@@ -233,24 +278,33 @@ Error text: %1</source>
         <translation>Не корректная структура UI файла</translation>
     </message>
     <message>
-        <location filename="../src/ui/dworkwidget.cpp" line="68"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="81"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="123"/>
         <source>Can&apos;t create button %1</source>
         <translation>Не возможно создать кнопку %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dworkwidget.cpp" line="71"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="74"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="77"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="80"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="85"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="88"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="91"/>
-        <location filename="../src/ui/dworkwidget.cpp" line="94"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="84"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="87"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="90"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="93"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="98"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="101"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="104"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="107"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="126"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="129"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="132"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="135"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="138"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="141"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="144"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="147"/>
         <source>Can&apos;t assign a value in the %1</source>
         <translation>Не возможно присвоить значение в элементе %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/dworkwidget.cpp" line="272"/>
+        <location filename="../src/ui/dworkwidget.cpp" line="405"/>
         <source>Work widget error</source>
         <translation>Ошибка рабочего виджета</translation>
     </message>
@@ -258,135 +312,171 @@ Error text: %1</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="35"/>
+        <location filename="../src/ui/mainwindow.cpp" line="42"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="36"/>
         <source>Create Project...</source>
-        <translation>Создать проект...</translation>
+        <translation type="obsolete">Создать проект...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="39"/>
+        <location filename="../src/ui/mainwindow.cpp" line="46"/>
         <source>Open Project...</source>
         <translation>Открыть проект...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="44"/>
+        <location filename="../src/ui/mainwindow.cpp" line="51"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="45"/>
+        <location filename="../src/ui/mainwindow.cpp" line="52"/>
+        <location filename="../src/ui/mainwindow.cpp" line="78"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="47"/>
+        <location filename="../src/ui/mainwindow.cpp" line="54"/>
         <source>Project</source>
         <translation>Проект</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="48"/>
-        <location filename="../src/ui/mainwindow.cpp" line="214"/>
+        <location filename="../src/ui/mainwindow.cpp" line="55"/>
+        <location filename="../src/ui/mainwindow.cpp" line="273"/>
         <source>Connect...</source>
         <translation>Соединение...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="51"/>
+        <location filename="../src/ui/mainwindow.cpp" line="58"/>
         <source>Connection settings</source>
         <translation>Настройки соединения</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="53"/>
+        <location filename="../src/ui/mainwindow.cpp" line="60"/>
         <source>Query settings</source>
         <translation>Настройки SQL запросов</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="55"/>
         <source>User interface</source>
-        <translation>Пользовательский интерфейс</translation>
+        <translation type="obsolete">Пользовательский интерфейс</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="64"/>
+        <location filename="../src/ui/mainwindow.cpp" line="65"/>
+        <source>Debug tool</source>
+        <translation>Отладка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="68"/>
+        <location filename="../src/ui/mainwindow.cpp" line="69"/>
+        <source>Help</source>
+        <translation>Помощь</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="70"/>
+        <source>About programm...</source>
+        <translation>О программе...</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="72"/>
+        <source>About Qt...</source>
+        <translation>О Qt...</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="75"/>
+        <source>Tray menu</source>
+        <translation>Трей</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="76"/>
+        <source>Show/Hide programm</source>
+        <translation>Показать/Скрыть программу</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="92"/>
         <source>Open MyInc Project File</source>
         <translation>Открыть файл проекта MyInc</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="138"/>
-        <location filename="../src/ui/mainwindow.cpp" line="148"/>
+        <location filename="../src/ui/mainwindow.cpp" line="93"/>
+        <location filename="../src/ui/mainwindow.cpp" line="284"/>
+        <source>No project</source>
+        <translation>Нет проекта</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mainwindow.cpp" line="190"/>
+        <location filename="../src/ui/mainwindow.cpp" line="200"/>
         <source>Select MyInc Project</source>
         <translation>Выбрать файл проекта MyInc</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="152"/>
+        <location filename="../src/ui/mainwindow.cpp" line="204"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="152"/>
+        <location filename="../src/ui/mainwindow.cpp" line="204"/>
         <source>Can&apos;t read project file.</source>
         <translation>Невозможно прочесть файл проекта.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="189"/>
+        <location filename="../src/ui/mainwindow.cpp" line="248"/>
         <source>Connection to database...</source>
         <translation>Соединение с базой данных...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="201"/>
-        <location filename="../src/ui/mainwindow.cpp" line="235"/>
+        <location filename="../src/ui/mainwindow.cpp" line="260"/>
+        <location filename="../src/ui/mainwindow.cpp" line="296"/>
         <source>Can&apos;t connect to SQL Server</source>
         <translation>Невозможно соединиться с SQL сервером</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="214"/>
+        <location filename="../src/ui/mainwindow.cpp" line="273"/>
         <source>Disconnect...</source>
         <translation>Разъединение...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="238"/>
+        <location filename="../src/ui/mainwindow.cpp" line="299"/>
         <source>Syntax error in URI query.</source>
         <translation>Ошибка синтаксиса в URI запросе.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="241"/>
+        <location filename="../src/ui/mainwindow.cpp" line="302"/>
         <source>SQL not be initialized.</source>
         <translation>SQL не инициализирован.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="243"/>
+        <location filename="../src/ui/mainwindow.cpp" line="304"/>
         <source>Config not be initialized.</source>
         <translation>Конфигурация не инициализирована.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="245"/>
+        <location filename="../src/ui/mainwindow.cpp" line="306"/>
         <source>Namespace type error?!</source>
         <translation>Ошибка типа пространства имен?!</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="247"/>
+        <location filename="../src/ui/mainwindow.cpp" line="308"/>
         <source>Config node not found in project xml file.</source>
         <translation>Конфигурационный блок не найден в xml файле проекта.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="249"/>
+        <location filename="../src/ui/mainwindow.cpp" line="310"/>
         <source>Root node not found in project xml file.</source>
         <translation>Корневой блок не найден в xml файле проекта.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="251"/>
+        <location filename="../src/ui/mainwindow.cpp" line="312"/>
         <source>Syntax error in project xml file.</source>
         <translation>Ошибка синтаксиса в xml файле проекта.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="253"/>
+        <location filename="../src/ui/mainwindow.cpp" line="314"/>
         <source>Can&apos;t open file.</source>
         <translation>Невозможно открыть файл.</translation>
     </message>
     <message>
-        <location filename="../src/ui/mainwindow.cpp" line="257"/>
+        <location filename="../src/ui/mainwindow.cpp" line="318"/>
         <source>Unknown</source>
         <translation>Неизвестно</translation>
     </message>
@@ -394,46 +484,68 @@ Error text: %1</source>
 <context>
     <name>MyIncApplication</name>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="41"/>
         <source>Usage: myinc [--drivers|--help] [Project]</source>
-        <translation>Использование: myinc [--drivers|--help] [Project]</translation>
+        <translation type="obsolete">Использование: myinc [--drivers|--help] [Project]</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="42"/>
+        <location filename="../src/core/myincapplication.cpp" line="50"/>
+        <source>Usage: myinc [--drivers|--debug|--help] [Project]</source>
+        <translation>Использование: myinc [--drivers|--debug|--help] [Project]</translation>
+    </message>
+    <message>
+        <location filename="../src/core/myincapplication.cpp" line="51"/>
         <source>Usage: myinc --compress [[Project1.xml] [[Project2.xml] [..]]
 </source>
         <translation>Использование: myinc --compress [Project1.xml] [[Project2.xml] [..]]</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="43"/>
+        <location filename="../src/core/myincapplication.cpp" line="52"/>
         <source>--drivers	show aviable SQL drivers</source>
         <translation>--drivers	показать доступные SQL драйвера</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="44"/>
+        <location filename="../src/core/myincapplication.cpp" line="53"/>
         <source>--help	show this message</source>
         <translation>--help	показать это сообщение</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="45"/>
+        <location filename="../src/core/myincapplication.cpp" line="54"/>
         <source>--compress	Compressing XML project</source>
         <translation>--compress	Сжатие XML проекта</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="49"/>
+        <location filename="../src/core/myincapplication.cpp" line="55"/>
+        <source>--debug	Adding specialy menu for developing and testing projects</source>
+        <translation>--debug	Включает дополнительное меню для разработки и отладки проектов myInc</translation>
+    </message>
+    <message>
+        <location filename="../src/core/myincapplication.cpp" line="59"/>
         <source>Aviable SQL drivers in system:
 </source>
         <translation>Доступные SQL драйвера в системе:</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="61"/>
+        <location filename="../src/core/myincapplication.cpp" line="75"/>
         <source>Compressing %1 file...</source>
         <translation>Сжатие %1 файла...</translation>
     </message>
     <message>
-        <location filename="../src/core/myincapplication.cpp" line="133"/>
+        <location filename="../src/core/myincapplication.cpp" line="83"/>
+        <source>Please set manual form for project</source>
+        <translation>Пожалуйста установите главную окно для проекта</translation>
+    </message>
+    <message>
+        <location filename="../src/core/myincapplication.cpp" line="154"/>
         <source>This file already compressed. Skipping...</source>
         <translation>Этот файл уже сжат. Пропуск...</translation>
+    </message>
+</context>
+<context>
+    <name>QAboutWidget</name>
+    <message>
+        <location filename="../src/ui/qaboutwidget.cpp" line="32"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
     </message>
 </context>
 </TS>
