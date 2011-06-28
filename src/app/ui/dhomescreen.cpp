@@ -1,9 +1,9 @@
 #include "dhomescreen.h"
 //
-#include "core/dproject.h"
-#include "ui/dworkwidget.h"
-#include "core/myincapplication.h"
-#include "core/dnamespace.h"
+#include "../core/dproject.h"
+#include "dworkwidget.h"
+#include "../core/myincapplication.h"
+#include "../core/dnamespace.h"
 //
 #include <QGridLayout>
 #include <QListWidget>

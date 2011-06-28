@@ -1,7 +1,7 @@
 #include "dsqlquertyviewer.h"
 //
-#include "core/myincapplication.h"
-#include "core/dproject.h"
+#include "../core/myincapplication.h"
+#include "../core/dproject.h"
 //
 #include <QGridLayout>
 #include <QLabel>

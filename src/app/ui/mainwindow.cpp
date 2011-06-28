@@ -1,22 +1,21 @@
 #include "mainwindow.h"
 //
-#include "core/dproject.h"
-#include "core/myincapplication.h"
-#include "core/dnamespace.h"
-#include "ui/dhomescreen.h"
-#include "ui/dfooter.h"
-#include "ui/ddbconfig.h"
-#include "ui/dsqlquertyviewer.h"
-#include "ui/qaboutwidget.h"
-#include "ui/ddebugwidget.h"
-#include "errors.h"
+#include "../core/dproject.h"
+#include "../core/myincapplication.h"
+#include "../core/dnamespace.h"
+#include "dhomescreen.h"
+#include "dfooter.h"
+#include "ddbconfig.h"
+#include "dsqlquertyviewer.h"
+#include "qaboutwidget.h"
+#include "ddebugwidget.h"
+#include "../errors.h"
 //
 #include <QGridLayout>
 #include <QMenu>
 #include <QMenuBar>
 #include <QFileDialog>
 #include <QMessageBox>
-//#include <QCloseEvent>
 #include <QStatusBar>
 #include <QSystemTrayIcon>
 //

@@ -1,7 +1,7 @@
 #include "ddebugwidget.h"
 //
-#include "core/myincapplication.h"
-#include "core/ddebug.h"
+#include "../core/myincapplication.h"
+#include "../core/ddebug.h"
 //
 #include <QListWidget>
 #include <QGridLayout>

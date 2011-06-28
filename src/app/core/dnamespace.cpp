@@ -1,12 +1,12 @@
-#include "core/dnamespace.h"
-#include "core/dproject.h"
-#include "errors.h"
-#include "core/myincapplication.h"
-#include "core/dsystemfuncs.h"
-#include "core/durihelper.h"
-#include "core/ddebug.h"
+#include "dnamespace.h"
+#include "dproject.h"
+#include "../errors.h"
+#include "myincapplication.h"
+#include "dsystemfuncs.h"
+#include "durihelper.h"
+#include "ddebug.h"
 //
-#include "ncreport.h"
+//#include "ncreport.h"
 //
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
@@ -171,7 +171,7 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
 //
 bool DNamespace::report(QString name, QStringList args)
 {
-    QString reportFile = config( name, "File" );
+    /*QString reportFile = config( name, "File" );
     if ((reportFile == "NULL") || (reportFile == "Array") || (reportFile == "Error"))
         return false;
     //NCReportLookup * lc = new NCReportLookup();
@@ -247,7 +247,8 @@ bool DNamespace::report(QString name, QStringList args)
         QMessageBox::information( 0, tr("Report error"), err );
         return false;
     }
-    return true;
+    return true;*/
+    return false;
 }
 // TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)

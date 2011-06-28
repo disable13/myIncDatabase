@@ -1,6 +1,6 @@
 #include "ddebug.h"
 //
-#include "core/myincapplication.h"
+#include "myincapplication.h"
 //
 DDebug::DDebug() :
     QObject(),p_maximum(200)

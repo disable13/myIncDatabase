@@ -2,7 +2,7 @@
 //
 #include <QGridLayout>
 #include <QProgressBar>
-#include "QProgressIndicator.h"
+#include "../QProgressIndicator.h"
 #include <QLabel>
 //
 DFooter::DFooter(QWidget *parent) :
