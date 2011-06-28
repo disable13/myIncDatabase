@@ -2,11 +2,12 @@
 # Project created by Timoshenko Sergey 2010-11-26T10:50:18
 #---------------------------------------------------------
 QT = core gui xml sql
+#
 include(../../ncreport.pri)
 #
 TARGET = myinc
 TEMPLATE = app
-DESTDIR = bin
+DESTDIR = ../../build/bin
 #
 TRANSLATIONS = ../share/lang/ru_RU.UTF-8.ts
 #
@@ -38,7 +39,8 @@ SOURCES = main.cpp\
     core/durihelper.cpp \
     ui/qaboutwidget.cpp \
     core/ddebug.cpp \
-    ui/ddebugwidget.cpp
+    ui/ddebugwidget.cpp \
+    core/dplugin.cpp
 #
 HEADERS =  core/dproject.h \
     core/dnamespace.h \
@@ -56,7 +58,8 @@ HEADERS =  core/dproject.h \
     core/durihelper.h \
     ui/qaboutwidget.h \
     core/ddebug.h \
-    ui/ddebugwidget.h
+    ui/ddebugwidget.h \
+    core/dplugin.h
 #
 OTHER_FILES += \
     samples/simple-project.xml \
