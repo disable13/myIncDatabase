@@ -7,4 +7,4 @@ OTHER_FILES += \
     TODO \
     README \
     COPYING \
-    INSTALL \
+    INSTALL
