@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = \
-    libs \
+#    libs \
     app
 #
 CONFIG += ordered

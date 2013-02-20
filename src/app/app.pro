@@ -3,8 +3,6 @@
 #---------------------------------------------------------
 QT = core gui xml sql
 #
-include(../../ncreport.pri)
-#
 TARGET = myinc
 TEMPLATE = app
 DESTDIR = ../../build/bin

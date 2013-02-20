@@ -1,8 +1,8 @@
-#include "core/dnamespace.h"
-#include "core/dproject.h"
-#include "errors.h"
-#include "core/myincapplication.h"
-#include "core/dauth.h"
+#include "dnamespace.h"
+#include "dproject.h"
+#include "../errors.h"
+#include "myincapplication.h"
+#include "dauth.h"
 //
 #include <QFile>
 #include <QtXml/QDomDocument>

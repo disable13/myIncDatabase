@@ -1,6 +1,6 @@
 #include "qaboutwidget.h"
 //
-#include "core/myincapplication.h"
+#include "../core/myincapplication.h"
 //
 #include <QLabel>
 #include <QGridLayout>

@@ -1,12 +1,12 @@
-#include "core/dnamespace.h"
-#include "core/dproject.h"
-#include "errors.h"
-#include "core/myincapplication.h"
-#include "core/dsystemfuncs.h"
-#include "core/durihelper.h"
-#include "core/ddebug.h"
+#include "dnamespace.h"
+#include "dproject.h"
+#include "../errors.h"
+#include "myincapplication.h"
+#include "dsystemfuncs.h"
+#include "durihelper.h"
+#include "ddebug.h"
 //
-#include "ncreport.h"
+//#include "ncreport.h" // cut this
 //
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
@@ -174,80 +174,10 @@ bool DNamespace::report(QString name, QStringList args)
     QString reportFile = config( name, "File" );
     if ((reportFile == "NULL") || (reportFile == "Array") || (reportFile == "Error"))
         return false;
-    //NCReportLookup * lc = new NCReportLookup();
-    //lc->setName( name );
 
-    qDebug("180");
+    QMessageBox::information( 0, tr("Report error"), tr("Report system not be installed") );
+    return false;
 
-    NCReport * report = new NCReport( );
-    // configure
-    report->setParseMode( NCReport::fromFile );
-    report->setReportFile( reportFile );
-
-    //report->registerLookupClass( lc );
-
-    // fill params
-    for(int i = 0; i < args.count(); i++)
-        report->addParameter( QString("arg_%1").arg(i), args.at(i) );
-
-    QSqlDatabase db = QSqlDatabase::database("Project");
-    report->setDatabase( &db );
-
-    // set type
-    QString type = config( name, "Type" ).toLower();
-    if (type=="Error") {
-        delete report;
-        //delete lc;
-        qDebug("199");
-        return false;
-    }
-    bool isPreview = false;
-    if (type == "preview") {
-        isPreview = true;
-        report->setDeleteReportAfterPreview( true );	// delete report object after close preview
-        report->setPreviewIsMaximized( false );
-        report->setOutput( NCReport::Preview );
-    } else if ((type=="printer") || (type=="default") || (type=="NULL")) {
-        report->setShowPrintDialog( true );
-        report->setCopies( 1 );
-        report->setOutput( NCReport::Printer );
-    } else if (type=="xml") {
-        QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save XML File"),
-                                                         name.append(".xml"), tr("Xml files (*.xml)"));
-        if ( !fileName.isEmpty() ) {
-            report->setOutputFile( fileName );
-            report->setOutput( NCReport::XML );
-        }
-    } else if (type=="pdf") {
-        QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save PDF File"),
-                                                         name.append(".pdf"), tr("Pdf files (*.pdf)"));
-        if ( !fileName.isEmpty() ) {
-            report->setShowPrintDialog( true );
-            report->setCopies( 1 );
-            report->setOutputFile( fileName );
-            report->setOutput( NCReport::Pdf );
-        }
-    } else if (type=="text") {
-        QString fileName = QFileDialog::getSaveFileName( MIA_FOCUS, tr("Save TXT File"),
-                                                         name.append(".txt"), tr("Text files (*.txt)"));
-        if ( !fileName.isEmpty() ) {
-            report->setOutputFile( fileName );
-            report->setOutput( NCReport::TXT );
-        }
-    }
-
-    report->runReport();
-
-    bool error = report->wasError();
-    QString err = report->ErrorMsg();
-
-    if ( !isPreview )	//  delete report object if report has done directly to printer
-        delete report;
-    if ( error ) {
-        QMessageBox::information( 0, tr("Report error"), err );
-        return false;
-    }
-    return true;
 }
 // TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)

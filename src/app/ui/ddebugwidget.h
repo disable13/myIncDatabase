@@ -3,7 +3,7 @@
 //
 #include <QWidget>
 //
-#include "core/ddebug.h"
+#include "../core/ddebug.h"
 //
 #include <QListWidgetItem>
 //

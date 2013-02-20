@@ -1,7 +1,7 @@
 #include "dauth.h"
 //
-#include "core/myincapplication.h"
-#include "core/dnamespace.h"
+#include "myincapplication.h"
+#include "dnamespace.h"
 //
 #include <QtCore/QCryptographicHash>
 // GUI

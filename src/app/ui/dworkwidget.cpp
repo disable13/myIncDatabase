@@ -10,7 +10,7 @@
 //
 #include <QtGui>
 //
-#include "core/myincapplication.h"
+#include "../core/myincapplication.h"
 //
 DWorkWidget::DWorkWidget(QString formName) :
     QWidget(), formName(formName)

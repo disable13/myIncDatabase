@@ -1,6 +1,6 @@
 #include "ddbconfig.h"
 //
-#include "core/dproject.h"
+#include "../core/dproject.h"
 //
 #include <QtGui/QFormLayout>
 #include <QtGui/QComboBox>
@@ -10,6 +10,7 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QLabel>
+//
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 #include <QtGui/QMessageBox>
