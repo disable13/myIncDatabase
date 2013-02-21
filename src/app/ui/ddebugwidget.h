@@ -1,11 +1,15 @@
 #ifndef DDEBUGWIDGET_H
 #define DDEBUGWIDGET_H
 //
-#include <QWidget>
+#ifndef HAVE_QT5
+ #include <QtGui/QWidget>
+ #include <QtGui/QListWidgetItem>
+#else
+ #include <QtWidgets/QWidget>
+ #include <QtWidgets/QListWidgetItem>
+#endif
 //
 #include "../core/ddebug.h"
-//
-#include <QListWidgetItem>
 //
 class QGridLayout;
 class QListWidget;

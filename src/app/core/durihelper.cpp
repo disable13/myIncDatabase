@@ -101,7 +101,7 @@ agais:
         return;
     }
 }
-//
+// TODO: fix for 4.5.x
 bool DUriHelper::isUri()
 {
     return (rx->captureCount() != -1);

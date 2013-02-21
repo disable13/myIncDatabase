@@ -3,10 +3,17 @@
 #include "../core/myincapplication.h"
 #include "../core/ddebug.h"
 //
-#include <QListWidget>
-#include <QGridLayout>
-#include <QMenu>
-#include <QAction>
+#ifndef HAVE_QT5
+ #include <QtGui/QListWidget>
+ #include <QtGui/QGridLayout>
+ #include <QtGui/QMenu>
+ #include <QtGui/QAction>
+#else
+ #include <QtWidgets/QListWidget>
+ #include <QtWidgets/QGridLayout>
+ #include <QtWidgets/QMenu>
+ #include <QtWidgets/QAction>
+#endif
 // TODO: upload previos debug data
 DDebugWidget::DDebugWidget(QWidget *parent) :
     QWidget(parent, Qt::Tool )

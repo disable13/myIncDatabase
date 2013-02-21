@@ -1,7 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 //
-#include <QtGui/QMainWindow>
+#ifndef HAVE_QT5
+ #include <QtGui/QMainWindow>
+#else
+ #include <QtWidgets/QMainWindow>
+#endif
 //
 class QCloseEvent;
 // UI

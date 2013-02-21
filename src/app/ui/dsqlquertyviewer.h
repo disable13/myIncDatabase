@@ -1,9 +1,13 @@
 #ifndef DSQLQUERTYVIEWER_H
 #define DSQLQUERTYVIEWER_H
 //
-#include <QWidget>
-//
-#include <QtGui/QListWidgetItem>
+#ifndef HAVE_QT5
+ #include <QtGui/QWidget>
+ #include <QtGui/QListWidgetItem>
+#else
+ #include <QtWidgets/QWidget>
+ #include <QtWidgets/QListWidgetItem>
+#endif
 //
 class QGridLayout;
 class QPushButton;

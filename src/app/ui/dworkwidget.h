@@ -1,7 +1,11 @@
 #ifndef DWORKWIDGET_H
 #define DWORKWIDGET_H
 //
-#include <QWidget>
+#ifndef HAVE_QT5
+ #include <QtGui/QWidget>
+#else
+ #include <QtWidgets/QWidget>
+#endif
 //
 #include <QVariant>
 #include <QModelIndex>

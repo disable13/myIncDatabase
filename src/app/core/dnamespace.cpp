@@ -6,8 +6,6 @@
 #include "durihelper.h"
 #include "ddebug.h"
 //
-//#include "ncreport.h" // cut this
-//
 #include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlResult>
@@ -15,8 +13,14 @@
 #include <QRegExp>
 #include <QStringList>
 #include <QTextStream>
-#include <QtGui/QMessageBox>
-#include <QtGui/QFileDialog>
+//
+#ifndef HAVE_QT5
+ #include <QtGui/QMessageBox>
+ #include <QtGui/QFileDialog>
+#else
+ #include <QtWidgets/QMessageBox>
+ #include <QtWidgets/QFileDialog>
+#endif
 //
 DNamespace::DNamespace() :
     QObject()
@@ -141,7 +145,7 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
 {
     if (!isSql) {
         emit error(_ERR_NS_SQLNOINIT);
-        return 0x00;
+        return QSqlQuery(); // FIXME: Qt5.. now is bad.
     }
     QString src;
     switch (type) {
@@ -169,15 +173,11 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
     return QSqlQuery( query[0] );
 }
 //
-bool DNamespace::report(QString name, QStringList args)
+bool DNamespace::report(QString, QStringList)
 {
-    QString reportFile = config( name, "File" );
-    if ((reportFile == "NULL") || (reportFile == "Array") || (reportFile == "Error"))
-        return false;
-
+    qDebug("FIXME: bool DNamespace::report(QString,QStringList)");
     QMessageBox::information( 0, tr("Report error"), tr("Report system not be installed") );
     return false;
-
 }
 // TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)
@@ -221,6 +221,7 @@ void DNamespace::uri(QString uri, QVariant * var)
                     for(int i = 0; i < pathFix.count(); i++)
                         q.append("/").append(pathFix.at(i));
                     q.remove(0,1);
+                    /// TODO: fix for 4.5.x
                     var->setValue(
                                 sys->run( q,
                                           ps.args(), sender() )

@@ -1,7 +1,11 @@
 #ifndef DDBCONFIG_H
 #define DDBCONFIG_H
 //
-#include <QDialog>
+#ifndef HAVE_QT5
+ #include <QtGui/QDialog>
+#else
+ #include <QtWidgets/QDialog>
+#endif
 //
 class DProject;
 //

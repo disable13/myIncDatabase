@@ -5,8 +5,13 @@
 #include "../core/myincapplication.h"
 #include "../core/dnamespace.h"
 //
-#include <QGridLayout>
-#include <QListWidget>
+#ifndef HAVE_QT5
+ #include <QtGui/QGridLayout>
+ #include <QtGui/QListWidget>
+#else
+ #include <QtWidgets/QGridLayout>
+ #include <QtWidgets/QListWidget>
+#endif
 //
 DHomeScreen::DHomeScreen(QWidget *parent) :
     QWidget(parent)

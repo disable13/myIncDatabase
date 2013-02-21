@@ -1,7 +1,11 @@
 #ifndef QABOUTWIDGET_H
 #define QABOUTWIDGET_H
 //
-#include <QWidget>
+#ifndef HAVE_QT5
+ #include <QtGui/QWidget>
+#else
+ #include <QtWidgets/QWidget>
+#endif
 //
 class QGridLayout;
 class QLabel;

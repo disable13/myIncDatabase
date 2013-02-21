@@ -2,18 +2,32 @@
 //
 #include "../core/dproject.h"
 //
-#include <QtGui/QFormLayout>
-#include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QSpinBox>
-#include <QtGui/QTextEdit>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QLabel>
+#ifndef HAVE_QT5
+ #include <QtGui/QFormLayout>
+ #include <QtGui/QComboBox>
+ #include <QtGui/QLineEdit>
+ #include <QtGui/QSpinBox>
+ #include <QtGui/QTextEdit>
+ #include <QtGui/QDialogButtonBox>
+ #include <QtGui/QPushButton>
+ #include <QtGui/QLabel>
+ //
+ #include <QtGui/QMessageBox>
+#else
+ #include <QtWidgets/QFormLayout>
+ #include <QtWidgets/QComboBox>
+ #include <QtWidgets/QLineEdit>
+ #include <QtWidgets/QSpinBox>
+ #include <QtWidgets/QTextEdit>
+ #include <QtWidgets/QDialogButtonBox>
+ #include <QtWidgets/QPushButton>
+ #include <QtWidgets/QLabel>
+ //
+ #include <QtWidgets/QMessageBox>
+#endif
 //
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
-#include <QtGui/QMessageBox>
 //
 // FIXME: class DDbConfig
 //

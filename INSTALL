@@ -1,6 +1,3 @@
-myIncDatabase requires the Qt 4.x development library. While
+myIncDatabase requires the Qt 4.7+ or Qt 5.x development library. While
 it will compile on earlier versions, Qt 4.7 is recommended for
 maximum functionality. http://qt.nokia.com/
-
-Also myIncDatabase requires NCReport 0.7 library.
-http://ncreport.sourceforge.net

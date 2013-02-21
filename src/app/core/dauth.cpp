@@ -5,12 +5,21 @@
 //
 #include <QtCore/QCryptographicHash>
 // GUI
-#include <QtGui/QDialog>
-#include <QtGui/QLineEdit>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QGridLayout>
-#include <QtGui/QMessageBox>
+#ifndef HAVE_QT5
+ #include <QtGui/QDialog>
+ #include <QtGui/QLineEdit>
+ #include <QtGui/QLabel>
+ #include <QtGui/QPushButton>
+ #include <QtGui/QGridLayout>
+ #include <QtGui/QMessageBox>
+#else
+ #include <QtWidgets/QDialog>
+ #include <QtWidgets/QLineEdit>
+ #include <QtWidgets/QLabel>
+ #include <QtWidgets/QPushButton>
+ #include <QtWidgets/QGridLayout>
+ #include <QtWidgets/QMessageBox>
+#endif
 //
 DAuth::DAuth(QObject *parent) :
     QObject(parent), p_isAuthed(false)
@@ -52,7 +61,7 @@ bool DAuth::isAuthed()
 //
 bool DAuth::setAuth(QString user, QString password)
 {
-    QByteArray hash = QCryptographicHash::hash(password.toAscii(), QCryptographicHash::Md5);
+    QByteArray hash = QCryptographicHash::hash(password.toLocal8Bit(), QCryptographicHash::Md5);
     hash = hash.toHex();
     p_isAuthed = ( QString(hash) == userPasswordHash( user ).toLower() );
 

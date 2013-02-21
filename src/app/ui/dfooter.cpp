@@ -1,9 +1,16 @@
 #include "dfooter.h"
 //
-#include <QGridLayout>
-#include <QProgressBar>
 #include "../QProgressIndicator.h"
-#include <QLabel>
+//
+#ifndef HAVE_QT5
+ #include <QtGui/QGridLayout>
+ #include <QtGui/QProgressBar>
+ #include <QtGui/QLabel>
+#else
+ #include <QtWidgets/QGridLayout>
+ #include <QtWidgets/QProgressBar>
+ #include <QtWidgets/QLabel>
+#endif
 //
 DFooter::DFooter(QWidget *parent) :
     QWidget(parent)

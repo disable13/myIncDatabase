@@ -8,7 +8,11 @@
 #include <QtSql/QSqlQueryModel>
 #include <QtSql/QSqlQuery>
 //
+#ifndef HAVE_QT5
 #include <QtGui>
+#else
+#include <QtWidgets>
+#endif
 //
 #include "../core/myincapplication.h"
 //

@@ -1,7 +1,15 @@
 #---------------------------------------------------------
 # Project created by Timoshenko Sergey 2010-11-26T10:50:18
 #---------------------------------------------------------
-QT = core gui xml sql
+QT = core xml sql
+#
+greaterThan(QT_MAJOR_VERSION, 4) {
+    QT += widgets uitools
+    DEFINES += HAVE_QT5
+} else {
+    QT += gui
+    CONFIG += uitools
+}
 #
 TARGET = myinc
 TEMPLATE = app
@@ -18,7 +26,7 @@ unix {
     target.path = /usr/local/bin
 }
 #
-CONFIG += uitools console static
+CONFIG +=  console static
 release : CONFIG -= console
 #
 SOURCES = main.cpp\
@@ -37,8 +45,7 @@ SOURCES = main.cpp\
     core/durihelper.cpp \
     ui/qaboutwidget.cpp \
     core/ddebug.cpp \
-    ui/ddebugwidget.cpp \
-    core/dplugin.cpp
+    ui/ddebugwidget.cpp
 #
 HEADERS =  core/dproject.h \
     core/dnamespace.h \
@@ -56,8 +63,7 @@ HEADERS =  core/dproject.h \
     core/durihelper.h \
     ui/qaboutwidget.h \
     core/ddebug.h \
-    ui/ddebugwidget.h \
-    core/dplugin.h
+    ui/ddebugwidget.h
 #
 OTHER_FILES += \
     samples/simple-project.xml \

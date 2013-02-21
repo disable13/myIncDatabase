@@ -4,13 +4,13 @@
 #include <QObject>
 //
 #include <QVariant>
+//
 class QDomDocument;
 class QDomNode;
 class DProject;
 class QRegExp;
 class QSqlQuery;
 class DSystemFuncs;
-//class QMutex;
 //
 class DNamespace : public QObject
 {
@@ -27,9 +27,6 @@ private:
     QSqlQuery * query;
     //
     QDomNode * cfg;
-    //
-//    QMutex * muConfig;
-//    QMutex * muSql;
 
 public:
     DNamespace();
