@@ -2,9 +2,9 @@
 #define DDBCONFIG_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QDialog>
+# include <QtGui/QDialog>
 #else
- #include <QtWidgets/QDialog>
+# include <QtWidgets/QDialog>
 #endif
 //
 class DProject;
@@ -36,7 +36,7 @@ private:
 
 public:
     DDbConfig(QWidget *parent = 0);
-    ~DDbConfig();
+    virtual ~DDbConfig();
     //
     void setProject(DProject *);
 

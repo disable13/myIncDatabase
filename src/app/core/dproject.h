@@ -5,33 +5,38 @@
 //
 #include <QStringList>
 #include <QHash>
-#include <QtXml/QDomElement>
-#include <QDataStream>
 //
-class DAuth;
+#include "../core.h"
+//
+#include "dauth.h"
+//
+class DXml;
 //
 class DProject : public QObject
 {
     Q_OBJECT
+public:
+    DProject(const QString &fileName );
+    virtual ~DProject();
+
 private:
-    bool isNew;
-    bool isLoad;
-    bool isSql;
-    DAuth * auth;
+    DAuth auth;
     //
-    QDataStream * data;
+    DQ_PROPERTY_R (bool, New,   private) //bool isNew;
+    DQ_PROPERTY_R (bool, Load,  private) //bool isLoad;
+    DQ_PROPERTY_R (bool, Sql,   private) //bool isSql;
     //
-    QString filePath;
-    QString dbDriver;
-    QString dbName;
-    QString dbUser;
-    QString dbPassord;
-    QString dbConnectOptions;
-    QString dbHost;
-    int     dbPort;
-    QStringList dbTables;
+    DQ_PROPERTY_R (QString, FilePath,   private) //QString filePath;
+    DQ_PROPERTY_R (QString, DbDriver,   private) //QString dbDriver;
+    DQ_PROPERTY_RW(QString, DbName,     private) //QString dbName;
+    DQ_PROPERTY_RW(QString, DbUser,     private) //QString dbUser;
+    DQ_PROPERTY_RW(QString, DbPassword, private) //QString dbPassord;
+    DQ_PROPERTY_RW(QString, DbConnectOptions, private) //QString dbConnectOptions;
+    DQ_PROPERTY_RW(QString, DbHost,     private) //QString dbHost;
+    DQ_PROPERTY_RW(unsigned int, DbPort,private) //int     dbPort;
+    DQ_PROPERTY_R (QStringList, DbTables, private)//QStringList dbTables;
     //
-    QString lastError;
+    DQ_PROPERTY_R (QString, LastError, protected) //QString lastError;
     //
     QHash<QString, QString> sel;
     QHash<QString, QString> ins;
@@ -40,63 +45,40 @@ private:
     QHash<QString, QString> other;
 
 public:
-    DProject( QString fileName );
-    ~DProject();
-    //
     void save();
     bool load();
-    bool loadSql(QDomElement);
-    bool authorized();
+    bool loadSql(DXml*);
+    bool authorized() const;
     bool getAuthorized(QWidget*);
     // propertes
-    bool getIsNew();
-    bool getIsLoad();
-    bool getIsConnected();
-    QString getLastError();
-    QDataStream * getData() { return data; }
-    QString getDbDriver();
-    QString getDbName();
-    QString getDbUser();
-    QString getDbPassord();
-    QString getDbConnectOptions();
-    QString getDbHost();
-    int     getDbPort();
-    QString getProjectFile();
+    int     getSelectSqlQuertyCount() const;
+    QString getSelectSqlQuerty(const QString &name) const;
+    QString getSelectSqlQuerty(const int &pos) const;
     //
-    int     getSelectSqlQuertyCount();
-    QString getSelectSqlQuerty( QString name );
-    QString getSelectSqlQuerty( int pos );
+    int     getInsertSqlQuertyCount() const;
+    QString getInsertSqlQuerty(const QString &name) const;
+    QString getInsertSqlQuerty(const int &pos) const;
     //
-    int     getInsertSqlQuertyCount();
-    QString getInsertSqlQuerty( QString name );
-    QString getInsertSqlQuerty( int pos );
+    int     getDeleteSqlQuertyCount() const;
+    QString getDeleteSqlQuerty(const QString &name) const;
+    QString getDeleteSqlQuerty(const int &pos) const;
     //
-    int     getDeleteSqlQuertyCount();
-    QString getDeleteSqlQuerty( QString name );
-    QString getDeleteSqlQuerty( int pos );
+    int     getUpdateSqlQuertyCount() const;
+    QString getUpdateSqlQuerty(const QString &name) const;
+    QString getUpdateSqlQuerty(const int &pos) const;
     //
-    int     getUpdateSqlQuertyCount();
-    QString getUpdateSqlQuerty( QString name );
-    QString getUpdateSqlQuerty( int pos );
+    int     getOtherSqlQuertyCount() const;
+    QString getOtherSqlQuerty(const QString &name) const;
+    QString getOtherSqlQuerty(const int &pos) const;
     //
-    int     getOtherSqlQuertyCount();
-    QString getOtherSqlQuerty( QString name );
-    QString getOtherSqlQuerty( int pos );
-    //
-    bool setDbDriver(QString nameDriver);
-    void setDbName(QString datebaseName);
-    void setDbUser(QString user);
-    void setDbPassord(QString password);
-    void setDbConnectOptions(QString connectOptions);
-    void setDbHost(QString hostName);
-    void setDbPort(int port);
+    bool setDbDriver(const QString &nameDriver);
     //
     bool connectDatabase();
     void disconnectDatabase();
     //
     QStringList workspace();
     //
-    QString config(QString, QString);
+    QString config(const QString&, const QString&) const;
 
 signals:
     void error(int);

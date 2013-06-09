@@ -2,19 +2,17 @@
 #define DHOMESCREEN_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QWidget>
- #include <QtGui/QListWidgetItem>
+# include <QtGui/QWidget>
+# include <QtGui/QListWidgetItem>
 #else
- #include <QtWidgets/QWidget>
- #include <QtWidgets/QListWidgetItem>
+# include <QtWidgets/QWidget>
+# include <QtWidgets/QListWidgetItem>
 #endif
 //
 class QGridLayout;
 class QListWidget;
+//
 class DProject;
-//
-
-//
 class DWorkWidget;
 //
 class DHomeScreen : public QWidget

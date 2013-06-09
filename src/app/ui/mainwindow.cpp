@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
                                              this, SLOT(openQuerySettings()) );
 //    actUiSettings = menProject->addAction( tr("User interface"),
 //                                          this, SLOT(openUiSettings()) );
-    if (MyIncApplication::isDebug())
+    if (MIA_GLOBAL->getDebug())
         menProject->addAction( QIcon(":/icon/develop.png"), tr("Debug tool"),
                            this, SLOT(openDebug()) );
 
@@ -189,7 +189,7 @@ void MainWindow::createProject()
 
     QFileDialog f(this, tr("Select MyInc Project"), "", "XML files (*.xml)" );
     if (f.exec()) {
-        MyIncApplication::openProject( f.selectedFiles()[0] );
+        MIA_GLOBAL->openProject( f.selectedFiles()[0] );
         lockUI( false );
     }
     qDebug("TODO: Run Wizard");
@@ -212,7 +212,7 @@ void MainWindow::openProjectPush()
 void MainWindow::openConnectionSettings()
 {
     DDbConfig c(this);
-    c.setProject( MyIncApplication::project() );
+    c.setProject( MIA_PROJECT );
     c.exec();
 }
 //
@@ -248,17 +248,17 @@ void MainWindow::connectDatabase()
     footer->progressStart( tr("Connection to database...") );
     if (isConnected) {
         home->clear();
-        MyIncApplication::project()->disconnectDatabase();
+        MIA_PROJECT->disconnectDatabase();
         isConnected = false;
     } else {
-        if (!MyIncApplication::project()->connectDatabase()) {
+        if (!MIA_PROJECT->connectDatabase()) {
             QMessageBox msg;
             msg.setIcon( QMessageBox::Critical );
             //msg.setWindowTitle( app.tr("This is Title") );
             msg.setStandardButtons( QMessageBox::Retry | QMessageBox::Cancel );
             msg.setDefaultButton( QMessageBox::Cancel );
             msg.setText( tr("Can't connect to SQL Server") );
-            msg.setDetailedText( MyIncApplication::project()->getLastError() );
+            msg.setDetailedText( MIA_PROJECT->getLastError() );
 
             if ( msg.exec() == QMessageBox::Retry ) // recurcive
                 this->connectDatabase();
@@ -268,7 +268,7 @@ void MainWindow::connectDatabase()
             return;
         }
         isConnected = true;
-        home->setProject( MyIncApplication::project() );
+        home->setProject( MIA_PROJECT );
     }
     actConnect->setText( (isConnected) ? tr("Disconnect...") : tr("Connect...") );
     footer->progressStop( true );
@@ -283,7 +283,8 @@ void MainWindow::closeProject()
         connectDatabase(); // to disconnect from database
     setWindowTitle( tr("No project").append(" - MyIncDatabase ver. ")
                     .append(MIA_APP->applicationVersion()) );
-    MyIncApplication::closeProject();
+    MIA_GLOBAL->closeProject();
+
     lockUI( true );
 }
 //

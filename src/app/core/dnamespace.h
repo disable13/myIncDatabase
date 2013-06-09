@@ -5,10 +5,7 @@
 //
 #include <QVariant>
 //
-class QDomDocument;
-class QDomNode;
-class DProject;
-class QRegExp;
+class DXml;
 class QSqlQuery;
 class DSystemFuncs;
 //
@@ -18,39 +15,39 @@ class DNamespace : public QObject
     Q_ENUMS(Type)
     Q_ENUMS(SqlType)
 
+public:
+    DNamespace();
+    virtual ~DNamespace();
+
 private:
     DSystemFuncs * sys;
     //
-    QDomDocument * doc;
-    bool isSql; // connected?
-    bool isConfig; // open?
+    DXml* doc;
     QSqlQuery * query;
-    //
-    QDomNode * cfg;
 
 public:
-    DNamespace();
-    ~DNamespace();
-    //
-    enum Type { Sql, System, Config };
-    enum SqlType { SELECT, INSERT, UPDATE, DELETE, Other };
+    enum Type   { T_Sql, T_System, T_Config };
+    enum SqlType{ ST_SELECT, ST_INSERT, ST_UPDATE, ST_DELETE, ST_Other };
     //
     bool initConfig();
     bool initSql();
     //
-    QString config(QString name, QString arrayElement );
-    int configSize(QString name);
-    void setConfig(QString name, QString value, QString arrayElement );
+    QString config(const QString &name,
+                   const QString &arrayElement = QString()
+            ) const;
+    quint32 configSize(const QString &name) const;
+    void    setConfig(const QString &name, const QString &value,
+                      const QString &arrayElement = QString() );
     //
     QSqlQuery sql(SqlType type, QString queryName, QStringList bindValue);
     //
-    bool report(QString name, QStringList args);
+    bool report(const QString &name, const QStringList &args) const;
 
 public slots:
     void uri(QString,QVariant*);
 
 signals:
-    void error(int);
+    void error(int) const;
 
 };
 //

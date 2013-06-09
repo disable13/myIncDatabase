@@ -111,7 +111,7 @@ void DDbConfig::setProject(DProject * pro)
     edtDbHost->setText( project->getDbHost() );
     edtDbName->setText( project->getDbName() );
     edtDbOptions->setPlainText( project->getDbConnectOptions() );
-    edtDbPassword->setText( project->getDbPassord() );
+    edtDbPassword->setText( project->getDbPassword() );
     edtDbUser->setText( project->getDbUser() );
     sbDbPort->setValue( project->getDbPort() );
 
@@ -134,12 +134,12 @@ void DDbConfig::save()
     project->setDbConnectOptions( edtDbOptions->toPlainText() );
     project->setDbHost( edtDbHost->text() );
     project->setDbName( edtDbName->text() );
-    project->setDbPassord( edtDbPassword->text() );
+    project->setDbPassword( edtDbPassword->text() );
     project->setDbPort( sbDbPort->value() );
     project->setDbUser( edtDbUser->text() );
 
     qDebug("TODO: can't save new Database configuration");
-    if (project->getIsConnected())
+    if (project->getSql())
         project->disconnectDatabase();
     project->connectDatabase();
     emit accept();

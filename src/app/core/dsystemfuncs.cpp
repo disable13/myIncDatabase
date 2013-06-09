@@ -23,7 +23,7 @@ QWidget* DSystemFuncs::findWidget(QString name)
     if (name == "")
         return 0x00;
     name = QString("ww_").append(name);
-    QWidgetList lst = MyIncApplication::application()->allWidgets();
+    QWidgetList lst = MIA_APP->allWidgets();
     for(int i = 0; i < lst.count(); i++)
         if (lst.at(i)->objectName() == name )
             return lst.at(i);
@@ -41,7 +41,7 @@ QVariant DSystemFuncs::returnBool(bool ret)
 //      myinc:///System/Window/Close#HelloWindow - kill window with name "HelloWindow"
 bool DSystemFuncs::openWidget(QString widget)
 {
-    return MyIncApplication::mainWindow()->getHome()->selectWorkspace( widget );
+    return MIA_GLOBAL->mainWindow()->getHome()->selectWorkspace( widget );
 }
 //
 void DSystemFuncs::closeWidget(QString widget)

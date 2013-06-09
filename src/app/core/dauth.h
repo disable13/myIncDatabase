@@ -5,27 +5,24 @@
 //
 #include <QString>
 //
+#include "../core.h"
+//
 class DAuth : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool Authed
-               READ isAuthed)
-
-private:
-    QString p_current; // for user name currenty login in.
-    bool p_isAuthed;
-
 public:
     DAuth(QObject *parent = 0);
     virtual ~DAuth();
+
+private:
+    DQ_PROPERTY_RW(bool, Auth,    private)
+
+public:
+    bool    isUser(const QString& name) const;
+    QString userPasswordHash(const QString& name);
     //
-    bool isUser(QString name);
-    QString userPasswordHash(QString name);
-    //
-    bool isAuthed();
-    bool setAuth(QString user, QString password);
+    bool setAuth(const QString& user, const QString& password);
     bool setAuth(QWidget*parentForm);
-    void setAuth(bool);
 
 };
 //

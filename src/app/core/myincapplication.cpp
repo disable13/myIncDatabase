@@ -13,18 +13,19 @@
 #include <QDataStream>
 //
 MyIncApplication*   MyIncApplication::self          = 0x00;
-QApplication*       MyIncApplication::m_app         = 0x00;
-DNamespace*         MyIncApplication::m_namespace   = 0x00;
-DProject*           MyIncApplication::m_project     = 0x00;
-DDebug*             MyIncApplication::m_debug       = 0x00;
-MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
-bool                MyIncApplication::m_isDebug     = false;
+//QApplication*       MyIncApplication::m_app         = 0x00;
+//DNamespace*         MyIncApplication::m_namespace   = 0x00;
+//DProject*           MyIncApplication::m_project     = 0x00;
+//DDebug*             MyIncApplication::m_debug       = 0x00;
+//MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
+//bool                MyIncApplication::m_isDebug     = false;
 //
 #define TR QApplication::instance()->tr
 //
 MyIncApplication::MyIncApplication(int &argc, char** argv)
+    : m_app(new QApplication(argc,argv)), m_namespace(NULL), m_project(NULL),
+      m_Debug(false), m_debug(NULL), m_mainWindow(NULL)
 {
-    MyIncApplication::m_app = new QApplication(argc,argv);
     m_app->setApplicationName( "myIncDatabase" );
     m_app->setApplicationVersion( "0.1a" );
     m_app->setOrganizationDomain( "http://github.com/disable13/myIncDatabase" );
@@ -65,7 +66,7 @@ MyIncApplication::MyIncApplication(int &argc, char** argv)
                 } else if (arg=="--compress") {
                     isCompress = true;
                 } else if (arg=="--debug") {
-                    m_isDebug = true;
+                    m_Debug = true;
                     if (!m_debug)
                         m_debug = new DDebug();
                 }
@@ -99,35 +100,33 @@ MyIncApplication::MyIncApplication(int &argc, char** argv)
 //
 MyIncApplication::~MyIncApplication()
 {
-    delete m_mainWindow;
-    delete m_project;
-    delete m_namespace;
-    if (m_debug)
-        delete m_debug;
+    FREE_MEM(m_mainWindow);
+    FREE_MEM(m_project);
+    FREE_MEM(m_namespace);
+    FREE_MEM(m_debug);
+
     QTimer::singleShot( 50, m_app, SLOT(quit()) );
 }
 //
-bool MyIncApplication::openProject( QString fileName )
+bool MyIncApplication::openProject(const QString &fileName )
 {
     Q_ASSERT_X(!m_project, "Project",
                "You don't able to open more then one project.");
     MyIncApplication::m_project = new DProject(fileName);
     QObject::connect( m_namespace, SIGNAL(error(int)),
                       m_project, SIGNAL(error(int)) );
-    m_namespace->initConfig();
 
-    return true;
+    return m_namespace->initConfig();
 }
 //
 bool MyIncApplication::closeProject()
 {
-    delete m_project;
-    m_project = 0x00;
+    FREE_MEM(m_project);
 
     return true;
 }
 //
-void MyIncApplication::compressXmlProject(QString fileName)
+void MyIncApplication::compressXmlProject(const QString &fileName)
 {
     QFile in(fileName);
     if (!in.open(QIODevice::ReadOnly)) {
@@ -142,7 +141,8 @@ void MyIncApplication::compressXmlProject(QString fileName)
 
     if (magic != 0x085a4950) {
         QByteArray buf = qCompress( data.device()->readAll() );
-        QFile out( fileName.append(".flate") );
+        QString sStuff = fileName;
+        QFile out( sStuff.append(".flate") );
         if (!out.open(QIODevice::WriteOnly)) {
             qDebug("Error: can't write compressed file");
         }
@@ -155,7 +155,9 @@ void MyIncApplication::compressXmlProject(QString fileName)
     }
 }
 // TODO: finish this
-void MyIncApplication::unCompressXmlProject(QString)
+void MyIncApplication::unCompressXmlProject(const QString &)
 {
     qDebug("TODO: void MyIncApplication::unCompressXmlProject(QString)");
 }
+//
+#undef TR

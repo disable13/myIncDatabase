@@ -2,9 +2,9 @@
 #define DWORKWIDGET_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QWidget>
+# include <QtGui/QWidget>
 #else
- #include <QtWidgets/QWidget>
+# include <QtWidgets/QWidget>
 #endif
 //
 #include <QVariant>

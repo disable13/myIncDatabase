@@ -2,11 +2,11 @@
 #define DDEBUGWIDGET_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QWidget>
- #include <QtGui/QListWidgetItem>
+# include <QtGui/QWidget>
+# include <QtGui/QListWidgetItem>
 #else
- #include <QtWidgets/QWidget>
- #include <QtWidgets/QListWidgetItem>
+# include <QtWidgets/QWidget>
+# include <QtWidgets/QListWidgetItem>
 #endif
 //
 #include "../core/ddebug.h"
@@ -25,15 +25,15 @@ public:
 
 private:
     int max;
-    QGridLayout * l;
+    QGridLayout* l;
     //
-    QListWidget * lstUri;
-    QMenu * popMenu;
-    QAction * actOpenUri;
-    QAction * actobjView;
-    QAction * actShError;
-    QAction * actShNull;
-    QAction * actShSuccessful;
+    QListWidget* lstUri;
+    QMenu*   popMenu;
+    QAction* actOpenUri;
+    QAction* actobjView;
+    QAction* actShError;
+    QAction* actShNull;
+    QAction* actShSuccessful;
     //
     QPoint last;
 

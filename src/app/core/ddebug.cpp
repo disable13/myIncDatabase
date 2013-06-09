@@ -3,10 +3,10 @@
 #include "myincapplication.h"
 //
 DDebug::DDebug() :
-    QObject(),p_maximum(200)
+    QObject(), m_Max(200)
 {
     // Can't create without '--debug' param
-    Q_ASSERT( MyIncApplication::isDebug() );
+    Q_ASSERT( MIA_GLOBAL->getDebug() );
 
     setObjectName( "Debug" );
 
@@ -21,19 +21,19 @@ DDebug::DDebug() :
 DDebug::~DDebug()
 {
     while (!p_uri.isEmpty()) {
-        delete p_uri.back();
+        FREE_MEM(p_uri.back());
         p_uri.removeLast();
     }
 }
 //
-DUriQuery* DDebug::getUri(int i)
+const DUriQuery *DDebug::getUri(int i) const
 {
     if (i < p_uri.count())
         return  p_uri.at(i);
     return NULL;
 }
 //
-int DDebug::getUriCount()
+int DDebug::getUriCount() const
 {
     return p_uri.count();
 }
@@ -50,18 +50,14 @@ void DDebug::debug(DUriQuery uri)
     else
         emit uriSuccessful( uri );
 
-    if (p_maximum > p_uri.count()) {
-        delete p_uri.last();
+    if (m_Max > p_uri.count()) {
+        FREE_MEM(p_uri.last());
         p_uri.removeLast();
     }
 }
 //
 void DDebug::debug(QString uri, QVariant result, QObject* sender)
 {
-    DUriQuery q;
-    q.uri = uri;
-    q.result = result;
-    q.sender = sender;
-    q.time = QDateTime::currentDateTime();
+    DUriQuery q = { uri, result, sender, QDateTime::currentDateTime() };
     debug( q );
 }

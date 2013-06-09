@@ -5,8 +5,8 @@
 #include "dsystemfuncs.h"
 #include "durihelper.h"
 #include "ddebug.h"
+#include "dxml.h"
 //
-#include <QtXml/QDomDocument>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlResult>
 #include <QFile>
@@ -15,84 +15,57 @@
 #include <QTextStream>
 //
 #ifndef HAVE_QT5
- #include <QtGui/QMessageBox>
- #include <QtGui/QFileDialog>
+# include <QtGui/QMessageBox>
+# include <QtGui/QFileDialog>
 #else
- #include <QtWidgets/QMessageBox>
- #include <QtWidgets/QFileDialog>
+# include <QtWidgets/QMessageBox>
+# include <QtWidgets/QFileDialog>
 #endif
 //
+const QString g_sNull   = "NULL";
+const QString g_sValue  = "value";
+const QString g_sError  = "Error";
+//
+const QString g_sMyInc  = "myinc.";
+const QString g_sConfig = g_sMyInc + "config.";
+//
 DNamespace::DNamespace() :
-    QObject()
+    QObject(), sys(new DSystemFuncs()), doc(NULL), query(NULL)
 {
-    isSql = false;
-    isConfig = false;
-
     setObjectName( "Namespace" );
-
-    sys = new DSystemFuncs();
 }
 //
 DNamespace::~DNamespace()
 {
-    if (isConfig) {
-        delete doc;
-        delete cfg;
-    }
-    if (isSql) {
-        delete query;
-    }
-    delete sys;
+    FREE_MEM(doc);
+    FREE_MEM(query);
+    FREE_MEM(sys);
 }
 //
 bool DNamespace::initConfig()
 {
-    if (isConfig) {
-        delete doc;
-        delete cfg;
-    }
+    FREE_MEM(doc);
+    doc = new DXml();
 
-    doc = new QDomDocument( "Project" );
-
-    if (!doc->setContent(
-                MyIncApplication::project()->getData()->device())) {
+    if (!doc->open(MIA_PROJECT->getFilePath()) ) {
         emit error( _ERR_NS_SYNTAX_PRO );
-        delete doc;
+        FREE_MEM(doc);
         return false;
     }
 
-    QDomElement docElem = doc->documentElement();
-
-    if (docElem.tagName().toLower() != "myinc") {
-        emit error( _ERR_NS_NOROOT );
-        delete doc;
-        return false;
-    }
-    /// TODO: Set config node;
-    cfg = new QDomNode( docElem.firstChildElement( "config" ) );
-    if ( cfg->isNull() ) {
-        emit error( _ERR_NS_NOCNFNODE );
-        delete doc;
-        delete cfg;
-        return false;
-    }
-
-    isConfig = true;
-    return true;
+    return doc->selectRoot();
 }
 //
 bool DNamespace::initSql()
 {
-    if ( !MyIncApplication::project()->getIsConnected() ) {
+    if ( !MIA_PROJECT->getSql() ) {
         emit error(_ERR_DB_CONNECT);
         return false;
     }
     QSqlDatabase db = QSqlDatabase::database("Project");
     query = new QSqlQuery(db);
 
-    isSql = true;
-
-    return MyIncApplication::project()->loadSql( doc->firstChildElement( "myinc" ) );
+    return MIA_PROJECT->loadSql( doc );
 }
 // <config>
 //      <name value="value1" /> <!-- single -->     //
@@ -101,68 +74,92 @@ bool DNamespace::initSql()
 //          <name0 value="val" />    //
 //      </name1>
 // </config>
-QString DNamespace::config(QString name, QString arrayElement)
+QString DNamespace::config(const QString &name,
+                           const QString &arrayElement /*= ""*/) const
 {
-    if (!isConfig) {
+    if (doc == NULL) {
         emit error( _ERR_NS_CNFNOINIT );
-        return "Error";
+        return g_sError;
     }
-    QDomElement child = cfg->firstChildElement( name );
-    if (child.childNodes().count() != 0 )  { // check array
-        if (arrayElement == "")
-            return "Array";
 
-        child = child.firstChildElement( arrayElement );
-        return child.attribute( "value", "NULL" );
-    } else
-        return child.attribute( "value", "NULL" );
+    if (!doc->selectRoot())
+        return g_sError;
+    if (!doc->selectElement( g_sConfig + name ))
+        return g_sNull;
+    if (!arrayElement.isEmpty()) {
+        if(!doc->selectElement( arrayElement ))
+            return g_sNull;
+    }
+
+    return doc->elementAttr( g_sValue );
+
+    //    QDomElement child = cfg->firstChildElement( name );
+    //    if (child.childNodes().count() != 0 )  { // check array
+    //        if (arrayElement == "")
+    //            return "Array";
+    //
+    //        child = child.firstChildElement( arrayElement );
+    //        return child.attribute( g_sValue, g_sNull );
+    //    } else
+    //        return child.attribute( g_sValue, g_sNull );
 }
 // BUG : return comments too
-int DNamespace::configSize( QString name )
+quint32 DNamespace::configSize( const QString &name ) const
 {
-    if (!isConfig) {
+    if (doc == NULL) {
         emit error( _ERR_NS_CNFNOINIT );
         return 0;
     }
-    return cfg->firstChildElement( name ).childNodes().count();
-}
-//
-void DNamespace::setConfig(QString name, QString value, QString arrayElement)
-{
-    if (!isConfig) {
+    doc->selectRoot();
+    if (!doc->selectElement( g_sConfig + name )) {
         emit error( _ERR_NS_CNFNOINIT );
-        return;
+        return 0;
     }
 
-    QDomElement child = cfg->firstChildElement( name );
-    if (child.childNodes().count() != 0 )
-        child.firstChildElement( arrayElement ).attributeNode( "value" ).setValue( value );
-    else
-        child.attributeNode("value").setValue( value );
+    return doc->countElements();
+    //    return cfg->firstChildElement( name ).childNodes().count();
+}
+//
+void DNamespace::setConfig(const QString &name, const QString &value,
+                           const QString &arrayElement/* = ""*/)
+{
+    //    if (!isConfig) {
+    Q_UNUSED(name);
+    Q_UNUSED(value);
+    Q_UNUSED(arrayElement);
+    emit error( _ERR_NS_CNFNOINIT );
+    return;
+    //    }
+    //
+    //    QDomElement child = cfg->firstChildElement( name );
+    //    if (child.childNodes().count() != 0 )
+    //        child.firstChildElement( arrayElement ).attributeNode( g_sValue ).setValue( value );
+    //    else
+    //        child.attributeNode(g_sValue).setValue( value );
 }
 // FIXME: DNamespace::sql
 QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue)
 {
-    if (!isSql) {
+    if (query == NULL) {
         emit error(_ERR_NS_SQLNOINIT);
         return QSqlQuery(); // FIXME: Qt5.. now is bad.
     }
     QString src;
     switch (type) {
-    case SELECT:
-        src = MyIncApplication::project()->getSelectSqlQuerty(queryName);
+    case ST_SELECT:
+        src = MIA_PROJECT->getSelectSqlQuerty(queryName);
         break;
-    case INSERT:
-        MyIncApplication::project()->getInsertSqlQuerty(queryName);
+    case ST_INSERT:
+        MIA_PROJECT->getInsertSqlQuerty(queryName);
         break;
-    case UPDATE:
-        MyIncApplication::project()->getUpdateSqlQuerty(queryName);
+    case ST_UPDATE:
+        MIA_PROJECT->getUpdateSqlQuerty(queryName);
         break;
-    case DELETE:
-        MyIncApplication::project()->getDeleteSqlQuerty(queryName);
+    case ST_DELETE:
+        MIA_PROJECT->getDeleteSqlQuerty(queryName);
         break;
     default:
-        MyIncApplication::project()->getOtherSqlQuerty(queryName);
+        MIA_PROJECT->getOtherSqlQuerty(queryName);
     }
     query->prepare(src);
     for (int i = 0; i < bindValue.count(); i++) {
@@ -173,7 +170,7 @@ QSqlQuery DNamespace::sql(SqlType type, QString queryName, QStringList bindValue
     return QSqlQuery( query[0] );
 }
 //
-bool DNamespace::report(QString, QStringList)
+bool DNamespace::report(const QString &, const QStringList &) const
 {
     qDebug("FIXME: bool DNamespace::report(QString,QStringList)");
     QMessageBox::information( 0, tr("Report error"), tr("Report system not be installed") );
@@ -182,7 +179,7 @@ bool DNamespace::report(QString, QStringList)
 // TODO: DNamespace::uri(QString,QVariant*)
 void DNamespace::uri(QString uri, QVariant * var)
 {
-    if (!MyIncApplication::project()->authorized()) {
+    if (!MIA_PROJECT->authorized()) {
         QMessageBox::critical( MIA_FOCUS, tr("Authentication"),
                                tr("Your not be authorized. Running the procedure will be terminated") );
         return;
@@ -201,15 +198,15 @@ void DNamespace::uri(QString uri, QVariant * var)
                     q = ps.path(1).toLower();
                     SqlType t;
                     if (q == "select")
-                        t = SELECT;
+                        t = ST_SELECT;
                     else if (q == "insert")
-                        t = INSERT;
+                        t = ST_INSERT;
                     else if (q == "update")
-                        t = UPDATE;
+                        t = ST_UPDATE;
                     else if (q == "delete")
-                        t = DELETE;
+                        t = ST_DELETE;
                     else
-                        t = Other;
+                        t = ST_Other;
                     sql(t, ps.path(2),
                         ps.args() );
                     var->setValue( (void*)query );
@@ -230,14 +227,15 @@ void DNamespace::uri(QString uri, QVariant * var)
                     if (report( ps.path(1).toLower(), ps.args() ))
                         var->setValue( QString("Success") );
                     else
-                        var->setValue( QString("Error") );
+                        var->setValue( QString(g_sError) );
                 } else {
-                    var->setValue(QString("Error"));
+                    var->setValue(QString(g_sError));
                     emit error(_ERR_URI_SYNTAX);
                 }
-            } else var->setValue(QString("Error"));
-        } else var->setValue(QString("Error"));
-    } else var->setValue(QString("Error"));
-    if (MyIncApplication::isDebug())
+            } else var->setValue(QString(g_sError));
+        } else var->setValue(QString(g_sError));
+    } else var->setValue(QString(g_sError));
+
+    if (MIA_GLOBAL->getDebug())
         MIA_DEBUG->debug( uri, var[0], sender() );
 }

@@ -7,6 +7,8 @@
 #include <QList>
 #include <QVariant>
 //
+#include "../core.h"
+//
 struct DUriQuery {
     QString uri;
     QVariant result;
@@ -23,12 +25,11 @@ public:
 
 protected:
     QList<DUriQuery*> p_uri;
-    int p_maximum;
+    DQ_PROPERTY_RW(int, Max, private)
 
 public:
-    DUriQuery* getUri(int);
-    int getUriCount();
-    int maximum() { return p_maximum; }
+    const DUriQuery* getUri(int) const;
+    int getUriCount() const;
 
 signals:
     void uriEvent( DUriQuery );

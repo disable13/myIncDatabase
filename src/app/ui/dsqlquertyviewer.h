@@ -2,11 +2,11 @@
 #define DSQLQUERTYVIEWER_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QWidget>
- #include <QtGui/QListWidgetItem>
+# include <QtGui/QWidget>
+# include <QtGui/QListWidgetItem>
 #else
- #include <QtWidgets/QWidget>
- #include <QtWidgets/QListWidgetItem>
+# include <QtWidgets/QWidget>
+# include <QtWidgets/QListWidgetItem>
 #endif
 //
 class QGridLayout;
@@ -36,7 +36,7 @@ private:
 
 public:
     DSqlQuertyViewer();
-    ~DSqlQuertyViewer();
+    virtual ~DSqlQuertyViewer();
 
 public slots:
     void changeType(int);

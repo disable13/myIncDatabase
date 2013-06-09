@@ -1,7 +1,7 @@
 #---------------------------------------------------------
 # Project created by Timoshenko Sergey 2010-11-26T10:50:18
 #---------------------------------------------------------
-QT = core xml sql
+QT = core sql
 #
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets uitools
@@ -45,7 +45,13 @@ SOURCES = main.cpp\
     core/durihelper.cpp \
     ui/qaboutwidget.cpp \
     core/ddebug.cpp \
-    ui/ddebugwidget.cpp
+    ui/ddebugwidget.cpp \
+    core.cpp \
+    core/dxml.cpp \
+    ../3rdparty/tinyxml/tinyxmlparser.cpp \
+    ../3rdparty/tinyxml/tinyxmlerror.cpp \
+    ../3rdparty/tinyxml/tinyxml.cpp \
+    ../3rdparty/tinyxml/tinystr.cpp
 #
 HEADERS =  core/dproject.h \
     core/dnamespace.h \
@@ -63,7 +69,11 @@ HEADERS =  core/dproject.h \
     core/durihelper.h \
     ui/qaboutwidget.h \
     core/ddebug.h \
-    ui/ddebugwidget.h
+    ui/ddebugwidget.h \
+    core.h \
+    ../3rdparty/tinyxml/tinyxml.h \
+    core/dxml.h \
+    ../3rdparty/tinyxml/tinystr.h
 #
 OTHER_FILES += \
     samples/simple-project.xml \

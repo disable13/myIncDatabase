@@ -2,9 +2,9 @@
 #define MAINWINDOW_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QMainWindow>
+# include <QtGui/QMainWindow>
 #else
- #include <QtWidgets/QMainWindow>
+# include <QtWidgets/QMainWindow>
 #endif
 //
 class QCloseEvent;

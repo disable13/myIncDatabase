@@ -24,7 +24,7 @@ DDebugWidget::DDebugWidget(QWidget *parent) :
     setWindowTitle( tr("Debug tool") );
     setWindowIcon( QIcon(":/icon/develop.png") );
 
-    max = MIA_DEBUG->maximum();
+    max = MIA_DEBUG->getMax();
 
     l = new QGridLayout( this );
     setLayout( l );

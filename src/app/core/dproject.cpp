@@ -3,50 +3,23 @@
 #include "../errors.h"
 #include "myincapplication.h"
 #include "dauth.h"
+#include "dxml.h"
 //
 #include <QFile>
-#include <QtXml/QDomDocument>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 //
-DProject::DProject(QString fileName)
+const QString g_sDatabase = "Database";
+const QString g_sNull =     "NULL";
+//
+DProject::DProject(const QString &fileName)
+    : m_Load(false), m_Sql(false), m_FilePath(fileName)
 {
-    isNew = !QFile::exists(fileName);
-    isLoad = false;
-    isSql = false;
+    m_New = !QFile::exists(m_FilePath);
 
-    auth = new DAuth();
-
-    filePath = fileName;
-
-    if (isNew) {
+    if (m_New) {
         qDebug("Creation new project is blocked!");
         MIA_APP->quit();
-    }
-    QFile f(fileName);
-    if (!f.open(QIODevice::ReadOnly)) {
-        qDebug("Error: can't open project file");
-    }
-    data = new QDataStream( f.readAll() );
-    quint32 magic = 0x00;
-    data[0] >> magic;
-
-    switch (magic) {
-    case 0x08435259: // cryped
-        qDebug("TODO: DProject::DProject()\n\t Cryped");
-        break;
-    case 0x085a4950: // siple ziped
-    {
-        QByteArray * buf = new QByteArray();
-        data[0] >> buf[0];
-        buf = new QByteArray(
-                    qUncompress( buf[0] ));
-        delete data;
-        data = new QDataStream( buf, QIODevice::ReadOnly );
-    }
-        break;
-    default: // Native XML
-        data->device()->seek(0);
     }
 }
 //
@@ -57,29 +30,30 @@ DProject::~DProject()
 //
 bool DProject::load()
 {
-    isLoad = false;
-    if (isNew)
+    if (m_Load)
+        return true;
+    if (m_New)
         return false;
 
-    dbDriver = MyIncApplication::uriNamespace()
-            ->config( "Database", "Driver" ).toUpper();
-    if ((dbDriver == "NULL") || (dbDriver == "ERORR"))
+    m_DbDriver = MIA_NAMESPACE->config( g_sDatabase, "Driver" ).toUpper();
+    if ((m_DbDriver == "NULL") || (m_DbDriver == "ERORR"))
         return false;
-    dbUser = MIA_NAMESPACE->config( "Database", "Username" );
-    dbName = MIA_NAMESPACE->config( "Database", "Name" );
-    dbPassord = MIA_NAMESPACE->config( "Database", "Password" );
-    dbConnectOptions = MIA_NAMESPACE->config( "Database", "Options" );
-    dbHost = MIA_NAMESPACE->config( "Database", "Hostname" );
-    dbPort = MIA_NAMESPACE->config( "Database", "Port" ).toInt();
+    m_DbUser =          MIA_NAMESPACE->config( g_sDatabase, "Username" );
+    m_DbName =          MIA_NAMESPACE->config( g_sDatabase, "Name" );
+    m_DbPassword =      MIA_NAMESPACE->config( g_sDatabase, "Password" );
+    m_DbConnectOptions = MIA_NAMESPACE->config( g_sDatabase, "Options" );
+    m_DbHost =          MIA_NAMESPACE->config( g_sDatabase, "Hostname" );
+    m_DbPort =          MIA_NAMESPACE->config( g_sDatabase, "Port" ).toInt();
+
     if (MIA_NAMESPACE->config( "Auth", "Enabled").trimmed().toLower() != "true")
-        auth->setAuth( true );
+        auth.setAuth( true );
 
-    isLoad = true;
+    m_Load = true;
 
     return true;
 }
 //
-bool DProject::loadSql(QDomElement docElem)
+bool DProject::loadSql(DXml *docElem)
 {
     sel.clear();
     del.clear();
@@ -87,143 +61,149 @@ bool DProject::loadSql(QDomElement docElem)
     ins.clear();
     other.clear();
 
-    for ( QDomNode n = docElem.firstChildElement( "sql" ); !n.isNull(); n = n.nextSiblingElement("sql") ) {
-        QDomElement e = n.toElement();
-        if ( !e.isNull() ) {
-            QString type = n.toElement().attribute( "type", "null" ).toLower();
-            for ( QDomNode nn = e.firstChild(); !nn.isNull(); nn = nn.nextSiblingElement( "query" ) ) {
-                QDomElement ee = nn.toElement();
-                if ( !ee.isNull() ) {
-
-                    if (type == "select") {
-                        sel.insert( ee.attribute( "name", "null"), ee.text() );
-                    } else if (type == "insert") {
-                        ins.insert( ee.attribute( "name", "null"), ee.text() );
-                    } else if (type == "delete") {
-                        del.insert( ee.attribute( "name", "null"), ee.text() );
-                    } else if ( type == "update") {
-                        upd.insert( ee.attribute( "name", "null"), ee.text() );
-                    } else if ( type == "other") {
-                        other.insert( ee.attribute( "name", "null"), ee.text() );
-                    }
-                }
-            }
+    docElem->selectRoot();
+    if (!docElem->selectElement("myinc.sql"))
+        return false;
+    do {
+        QString attr = docElem->elementAttr( "type" );
+        DNamespace::SqlType eType;
+        if (attr == "select") {
+            eType = DNamespace::ST_SELECT;
+        } else if (attr == "insert") {
+            eType = DNamespace::ST_INSERT;
+        } else if (attr == "delete") {
+            eType = DNamespace::ST_DELETE;
+        } else if ( attr == "update") {
+            eType = DNamespace::ST_UPDATE;
+        } else /*if ( attr == "other")*/ {
+            eType = DNamespace::ST_Other;
         }
-    }
-    return false;
+        docElem->selectElement("query");
+        do {
+            QString name = docElem->elementAttr("name");
+            switch (eType) {
+            case DNamespace::ST_SELECT:
+                sel.insert(name, docElem->element()); break;
+            case DNamespace::ST_INSERT:
+                ins.insert(name, docElem->element()); break;
+            case DNamespace::ST_DELETE:
+                del.insert(name, docElem->element()); break;
+            case DNamespace::ST_UPDATE:
+                upd.insert(name, docElem->element()); break;
+            default: other.insert(name, docElem->element());
+            }
+        } while(!docElem->selectNext());
+
+        if (!docElem->selectParent()) break;
+    } while(!docElem->selectNext());
+
+    return true;
 }
 //
-bool DProject::authorized() { return auth->isAuthed(); }
+bool DProject::authorized() const
+{ return auth.getAuth(); }
 //
-bool DProject::getAuthorized(QWidget* parent) { return auth->setAuth(parent); }
+bool DProject::getAuthorized(QWidget* parent)
+{ return auth.setAuth(parent); }
 //
-bool DProject::getIsNew() { return isNew; }
+int DProject::getSelectSqlQuertyCount() const
+{ return sel.count(); }
 //
-bool DProject::getIsLoad() { return isLoad; }
+QString DProject::getSelectSqlQuerty(const QString &name) const
+{ return sel[name]; }
 //
-bool DProject::getIsConnected() { return isSql; }
+QString DProject::getSelectSqlQuerty(const int &pos) const
+{ return sel.keys().at( pos ); }
 //
-QString DProject::getLastError() { return lastError; }
+int DProject::getInsertSqlQuertyCount() const
+{ return ins.size(); }
 //
-QString DProject::getDbDriver() { return dbDriver; }
+QString DProject::getInsertSqlQuerty(const QString &name) const
+{ return ins[name]; }
 //
-QString DProject::getDbUser() { return dbUser; }
+QString DProject::getInsertSqlQuerty(const int &pos) const
+{ return ins.keys().at( pos ); }
 //
-QString DProject::getDbPassord() { return dbPassord; }
+int DProject::getDeleteSqlQuertyCount() const
+{ return del.size(); }
 //
-QString DProject::getDbConnectOptions() { return dbConnectOptions; }
+QString DProject::getDeleteSqlQuerty(const QString &name) const
+{ return del[name]; }
 //
-QString DProject::getDbHost() {  return dbHost; }
+QString DProject::getDeleteSqlQuerty(const int &pos) const
+{ return del.keys().at( pos ); }
 //
-QString DProject::getDbName() { return dbName; }
+int DProject::getUpdateSqlQuertyCount() const
+{ return upd.size(); }
 //
-int DProject::getDbPort() { return dbPort; }
-/*/
-QString DProject::getProjectFile() { return filePath; }
-/*/
-int DProject::getSelectSqlQuertyCount() { return sel.count(); }
+QString DProject::getUpdateSqlQuerty(const QString &name) const
+{ return upd[name]; }
 //
-QString DProject::getSelectSqlQuerty(QString name) { return sel[name]; }
+QString DProject::getUpdateSqlQuerty( const int &pos ) const
+{ return upd.keys().at( pos ); }
 //
-QString DProject::getSelectSqlQuerty( int pos ) { return sel.keys().at( pos ); }
+int DProject::getOtherSqlQuertyCount() const
+{ return other.size(); }
 //
-int DProject::getInsertSqlQuertyCount() { return ins.size(); }
+QString DProject::getOtherSqlQuerty(const QString &name) const
+{ return other[name]; }
 //
-QString DProject::getInsertSqlQuerty(QString name) { return ins[name]; }
+QString DProject::getOtherSqlQuerty(const int &pos ) const
+{ return other.keys().at( pos ); }
 //
-QString DProject::getInsertSqlQuerty( int pos ) { return ins.keys().at( pos ); }
-//
-int DProject::getDeleteSqlQuertyCount() { return del.size(); }
-//
-QString DProject::getDeleteSqlQuerty(QString name) { return del[name]; }
-//
-QString DProject::getDeleteSqlQuerty( int pos ) { return del.keys().at( pos ); }
-//
-int DProject::getUpdateSqlQuertyCount() { return upd.size(); }
-//
-QString DProject::getUpdateSqlQuerty(QString name) { return upd[name]; }
-//
-QString DProject::getUpdateSqlQuerty( int pos ) { return upd.keys().at( pos ); }
-//
-int DProject::getOtherSqlQuertyCount() { return other.size(); }
-//
-QString DProject::getOtherSqlQuerty(QString name) { return other[name]; }
-//
-QString DProject::getOtherSqlQuerty( int pos ) { return other.keys().at( pos ); }
-//
-bool DProject::setDbDriver(QString nameDriver)
+bool DProject::setDbDriver(const QString &driver)
 {
-    nameDriver = nameDriver.trimmed().toUpper() ;
-    if (nameDriver == "")
+    QString nameDriver = driver.trimmed().toUpper();
+    if (nameDriver.isEmpty())
         return false;
 
-    int n = QSqlDatabase::drivers().count();
-    for (int i = 0; i < n; i++)
-        if (nameDriver == QSqlDatabase::drivers().at(i) ) {
-            dbDriver = nameDriver;
+    foreach(QString driver, QSqlDatabase::drivers()) {
+        if (nameDriver == driver) {
+            m_DbDriver = driver;
             return true;
         }
+    }
+    //    int n = QSqlDatabase::drivers().count();
+    //    for (int i = 0; i < n; i++)
+    //        if (nameDriver == QSqlDatabase::drivers().at(i) ) {
+    //            m_DbDriver = nameDriver;
+    //            return true;
+    //        }
+
     return false;
 }
-//
-void DProject::setDbName(QString datebaseName) { dbName = datebaseName; }
-//
-void DProject::setDbUser(QString user) { dbUser = user; }
-//
-void DProject::setDbPassord(QString password) { dbPassord = password; }
-//
-void DProject::setDbConnectOptions(QString connectOptions) { dbConnectOptions = connectOptions; }
-//
-void DProject::setDbHost(QString hostName) { dbHost = hostName; }
-//
-void DProject::setDbPort(int port) { dbPort = port; }
 // FIXME: DProject::connectDatabase()
 bool DProject::connectDatabase()
 {
-    if ( !isLoad || isSql )
+    if (!m_Load)
         return false;
+    if (m_Sql) {
+        qDebug("DProject::connectDatabase() Already connected");
+        return true;
+    }
 
-    QSqlDatabase db = QSqlDatabase::addDatabase( dbDriver, "Project" );
-    if (dbHost != "NULL")
-        db.setHostName( dbHost );
-    if (dbName!="NULL")
-        db.setDatabaseName( dbName );
-    if (dbUser!="NULL")
-        db.setUserName( dbUser );
-    if (dbPassord!="NULL")
-        db.setPassword( dbPassord );
-    if (dbPort!=0)
-        db.setPort( dbPort );
-    if (dbConnectOptions!="NULL")
-        db.setConnectOptions( dbConnectOptions );
+    QSqlDatabase db = QSqlDatabase::addDatabase( m_DbDriver, "Project" );
+    if (m_DbHost != g_sNull)
+        db.setHostName( m_DbHost );
+    if (m_DbName != g_sNull)
+        db.setDatabaseName( m_DbName );
+    if (m_DbUser != g_sNull)
+        db.setUserName( m_DbUser );
+    if (m_DbPassword != g_sNull)
+        db.setPassword( m_DbPassword );
+    if (m_DbPort != 0)
+        db.setPort( m_DbPort );
+    if (m_DbConnectOptions != g_sNull)
+        db.setConnectOptions( m_DbConnectOptions );
 
-    isSql = db.open();
-    if (!isSql) {
-        lastError = db.lastError().text();
+    m_Sql = db.open();
+    if (!m_Sql) {
+        m_LastError = db.lastError().text();
         emit error( _ERR_DB_CONNECT );
     }
-    MyIncApplication::uriNamespace()->initSql();
-    return isSql;
+    MIA_NAMESPACE->initSql();
+
+    return m_Sql;
 }
 //
 void DProject::disconnectDatabase()
@@ -231,7 +211,7 @@ void DProject::disconnectDatabase()
     // FIXME: recurse closing QSqlQuery, QSqlError, QSqlDatabase etc...
     qDebug("FIXME: DProjct::disconnectDatabase()");
     QSqlDatabase::removeDatabase( "Project" );
-    isSql = false;
+    m_Sql = false;
 }
 //
 QStringList DProject::workspace()
@@ -244,7 +224,7 @@ QStringList DProject::workspace()
     return list;
 }
 // TODO: DProject::config(QString,QString) to Multi-threaded.
-QString DProject::config(QString name, QString arrayElement)
+QString DProject::config(const QString &name, const QString &arrayElement) const
 {
     return MIA_NAMESPACE->config(name, arrayElement);
 }

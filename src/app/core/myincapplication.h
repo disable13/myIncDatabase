@@ -3,6 +3,8 @@
 //
 #include <QApplication>
 //
+#include "../core.h"
+//
 class DProject;
 class DNamespace;
 class MainWindow;
@@ -10,43 +12,51 @@ class DDebug;
 //
 class MyIncApplication
 {
-private:
-    static MyIncApplication * self;
-    static QApplication * m_app;
-    //
-    static DNamespace * m_namespace;
-    static DProject * m_project;
-    static DDebug * m_debug;
-    // UI
-    static MainWindow * m_mainWindow;
-    // global settings
-    static bool m_isDebug;
-
 public:
     MyIncApplication(int &argc, char** argv);
     virtual ~MyIncApplication();
+
+private:
+    static MyIncApplication *   self;
+    QApplication* m_app;
     //
-    static bool openProject( QString fileName );
-    static bool closeProject();
+    DNamespace* m_namespace;
+    DProject*   m_project;
+    DDebug*     m_debug;
+    // UI
+    MainWindow* m_mainWindow;
+    // global settings
+    D_PROPERTY_RW(bool, Debug, private)
+
+public:
+    bool openProject( const QString &fileName );
+    bool closeProject();
     //
-    static MyIncApplication * instance() { return self; }
-    static QApplication * application() { return m_app; }
-    static DNamespace * uriNamespace() { return m_namespace; }
-    static DProject * project() { return m_project; }
-    static DDebug * debug() { return m_debug; }
-    static MainWindow * mainWindow() { return m_mainWindow; }
+    inline static MyIncApplication* instance()
+    { Q_ASSERT(self); return self; }
+    inline QApplication * application() const
+    { return m_app; }
+    inline DNamespace * uriNamespace() const
+    { return m_namespace; }
+    inline DProject * project() const
+    { return m_project; }
+    inline DDebug * debug() const
+    { return m_debug; }
+    inline MainWindow * mainWindow() const
+    { return m_mainWindow; }
     //
-    static void compressXmlProject(QString fileName);
-    static void unCompressXmlProject(QString fileName);
-    // Settings
-    static bool isDebug() { return m_isDebug; }
+    void compressXmlProject(const QString &fileName);
+    void unCompressXmlProject(const QString &fileName);
 
 };
 //
-#define MIA_FOCUS MyIncApplication::application()->focusWidget()
-#define MIA_PROJECT MyIncApplication::project()
-#define MIA_NAMESPACE MyIncApplication::uriNamespace()
-#define MIA_APP MyIncApplication::application()
-#define MIA_DEBUG MyIncApplication::debug()
+#define MIA_GLOBAL      MyIncApplication::instance()
+//
+#define MIA_PROJECT     MIA_GLOBAL->project()
+#define MIA_NAMESPACE   MIA_GLOBAL->uriNamespace()
+#define MIA_APP         MIA_GLOBAL->application()
+#define MIA_DEBUG       MIA_GLOBAL->debug()
+//
+#define MIA_FOCUS       MIA_APP->focusWidget()
 //
 #endif // MYINCAPPLICATION_H

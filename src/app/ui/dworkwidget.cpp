@@ -36,7 +36,7 @@ bool DWorkWidget::init()
     // TODO: DWorkWidget::init()
     qDebug( "TODO: DWorkWidget::init() " );
 
-    if (MyIncApplication::project() == 0x00) {
+    if (MIA_PROJECT == NULL) {
         errorMessage( tr("Project not be opened") );
         return false;
     }
