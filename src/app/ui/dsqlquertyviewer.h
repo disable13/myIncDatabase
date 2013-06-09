@@ -20,6 +20,10 @@ class QTextEdit;
 class DSqlQuertyViewer : public QWidget
 {
     Q_OBJECT
+public:
+    DSqlQuertyViewer();
+    virtual ~DSqlQuertyViewer();
+
 private:
     QGridLayout * l;
     // colomn 0
@@ -34,12 +38,8 @@ private:
     //
     QPushButton * btnCancel;
 
-public:
-    DSqlQuertyViewer();
-    virtual ~DSqlQuertyViewer();
-
 public slots:
-    void changeType(int);
+    void changeType(const int &);
     void selectQuery(QListWidgetItem*);
 };
 //

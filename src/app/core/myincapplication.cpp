@@ -12,19 +12,13 @@
 #include <QtSql/QSqlDatabase>
 #include <QDataStream>
 //
-MyIncApplication*   MyIncApplication::self          = 0x00;
-//QApplication*       MyIncApplication::m_app         = 0x00;
-//DNamespace*         MyIncApplication::m_namespace   = 0x00;
-//DProject*           MyIncApplication::m_project     = 0x00;
-//DDebug*             MyIncApplication::m_debug       = 0x00;
-//MainWindow*         MyIncApplication::m_mainWindow  = 0x00;
-//bool                MyIncApplication::m_isDebug     = false;
+MyIncApplication* MyIncApplication::self = NULL;
 //
 #define TR QApplication::instance()->tr
 //
 MyIncApplication::MyIncApplication(int &argc, char** argv)
     : m_app(new QApplication(argc,argv)), m_namespace(NULL), m_project(NULL),
-      m_Debug(false), m_debug(NULL), m_mainWindow(NULL)
+      m_debug(NULL), m_mainWindow(NULL), m_Debug(false)
 {
     m_app->setApplicationName( "myIncDatabase" );
     m_app->setApplicationVersion( "0.1a" );

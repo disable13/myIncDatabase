@@ -1,22 +1,20 @@
 #include "dfooter.h"
 //
-#include "../QProgressIndicator.h"
+#include "../../3rdparty/QProgressIndicator.h"
 //
 #ifndef HAVE_QT5
- #include <QtGui/QGridLayout>
- #include <QtGui/QProgressBar>
- #include <QtGui/QLabel>
+# include <QtGui/QGridLayout>
+# include <QtGui/QProgressBar>
+# include <QtGui/QLabel>
 #else
- #include <QtWidgets/QGridLayout>
- #include <QtWidgets/QProgressBar>
- #include <QtWidgets/QLabel>
+# include <QtWidgets/QGridLayout>
+# include <QtWidgets/QProgressBar>
+# include <QtWidgets/QLabel>
 #endif
 //
 DFooter::DFooter(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent), max(-1)
 {
-    max = -1;
-
     setObjectName( "Footer" );
     setMinimumHeight( 33 );
 
@@ -40,44 +38,40 @@ DFooter::DFooter(QWidget *parent) :
 //
 DFooter::~DFooter()
 {
-    delete progressInicator;
-    delete progressBar;
-    delete lText;
+    FREE_MEM(progressInicator);
+    FREE_MEM(progressBar);
+    FREE_MEM(lText);
 
-    delete l;
+    FREE_MEM(l);
 }
 //
-void DFooter::setText( QString text )
+void DFooter::setText( const QString &text )
 {
     lText->setText( text );
 }
 //
 void DFooter::progressStart()
 {
-   //lText->setPixmap( QPixmap() );
     progressInicator->startAnimation();
 }
 //
-void DFooter::progressStart(int mx)
+void DFooter::progressStart(const int &mx)
 {
     max = mx;
-   //lText->setPixmap( QPixmap() );
     progressBar->setMaximum( max );
     progressBar->setVisible( true );
     if (!progressInicator->isAnimated())
         progressInicator->startAnimation();
 }
 //
-void DFooter::progressStart(QString text )
+void DFooter::progressStart(const QString &text )
 {
-   //lText->setPixmap( QPixmap() );
     lText->setText( text );
     progressInicator->startAnimation();
 }
 //
-void DFooter::progressStart(QString text, int mx)
+void DFooter::progressStart(const QString &text, const int &mx)
 {
-    //lText->setPixmap( QPixmap() );
     lText->setText( text );
     max = mx;
     progressBar->setMaximum( max );
@@ -86,7 +80,7 @@ void DFooter::progressStart(QString text, int mx)
         progressInicator->startAnimation();
 }
 //
-void DFooter::progressChange(int cr)
+void DFooter::progressChange(const int &cr)
 {
     if (max > cr ) { // then stop
         progressBar->setValue( 0 );
@@ -103,13 +97,11 @@ void DFooter::progressStop()
     progressInicator->stopAnimation();
 }
 //
-void DFooter::progressStop(bool state)
+void DFooter::progressStop(const bool &state)
 {
     if (state) {
-        //lText->setPixmap( QPixmap(":/icon/apply.png") );
         lText->setText( tr("Complete!") );
     } else{
-        //lText->setPixmap( QPixmap(":/icon/cancel.png") );
         lText->setText( tr("Uncomplete...") );
     }
     progressInicator->stopAnimation();

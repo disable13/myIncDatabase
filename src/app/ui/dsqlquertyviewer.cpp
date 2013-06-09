@@ -88,29 +88,29 @@ DSqlQuertyViewer::DSqlQuertyViewer( ) :
     l->addWidget( btnCancel, 2, 4);
     // Events
     connect( cbType, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(changeType(int)) );
+             this, SLOT(changeType(int)) );
     connect( lstQuery, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-            this, SLOT(selectQuery(QListWidgetItem*)) );
+             this, SLOT(selectQuery(QListWidgetItem*)) );
     connect( btnCancel, SIGNAL(clicked()),
-            this, SLOT(close()) );
+             this, SLOT(close()) );
 
     setWindowTitle( tr("SQL query viewer") );
 }
 //
 DSqlQuertyViewer::~DSqlQuertyViewer()
 {
-    delete btnCancel;
-    delete teData;
-    delete lData;
-    delete leName;
-    delete lName;
-    delete lstQuery;
-    delete cbType;
-    delete lType;
-    delete l;
+    FREE_MEM(btnCancel);
+    FREE_MEM(teData);
+    FREE_MEM(lData);
+    FREE_MEM(leName);
+    FREE_MEM(lName);
+    FREE_MEM(lstQuery);
+    FREE_MEM(cbType);
+    FREE_MEM(lType);
+    FREE_MEM(l);
 }
 //
-void DSqlQuertyViewer::changeType(int type)
+void DSqlQuertyViewer::changeType(const int &type)
 {
     int count = 0;
     lstQuery->clear();

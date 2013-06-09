@@ -23,6 +23,9 @@ class QSystemTrayIcon;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+public:
+    MainWindow(QWidget *parent = 0);
+    virtual ~MainWindow();
 
 private:
     QWidget * central;
@@ -57,10 +60,7 @@ private:
     bool isOpened; // to ~MainWindow
 
 public:
-    MainWindow(QWidget *parent = 0);
-    virtual ~MainWindow();
-    //
-    bool loadProject( QString & filename);
+    bool loadProject( const QString &filename);
     DHomeScreen * getHome();
     bool openManualWorkspace();
 

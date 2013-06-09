@@ -32,7 +32,7 @@ release : CONFIG -= console
 SOURCES = main.cpp\
     core/dproject.cpp \
     core/dnamespace.cpp \
-    QProgressIndicator.cpp \
+    ../3rdparty/QProgressIndicator.cpp \
     ui/mainwindow.cpp \
     ui/dfooter.cpp \
     ui/ddbconfig.cpp \
@@ -55,7 +55,7 @@ SOURCES = main.cpp\
 #
 HEADERS =  core/dproject.h \
     core/dnamespace.h \
-    QProgressIndicator.h \
+    ../3rdparty/QProgressIndicator.h \
     ui/mainwindow.h \
     ui/dfooter.h \
     ui/ddbconfig.h \

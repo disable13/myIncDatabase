@@ -2,15 +2,17 @@
 #define DFOOTER_H
 //
 #ifndef HAVE_QT5
- #include <QtGui/QWidget>
+# include <QtGui/QWidget>
 #else
- #include <QtWidgets/QWidget>
+# include <QtWidgets/QWidget>
 #endif
 //
 class QGridLayout;
 class QProgressIndicator;
 class QProgressBar;
 class QLabel;
+//
+#include "../core.h"
 //
 class DFooter : public QWidget
 {
@@ -29,14 +31,14 @@ private:
     int max;
 
 public slots:
-    void setText( QString );
+    void setText( const QString &);
     void progressStart(); // for indicator
-    void progressStart(int); // max
-    void progressStart(QString);
-    void progressStart(QString,int);
-    void progressChange(int); // now value. to stop set max value
+    void progressStart(const int &); // max
+    void progressStart(const QString &);
+    void progressStart(const QString &, const int &);
+    void progressChange(const int&); // now value. to stop set max value
     void progressStop(); // for indicator (unknow result)
-    void progressStop(bool); // for good or bad result
+    void progressStop(const bool&); // for good or bad result
 
 };
 //

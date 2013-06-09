@@ -9,26 +9,24 @@
 #include <QtSql/QSqlQuery>
 //
 #ifndef HAVE_QT5
-#include <QtGui>
+# include <QtGui>
 #else
-#include <QtWidgets>
+# include <QtWidgets>
 #endif
 //
 #include "../core/myincapplication.h"
 //
-DWorkWidget::DWorkWidget(QString formName) :
-    QWidget(), formName(formName)
+DWorkWidget::DWorkWidget(const QString &myName) :
+    QWidget(), central(NULL), formName(myName)
 {
-    central = 0x00;
     l = new QGridLayout( this );
     setLayout( l );
 }
 //
 DWorkWidget::~DWorkWidget()
 {
-    if (central)
-        delete central;
-    delete l;
+    FREE_MEM(central);
+    FREE_MEM(l);
 }
 //
 bool DWorkWidget::init()
@@ -372,7 +370,7 @@ bool DWorkWidget::initComboBoxItems(QComboBox * w)
                 while (q->next())
                     w->addItem( q->value(0).toString() );
             }
-            break;
+                break;
             default:
                 return false;
             }
@@ -399,7 +397,7 @@ bool DWorkWidget::initComboBoxChange(QWidget * w)
     return true;
 }
 //
-int DWorkWidget::errorMessage(QString more)
+int DWorkWidget::errorMessage(const QString &more)
 {
     QMessageBox msg;
     msg.setIcon( QMessageBox::Critical );
@@ -440,8 +438,8 @@ void DWorkWidget::changeItemIndex(int index)
     emit uri( sender()->property( "OnChangeIndex" ).toString()
               .arg( index ), new QVariant() );
 }
-//
+// TODO
 void DWorkWidget::listItemChange(QModelIndex)
 {
-
+    qDebug("void DWorkWidget::listItemChange(QModelIndex) MAKEME");
 }

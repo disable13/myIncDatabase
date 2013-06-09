@@ -100,32 +100,30 @@ MainWindow::MainWindow(QWidget *parent)
 //
 MainWindow::~MainWindow()
 {
-    if (sqlQuertyViewer)
-        delete sqlQuertyViewer;
-    if (debug)
-        delete debug;
-    delete home;
-    delete footer;
-    delete actExit;
-    delete actClose;
-    //delete actSaveAs;
-    //delete actSave;
-    delete actOpenProject;
-    //delete actCreateProject;
-    delete actConnect;
-    delete actDbSettings;
-    delete actQuerySettings;
-//    delete actUiSettings;
-    delete menProject;
-    delete menFile;
-    delete menuBar;
-    delete trayMenu;
-    delete tray;
-    delete l;
-    delete central;
+    FREE_MEM(sqlQuertyViewer);
+    FREE_MEM(debug);
+    FREE_MEM(home);
+    FREE_MEM(footer);
+    FREE_MEM(actExit);
+    FREE_MEM(actClose);
+    //FREE_MEM(actSaveAs);
+    //FREE_MEM(actSave);
+    FREE_MEM(actOpenProject);
+    //FREE_MEM(actCreateProject);
+    FREE_MEM(actConnect);
+    FREE_MEM(actDbSettings);
+    FREE_MEM(actQuerySettings);
+    //FREE_MEM(actUiSettings);
+    FREE_MEM(menProject);
+    FREE_MEM(menFile);
+    FREE_MEM(menuBar);
+    FREE_MEM(trayMenu);
+    FREE_MEM(tray);
+    FREE_MEM(l);
+    FREE_MEM(central);
 }
 //
-bool MainWindow::loadProject( QString & fileName)
+bool MainWindow::loadProject(const QString &fileName)
 {
     MyIncApplication::instance()->openProject( fileName );
     connect( MIA_PROJECT, SIGNAL(error(int)),

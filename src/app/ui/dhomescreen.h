@@ -18,6 +18,10 @@ class DWorkWidget;
 class DHomeScreen : public QWidget
 {
     Q_OBJECT
+public:
+    DHomeScreen(QWidget * parent = 0);
+    virtual ~DHomeScreen();
+
 private:
     DProject * current;
     QList<DWorkWidget*> listWidget;
@@ -27,11 +31,8 @@ private:
     QListWidget * lstBase;
 
 public:
-    DHomeScreen(QWidget * parent = 0);
-    virtual ~DHomeScreen();
-    //
     bool selectManualWorkspace();
-    bool selectWorkspace(QString name);
+    bool selectWorkspace(const QString &name);
 
 public slots:
     void clear();

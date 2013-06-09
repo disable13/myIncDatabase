@@ -7,35 +7,29 @@
 #include <QtSql/QSqlQuery>
 #include <QStringList>
 //
-QString DUriHelper::uriMask =
+const QString DUriHelper::uriMask =
 QString("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
 //
-DUriHelper::DUriHelper(QString  query) :
-    QObject()
+DUriHelper::DUriHelper(const QString &query) :
+    QObject(), rx(new QRegExp( uriMask )), p_path(NULL), p_args(NULL)
 {
-    rx = new QRegExp( uriMask );
     rx->indexIn( query );
 
     connect( this, SIGNAL(uriArgument(QString,QVariant*)),
              MIA_NAMESPACE, SLOT(uri(QString,QVariant*)) );
-
-    p_path = 0x00;
-    p_args = 0x00;
 }
 //
 DUriHelper::~DUriHelper()
 {
-    delete rx;
-    if (p_path == 0x00)
-        delete p_path;
-    if (p_args == 0x00)
-        delete p_args;
+    FREE_MEM(rx);
+    FREE_MEM(p_path);
+    FREE_MEM(p_args);
 }
 //
 void DUriHelper::initPath()
 {
-    p_path = new QStringList(
-                rx->cap(5).split('/', QString::SkipEmptyParts) );
+    FREE_MEM(p_path);
+    p_path = new QStringList( rx->cap(5).split('/', QString::SkipEmptyParts) );
 }
 // TODO: see Global TODO (1).
 void DUriHelper::initArg()
@@ -43,8 +37,9 @@ void DUriHelper::initArg()
     QStringList arg(
                 rx->cap(9).split('&', QString::SkipEmptyParts) );
 
+    FREE_MEM(p_args);
     p_args = new QStringList();
-    QString buf = "";
+    QString buf;
     int open = 0;
     for(int i = 0; i < arg.count(); i++) {
         QString tmp = arg.at(i).trimmed();
@@ -102,26 +97,26 @@ agais:
     }
 }
 // TODO: fix for 4.5.x
-bool DUriHelper::isUri()
+bool DUriHelper::isUri() const
 {
     return (rx->captureCount() != -1);
 }
 //
-QString DUriHelper::protocol()
+QString DUriHelper::protocol() const
 {
     if (!isUri())
         return QString();
     return rx->cap(2).trimmed().toLower();
 }
 //
-QString DUriHelper::host()
+QString DUriHelper::host() const
 {
     if (!isUri())
         return QString();
     return rx->cap(4).trimmed().toLower();
 }
 //
-QString DUriHelper::path()
+QString DUriHelper::path() const
 {
     if (!isUri())
         return QString();
@@ -129,7 +124,7 @@ QString DUriHelper::path()
     return rx->cap(5).trimmed();
 }
 //
-unsigned int DUriHelper::pathItemsCount()
+quint32 DUriHelper::pathItemsCount()
 {
     if (!isUri())
         return 0x00;
@@ -139,7 +134,7 @@ unsigned int DUriHelper::pathItemsCount()
     return p_path->count();
 }
 //
-QString DUriHelper::path(int i)
+QString DUriHelper::path(const int &i)
 {
     if (!isUri())
         return QString();
@@ -153,27 +148,27 @@ QStringList DUriHelper::args()
 {
     if (!isUri())
         return QStringList();
-    if (p_args == 0x00)
+    if (p_args == NULL)
         initArg();
 
-    return p_args[0];
+    return *p_args;
 }
 //
-QString DUriHelper::arg(int i)
+QString DUriHelper::arg(const int &i)
 {
     if (!isUri())
         return QString();
-    if (p_args != 0x00)
+    if (p_args == NULL)
         initArg();
 
     return p_args->at(i);
 }
 //
-unsigned int DUriHelper::argCount()
+quint32 DUriHelper::argCount()
 {
     if (!isUri())
-        return 0x00;
-    if (p_args == 0x00)
+        return 0;
+    if (p_args == NULL)
         initArg();
 
     return p_args->count();

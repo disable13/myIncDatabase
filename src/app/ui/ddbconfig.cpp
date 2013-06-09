@@ -3,27 +3,27 @@
 #include "../core/dproject.h"
 //
 #ifndef HAVE_QT5
- #include <QtGui/QFormLayout>
- #include <QtGui/QComboBox>
- #include <QtGui/QLineEdit>
- #include <QtGui/QSpinBox>
- #include <QtGui/QTextEdit>
- #include <QtGui/QDialogButtonBox>
- #include <QtGui/QPushButton>
- #include <QtGui/QLabel>
- //
- #include <QtGui/QMessageBox>
+# include <QtGui/QFormLayout>
+# include <QtGui/QComboBox>
+# include <QtGui/QLineEdit>
+# include <QtGui/QSpinBox>
+# include <QtGui/QTextEdit>
+# include <QtGui/QDialogButtonBox>
+# include <QtGui/QPushButton>
+# include <QtGui/QLabel>
+//
+# include <QtGui/QMessageBox>
 #else
- #include <QtWidgets/QFormLayout>
- #include <QtWidgets/QComboBox>
- #include <QtWidgets/QLineEdit>
- #include <QtWidgets/QSpinBox>
- #include <QtWidgets/QTextEdit>
- #include <QtWidgets/QDialogButtonBox>
- #include <QtWidgets/QPushButton>
- #include <QtWidgets/QLabel>
- //
- #include <QtWidgets/QMessageBox>
+# include <QtWidgets/QFormLayout>
+# include <QtWidgets/QComboBox>
+# include <QtWidgets/QLineEdit>
+# include <QtWidgets/QSpinBox>
+# include <QtWidgets/QTextEdit>
+# include <QtWidgets/QDialogButtonBox>
+# include <QtWidgets/QPushButton>
+# include <QtWidgets/QLabel>
+//
+# include <QtWidgets/QMessageBox>
 #endif
 //
 #include <QtSql/QSqlDatabase>
@@ -32,18 +32,16 @@
 // FIXME: class DDbConfig
 //
 DDbConfig::DDbConfig(QWidget *parent) :
-    QDialog(parent)
+    QDialog(parent), project(NULL)
 {
     qDebug("FIXME: class DDbConfig");
-    project = 0x00;
-
     l = new QFormLayout(this);
 
     cbDriver = new QComboBox(this);
     cbDriver->addItem( tr("NULL") );
     cbDriver->insertItems(1, QSqlDatabase::drivers());
     edtDbHost = new QLineEdit(this);
-// FIXME: DDbConfig::DDbConfig()\n\tFull Input check.
+    // FIXME: DDbConfig::DDbConfig()\n\tFull Input check.
     qDebug("FIXME: DDbConfig::DDbConfig()\n\tFull Input check.");
     sbDbPort = new QSpinBox(this);
     sbDbPort->setMinimum(0);
@@ -93,19 +91,22 @@ DDbConfig::DDbConfig(QWidget *parent) :
 //
 DDbConfig::~DDbConfig()
 {
-    delete cbDriver;
-    delete edtDbHost;
-    delete edtDbName;
-    delete edtDbOptions;
-    delete edtDbPassword;
-    delete sbDbPort;
-    delete edtDbUser;
+    FREE_MEM( cbDriver );
+    FREE_MEM( edtDbHost );
+    FREE_MEM( edtDbName );
+    FREE_MEM( edtDbOptions );
+    FREE_MEM( edtDbPassword );
+    FREE_MEM( sbDbPort );
+    FREE_MEM( edtDbUser );
 
-    delete l;
+    FREE_MEM( l );
+    // NOTE: Do not run FREE_MEM(project)
 }
 //
 void DDbConfig::setProject(DProject * pro)
 {
+    Q_ASSERT(project != NULL || pro != project);
+
     project = pro;
 
     edtDbHost->setText( project->getDbHost() );
@@ -162,8 +163,8 @@ bool DDbConfig::apply()
         if (!isSql) { // Error
             QSqlError err = db.lastError();
             QMessageBox::warning( this, tr("Not connected"),
-                                 tr("Can't create connection to SQL server.\nError text: %1")
-                                 .arg(err.text()) );
+                                  tr("Can't create connection to SQL server.\nError text: %1")
+                                  .arg(err.text()) );
         } else {
             db.close();
             QMessageBox::information( this, tr("Connection sucsessfull"),

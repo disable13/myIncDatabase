@@ -10,41 +10,53 @@ class DWorkWidget;
 #include <QStringList>
 #include <QVariant>
 //
+#include "../core.h"
+//
 class DSystemFuncs : public QObject
 {
     Q_OBJECT
-
-private:
-    QList< QPair<QString,QString> > var;
-    //
-    QWidget* findWidget( QString name );
-    //
-    QVariant inline returnBool(bool);
-
 public:
     DSystemFuncs();
     virtual ~DSystemFuncs();
-    //
-    bool openWidget(QString widget);
-    void closeWidget(QString widget);
-    bool refreshWidget(QString widget);
+
+private:
+    QList< QPair<QString,QString> > var;
+
+protected:
+    static QWidget* findWidget( const QString &name );
+
+public:
+    static bool openWidget(const QString &widget);
+    static void closeWidget(const QString &widget);
+    static bool refreshWidget(const QString &widget);
     // Variables
-    QString getGlobalVariable(QString name);
-    void setGlobalVariable(QString name,
-                           QString value);
-    QString getVariable(QString widget,
-                        QString name);
-    void setVariable(QString widget,
-                     QString name, QString value);
-    QVariant object(QString window, QString control, QString property);
-    void setObject(QString window, QString control,  QString property ,QString value);
+    QString getGlobalVariable(const QString &name) const;
+    void    setGlobalVariable(const QString &name, const QString &value);
+    //
+    static QString getVariable(const QString &widget, const QString &name);
+    static void    setVariable(const QString &widget,
+                        const QString &name,
+                        const QString &value
+                        );
+    //
+    static QVariant object(const QString &window,
+                    const QString &control,
+                    const QString &property
+                    );
+    static void    setObject(const QString &window,
+                      const QString &control,
+                      const QString &property,
+                      const QString &value
+                      );
 
 signals:
     void error( int );
 
 public slots:
-    QVariant run( QString func,
-            QStringList arg = QStringList(), QObject * nativeSender = 0x00 );
+    QVariant run(const QString &func,
+                 const QStringList &arg = QStringList(),
+                 const QObject *nativeSender = NULL
+            );
 
 };
 //

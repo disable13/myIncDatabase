@@ -6,15 +6,15 @@
 #include "../core/dnamespace.h"
 //
 #ifndef HAVE_QT5
- #include <QtGui/QGridLayout>
- #include <QtGui/QListWidget>
+# include <QtGui/QGridLayout>
+# include <QtGui/QListWidget>
 #else
- #include <QtWidgets/QGridLayout>
- #include <QtWidgets/QListWidget>
+# include <QtWidgets/QGridLayout>
+# include <QtWidgets/QListWidget>
 #endif
 //
 DHomeScreen::DHomeScreen(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent), current(NULL)
 {
     l = new QGridLayout( this );
 
@@ -22,14 +22,14 @@ DHomeScreen::DHomeScreen(QWidget *parent) :
     l->addWidget( lstBase, 0, 0);
 
     connect( lstBase, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-            this, SLOT(selectWorkspace(QListWidgetItem*)) );
+             this, SLOT(selectWorkspace(QListWidgetItem*)) );
 }
 //
 DHomeScreen::~DHomeScreen()
 {
     clear();
-    delete lstBase;
-    delete l;
+    FREE_MEM(lstBase);
+    FREE_MEM(l);
 }
 //
 void DHomeScreen::clear()
@@ -37,7 +37,7 @@ void DHomeScreen::clear()
     lstBase->clear();
     for(int i = 0; i < listWidget.size(); i++ ) {
         listWidget.at(i)->close();
-        delete listWidget.at(i);
+        /*FREE_MEM*/ delete (listWidget.at(i));
     }
     listWidget.clear();
 }
@@ -45,6 +45,7 @@ void DHomeScreen::clear()
 void DHomeScreen::setProject( DProject * project )
 {
     clear();
+    Q_ASSERT(current != NULL);
 
     current = project;
     QStringList list = current->workspace();
@@ -60,22 +61,22 @@ void DHomeScreen::setProject( DProject * project )
 bool DHomeScreen::selectManualWorkspace()
 {
     for(int i = 0; i < lstBase->count(); i++ )
-    if ( current->config(lstBase->item(i)->data(Qt::UserRole).toString(), "Manual")
-         .toLower().trimmed() == "true") {
+        if ( current->config(lstBase->item(i)->data(Qt::UserRole).toString(), "Manual")
+             .toLower().trimmed() == "true") {
             selectWorkspace( lstBase->item(i) );
             return true;
-    }
+        }
     return false;
 }
 //
-bool DHomeScreen::selectWorkspace( QString name )
+bool DHomeScreen::selectWorkspace(const QString &name )
 {
-    name = name.toLower();
+    QString p_sName = name.toLower();
     for(int i = 0; i < lstBase->count(); i++ )
         if (lstBase->item(i)->text().toLower() == name ) {
             selectWorkspace( lstBase->item(i) );
             return true;
-    }
+        }
     return false;
 }
 //
@@ -86,7 +87,7 @@ void DHomeScreen::selectWorkspace(QListWidgetItem* item)
         if (listWidget.at(i)->objectName() == file) {
             listWidget.at(i)->show();
             return;
-    }
+        }
     DWorkWidget * widget =
             new DWorkWidget(
                 file );
@@ -96,6 +97,6 @@ void DHomeScreen::selectWorkspace(QListWidgetItem* item)
         listWidget.append( widget );
         widget->show();
     } else {
-        delete widget;
+        FREE_MEM(widget);
     }
 }

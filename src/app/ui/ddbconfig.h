@@ -19,9 +19,12 @@ class QLabel;
 class DDbConfig : public QDialog
 {
     Q_OBJECT
+public:
+    DDbConfig(QWidget *parent = 0);
+    virtual ~DDbConfig();
+
 private:
     DProject * project;
-
     // UI
     QFormLayout * l;
 
@@ -35,9 +38,6 @@ private:
     QLabel    * lStatus;
 
 public:
-    DDbConfig(QWidget *parent = 0);
-    virtual ~DDbConfig();
-    //
     void setProject(DProject *);
 
 public slots:

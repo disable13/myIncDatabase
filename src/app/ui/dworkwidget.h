@@ -18,6 +18,10 @@ class QComboBox;
 class DWorkWidget : public QWidget
 {
     Q_OBJECT
+public:
+    DWorkWidget(const QString &formName);
+    virtual ~DWorkWidget();
+
 private:
     QWidget  * central;
     //
@@ -25,9 +29,6 @@ private:
     QString formName;
 
 public:
-    DWorkWidget(QString formName);
-    virtual ~DWorkWidget();
-    //
     bool init();
     bool initUri();
 
@@ -35,18 +36,18 @@ public slots:
     bool refreshUri();
 
 private:
-    bool inline initButton(QWidget*);
-    bool inline initLabel(QWidget*);
-    bool inline initSpinBox(QWidget*);
-    bool inline initDateTime(QWidget*);
-    bool inline initList(QAbstractItemView*);
-    bool inline initListItemChange(QAbstractItemView*);
-    bool inline initChangeText(QWidget*);
-    bool inline initComboBoxItems(QComboBox*);
-    bool inline initComboBoxChange(QWidget*);
+    bool initButton(QWidget*);
+    bool initLabel(QWidget*);
+    bool initSpinBox(QWidget*);
+    bool initDateTime(QWidget*);
+    bool initList(QAbstractItemView*);
+    bool initListItemChange(QAbstractItemView*);
+    bool initChangeText(QWidget*);
+    bool initComboBoxItems(QComboBox*);
+    bool initComboBoxChange(QWidget*);
 
 protected:
-    int errorMessage( QString more );
+    static int errorMessage( const QString &more );
 
 private slots:
     void clickEvent();

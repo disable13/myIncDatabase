@@ -67,10 +67,10 @@ DDebugWidget::DDebugWidget(QWidget *parent) :
 //
 DDebugWidget::~DDebugWidget()
 {
-    delete lstUri;
-    delete l;
+    FREE_MEM(lstUri);
+    FREE_MEM(l);
 
-    delete popMenu;
+    FREE_MEM(popMenu);
 }
 // TODO: create form
 void DDebugWidget::openObjView()
@@ -101,8 +101,8 @@ void DDebugWidget::openPopup(QPoint p)
     last = p;
     popMenu->popup( lstUri->mapToGlobal(p) );
     QListWidgetItem * item = lstUri->itemAt( p );
-    actOpenUri->setEnabled( item != 0x00);
-    actobjView->setEnabled( item != 0x00);
+    actOpenUri->setEnabled( item != NULL);
+    actobjView->setEnabled( item != NULL);
 }
 
 //
